@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Management - Circling Logistics</title>
+    <link rel="stylesheet" href="css/design-system-european.css">
+    <link rel="stylesheet" href="css/navigation.css">
+    <style>
+        .driver-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .main-content {
+            flex: 1;
+            background: var(--neutral-light);
+        }
+        
+        .driver-header {
+            background: var(--white);
+            padding: var(--space-6);
+            border-bottom: 1px solid #e5e7eb;
+            border-left: 4px solid var(--success-green);
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: var(--space-4);
+        }
+        
+        .driver-title {
+            margin: 0;
+            font-size: var(--font-size-3xl);
+            font-weight: 700;
+            color: var(--neutral-dark);
+        }
+        
+        .driver-subtitle {
+            color: var(--neutral-medium);
+            margin-top: var(--space-2);
+        }
+        
+        .driver-actions {
+            display: flex;
+            gap: var(--space-3);
+            align-items: center;
+        }
+        
+        .driver-content {
+            padding: var(--space-6);
+        }
+        
+        .stats-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-4);
+            margin-bottom: var(--space-6);
+        }
+        
+        .stat-card {
+            background: var(--white);
+            padding: var(--space-6);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+            transition: transform var(--transition-fast);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .stat-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-2xl);
+        }
+        
+        .stat-icon.total {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--secondary-blue);
+        }
+        
+        .stat-icon.active {
+            background: rgba(5, 150, 105, 0.1);
+            color: var(--success-green);
+        }
+        
+        .stat-icon.available {
+            background: rgba(217, 119, 6, 0.1);
+            color: var(--warning-amber);
+        }
+        
+        .stat-icon.performance {
+            background: rgba(220, 38, 38, 0.1);
+            color: var(--error-red);
+        }
+        
+        .stat-details {
+            flex: 1;
+        }
+        
+        .stat-value {
+            font-size: var(--font-size-3xl);
+            font-weight: 700;
+            color: var(--neutral-dark);
+            margin-bottom: var(--space-1);
+        }
+        
+        .stat-label {
+            color: var(--neutral-medium);
+            font-size: var(--font-size-sm);
+            margin-bottom: var(--space-2);
+        }
+        
+        .stat-trend {
+            font-size: var(--font-size-xs);
+            display: flex;
+            align-items: center;
+            gap: var(--space-1);
+        }
+        
+        .trend-positive {
+            color: var(--success-green);
+        }
+        
+        .trend-negative {
+            color: var(--error-red);
+        }
+        
+        .drivers-section {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: var(--space-6);
+        }
+        
+        .drivers-main {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+        
+        .drivers-header {
+            padding: var(--space-4) var(--space-6);
+            background: var(--neutral-light);
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .drivers-title {
+            font-size: var(--font-size-lg);
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .drivers-controls {
+            display: flex;
+            gap: var(--space-3);
+            align-items: center;
+        }
+        
+        .filter-select {
+            padding: var(--space-2) var(--space-3);
+            border: 1px solid #d1d5db;
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-sm);
+            min-width: 120px;
+        }
+        
+        .search-drivers {
+            position: relative;
+            min-width: 200px;
+        }
+        
+        .search-drivers input {
+            width: 100%;
+            padding: var(--space-2) var(--space-3);
+            padding-left: var(--space-8);
+            border: 1px solid #d1d5db;
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-sm);
+        }
+        
+        .search-drivers .search-icon {
+            position: absolute;
+            left: var(--space-3);
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--neutral-medium);
+        }
+        
+        .drivers-grid {
+            padding: var(--space-6);
+            display: grid;
+            gap: var(--space-4);
+        }
+        
+        .driver-card {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+            padding: var(--space-4);
+            border: 1px solid #e5e7eb;
+            border-radius: var(--radius-lg);
+            transition: all var(--transition-fast);
+            cursor: pointer;
+        }
+        
+        .driver-card:hover {
+            border-color: var(--secondary-blue);
+            background: var(--accent-blue);
+            transform: translateY(-1px);
+        }
+        
+        .driver-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 600;
+            font-size: var(--font-size-xl);
+            flex-shrink: 0;
+        }
+        
+        .driver-info {
+            flex: 1;
+        }
+        
+        .driver-name {
+            font-size: var(--font-size-lg);
+            font-weight: 600;
+            margin-bottom: var(--space-1);
+            color: var(--neutral-dark);
+        }
+        
+        .driver-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: var(--space-2);
+            margin-bottom: var(--space-2);
+            font-size: var(--font-size-sm);
+            color: var(--neutral-medium);
+        }
+        
+        .driver-meta {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+            margin-top: var(--space-2);
+        }
+        
+        .driver-status {
+            flex-shrink: 0;
+        }
+        
+        .driver-actions {
+            display: flex;
+            gap: var(--space-2);
+            flex-shrink: 0;
+        }
+        
+        .driver-btn {
+            padding: var(--space-2) var(--space-3);
+            border: 1px solid #d1d5db;
+            background: var(--white);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-sm);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+        
+        .driver-btn:hover {
+            background: var(--neutral-light);
+        }
+        
+        .driver-btn.primary {
+            background: var(--primary-blue);
+            color: var(--white);
+            border-color: var(--primary-blue);
+        }
+        
+        .driver-btn.primary:hover {
+            background: #1e40af;
+        }
+        
+        .performance-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-6);
+        }
+        
+        .performance-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+        
+        .performance-header {
+            padding: var(--space-4) var(--space-6);
+            background: var(--neutral-light);
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .performance-title {
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .performance-content {
+            padding: var(--space-6);
+        }
+        
+        .top-performers {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-4);
+        }
+        
+        .performer-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+        }
+        
+        .performer-rank {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--secondary-blue);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-xs);
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        
+        .performer-rank.gold {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+        }
+        
+        .performer-rank.silver {
+            background: linear-gradient(135deg, #e5e7eb, #9ca3af);
+        }
+        
+        .performer-rank.bronze {
+            background: linear-gradient(135deg, #d97706, #92400e);
+        }
+        
+        .performer-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 600;
+            font-size: var(--font-size-sm);
+        }
+        
+        .performer-info {
+            flex: 1;
+        }
+        
+        .performer-name {
+            font-weight: 500;
+            margin-bottom: var(--space-1);
+        }
+        
+        .performer-score {
+            font-size: var(--font-size-xs);
+            color: var(--neutral-medium);
+        }
+        
+        .alerts-section {
+            background: rgba(217, 119, 6, 0.1);
+            border: 1px solid rgba(217, 119, 6, 0.3);
+            border-radius: var(--radius-md);
+            padding: var(--space-4);
+        }
+        
+        .alert-title {
+            font-weight: 600;
+            color: var(--warning-amber);
+            margin-bottom: var(--space-3);
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+        
+        .alert-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-2);
+        }
+        
+        .alert-item {
+            background: var(--white);
+            padding: var(--space-3);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-sm);
+            border-left: 3px solid var(--warning-amber);
+        }
+        
+        .quick-assign {
+            background: var(--accent-blue);
+            border-radius: var(--radius-md);
+            padding: var(--space-4);
+        }
+        
+        .assign-title {
+            font-weight: 600;
+            margin-bottom: var(--space-3);
+            color: var(--primary-blue);
+        }
+        
+        .assign-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-2) 0;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: var(--font-size-sm);
+        }
+        
+        .assign-item:last-child {
+            border-bottom: none;
+        }
+
+        @media (max-width: 1024px) {
+            .drivers-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-overview {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .stats-overview {
+                grid-template-columns: 1fr;
+            }
+            
+            .driver-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .driver-details {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <div class="navigation-wrapper">
+        <nav class="navbar">
+            <a href="06-home-page-european.html" class="navbar-brand">
+                <div class="navbar-logo">CL</div>
+                Circling Logistics
+            </a>
+            
+            <div class="navbar-search">
+                <input type="text" class="search-input" placeholder="Search drivers...">
+                <span class="search-icon">🔍</span>
+            </div>
+            
+            <ul class="navbar-nav">
+                <!-- Navigation items will be populated by JavaScript -->
+            </ul>
+            
+            <div class="navbar-user">
+                <div class="user-profile">
+                    <!-- User profile will be populated by JavaScript -->
+                </div>
+                <div class="dropdown-menu">
+                    <a href="14-profile-settings-european.html" class="dropdown-item">Profile Settings</a>
+                    <a href="15-notifications-european.html" class="dropdown-item">Notifications</a>
+                    <div class="dropdown-divider"></div>
+                    <button class="dropdown-item" onclick="logout()">Sign Out</button>
+                </div>
+            </div>
+            
+            <button class="mobile-menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb-container">
+        <nav class="container">
+            <ol class="breadcrumb">
+                <!-- Breadcrumb items will be populated by JavaScript -->
+            </ol>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="driver-layout">
+        <main class="main-content page-transition">
+            <div class="driver-header">
+                <div class="header-content">
+                    <div>
+                        <h1 class="driver-title">Driver Management</h1>
+                        <p class="driver-subtitle">Manage your driver team, assignments, and performance</p>
+                    </div>
+                    <div class="driver-actions">
+                        <button class="btn btn-secondary" onclick="importDrivers()">📥 Import</button>
+                        <button class="btn btn-primary" onclick="addDriver()">👤 Add Driver</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="driver-content">
+                <!-- Statistics Overview -->
+                <div class="stats-overview">
+                    <div class="stat-card">
+                        <div class="stat-icon total">👥</div>
+                        <div class="stat-details">
+                            <div class="stat-value">32</div>
+                            <div class="stat-label">Total Drivers</div>
+                            <div class="stat-trend trend-positive">
+                                <span>↗</span> +3 this month
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon active">🚛</div>
+                        <div class="stat-details">
+                            <div class="stat-value">24</div>
+                            <div class="stat-label">On Duty</div>
+                            <div class="stat-trend trend-positive">
+                                <span>↗</span> 75% utilization
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon available">✅</div>
+                        <div class="stat-details">
+                            <div class="stat-value">8</div>
+                            <div class="stat-label">Available</div>
+                            <div class="stat-trend trend-negative">
+                                <span>↘</span> Ready for assignment
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon performance">⭐</div>
+                        <div class="stat-details">
+                            <div class="stat-value">4.7</div>
+                            <div class="stat-label">Avg. Rating</div>
+                            <div class="stat-trend trend-positive">
+                                <span>↗</span> +0.2 this quarter
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="drivers-section">
+                    <!-- Main Drivers List -->
+                    <div class="drivers-main">
+                        <div class="drivers-header">
+                            <h2 class="drivers-title">Driver Directory</h2>
+                            <div class="drivers-controls">
+                                <select class="filter-select" id="statusFilter">
+                                    <option value="">All Status</option>
+                                    <option value="active">Active</option>
+                                    <option value="on-duty">On Duty</option>
+                                    <option value="available">Available</option>
+                                    <option value="resting">Resting</option>
+                                    <option value="vacation">On Vacation</option>
+                                </select>
+                                
+                                <div class="search-drivers">
+                                    <input type="text" placeholder="Search drivers..." id="searchDrivers">
+                                    <span class="search-icon">🔍</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="drivers-grid">
+                            <div class="driver-card" data-driver="hans-mueller">
+                                <div class="driver-avatar">HM</div>
+                                <div class="driver-info">
+                                    <div class="driver-name">Hans Mueller</div>
+                                    <div class="driver-details">
+                                        <div>📧 hans.m@eurotransport.de</div>
+                                        <div>📞 +49 30 1234 5678</div>
+                                        <div>🚛 Mercedes Actros (VH-001)</div>
+                                        <div>📍 Currently in Düsseldorf</div>
+                                    </div>
+                                    <div class="driver-meta">
+                                        <span class="status-badge status-active">On Route</span>
+                                        <span class="text-muted">License: CE • Expires: Dec 2025</span>
+                                        <span class="text-muted">⭐ 4.9 rating (156 trips)</span>
+                                    </div>
+                                </div>
+                                <div class="driver-actions">
+                                    <button class="driver-btn" onclick="callDriver('Hans Mueller')">📞</button>
+                                    <button class="driver-btn" onclick="messageDriver('Hans Mueller')">💬</button>
+                                    <button class="driver-btn primary" onclick="viewDriver('hans-mueller')">View</button>
+                                </div>
+                            </div>
+
+                            <div class="driver-card" data-driver="klaus-weber">
+                                <div class="driver-avatar">KW</div>
+                                <div class="driver-info">
+                                    <div class="driver-name">Klaus Weber</div>
+                                    <div class="driver-details">
+                                        <div>📧 klaus.w@eurotransport.de</div>
+                                        <div>📞 +49 30 2345 6789</div>
+                                        <div>🚛 Volvo FH (VH-002)</div>
+                                        <div>📍 Loading in Berlin</div>
+                                    </div>
+                                    <div class="driver-meta">
+                                        <span class="status-badge status-pending">Loading</span>
+                                        <span class="text-muted">License: CE • Expires: Mar 2026</span>
+                                        <span class="text-muted">⭐ 4.8 rating (203 trips)</span>
+                                    </div>
+                                </div>
+                                <div class="driver-actions">
+                                    <button class="driver-btn" onclick="callDriver('Klaus Weber')">📞</button>
+                                    <button class="driver-btn" onclick="messageDriver('Klaus Weber')">💬</button>
+                                    <button class="driver-btn primary" onclick="viewDriver('klaus-weber')">View</button>
+                                </div>
+                            </div>
+
+                            <div class="driver-card" data-driver="maria-schmidt">
+                                <div class="driver-avatar">MS</div>
+                                <div class="driver-info">
+                                    <div class="driver-name">Maria Schmidt</div>
+                                    <div class="driver-details">
+                                        <div>📧 maria.s@eurotransport.de</div>
+                                        <div>📞 +49 30 3456 7890</div>
+                                        <div>🚛 Scania R-Series (VH-003)</div>
+                                        <div>📍 Rest area near Frankfurt</div>
+                                    </div>
+                                    <div class="driver-meta">
+                                        <span class="status-badge status-inactive">Resting</span>
+                                        <span class="text-muted">License: CE • Expires: Aug 2025</span>
+                                        <span class="text-muted">⭐ 4.7 rating (189 trips)</span>
+                                    </div>
+                                </div>
+                                <div class="driver-actions">
+                                    <button class="driver-btn" onclick="callDriver('Maria Schmidt')">📞</button>
+                                    <button class="driver-btn" onclick="messageDriver('Maria Schmidt')">💬</button>
+                                    <button class="driver-btn primary" onclick="viewDriver('maria-schmidt')">View</button>
+                                </div>
+                            </div>
+
+                            <div class="driver-card" data-driver="jurgen-hoffmann">
+                                <div class="driver-avatar">JH</div>
+                                <div class="driver-info">
+                                    <div class="driver-name">Jürgen Hoffmann</div>
+                                    <div class="driver-details">
+                                        <div>📧 jurgen.h@eurotransport.de</div>
+                                        <div>📞 +49 30 4567 8901</div>
+                                        <div>🚛 Available for assignment</div>
+                                        <div>📍 Base in Hamburg</div>
+                                    </div>
+                                    <div class="driver-meta">
+                                        <span class="status-badge status-active">Available</span>
+                                        <span class="text-muted">License: CE • Expires: Nov 2026</span>
+                                        <span class="text-muted">⭐ 4.6 rating (134 trips)</span>
+                                    </div>
+                                </div>
+                                <div class="driver-actions">
+                                    <button class="driver-btn" onclick="callDriver('Jürgen Hoffmann')">📞</button>
+                                    <button class="driver-btn" onclick="messageDriver('Jürgen Hoffmann')">💬</button>
+                                    <button class="driver-btn primary" onclick="viewDriver('jurgen-hoffmann')">Assign</button>
+                                </div>
+                            </div>
+
+                            <div class="driver-card" data-driver="andreas-klein">
+                                <div class="driver-avatar">AK</div>
+                                <div class="driver-info">
+                                    <div class="driver-name">Andreas Klein</div>
+                                    <div class="driver-details">
+                                        <div>📧 andreas.k@eurotransport.de</div>
+                                        <div>📞 +49 30 5678 9012</div>
+                                        <div>🚛 Not assigned</div>
+                                        <div>📍 On vacation</div>
+                                    </div>
+                                    <div class="driver-meta">
+                                        <span class="status-badge status-inactive">Vacation</span>
+                                        <span class="text-muted">License: CE • Expires: Jan 2027</span>
+                                        <span class="text-muted">⭐ 4.5 rating (98 trips)</span>
+                                    </div>
+                                </div>
+                                <div class="driver-actions">
+                                    <button class="driver-btn" disabled>📞</button>
+                                    <button class="driver-btn" onclick="messageDriver('Andreas Klein')">💬</button>
+                                    <button class="driver-btn primary" onclick="viewDriver('andreas-klein')">View</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Performance Sidebar -->
+                    <div class="performance-sidebar">
+                        <!-- Top Performers -->
+                        <div class="performance-card">
+                            <div class="performance-header">
+                                <h3 class="performance-title">🏆 Top Performers</h3>
+                            </div>
+                            <div class="performance-content">
+                                <div class="top-performers">
+                                    <div class="performer-item">
+                                        <div class="performer-rank gold">1</div>
+                                        <div class="performer-avatar">HM</div>
+                                        <div class="performer-info">
+                                            <div class="performer-name">Hans Mueller</div>
+                                            <div class="performer-score">4.9 ⭐ • 98% on-time</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="performer-item">
+                                        <div class="performer-rank silver">2</div>
+                                        <div class="performer-avatar">KW</div>
+                                        <div class="performer-info">
+                                            <div class="performer-name">Klaus Weber</div>
+                                            <div class="performer-score">4.8 ⭐ • 96% on-time</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="performer-item">
+                                        <div class="performer-rank bronze">3</div>
+                                        <div class="performer-avatar">MS</div>
+                                        <div class="performer-info">
+                                            <div class="performer-name">Maria Schmidt</div>
+                                            <div class="performer-score">4.7 ⭐ • 94% on-time</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Alerts & Notifications -->
+                        <div class="performance-card">
+                            <div class="performance-header">
+                                <h3 class="performance-title">⚠️ Alerts</h3>
+                            </div>
+                            <div class="performance-content">
+                                <div class="alerts-section">
+                                    <div class="alert-title">
+                                        <span>⚠️</span> Attention Required
+                                    </div>
+                                    <div class="alert-list">
+                                        <div class="alert-item">
+                                            Maria Schmidt's license expires in 8 months
+                                        </div>
+                                        <div class="alert-item">
+                                            2 drivers need safety training renewal
+                                        </div>
+                                        <div class="alert-item">
+                                            Klaus Weber approaching driving time limit
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Assignment -->
+                        <div class="performance-card">
+                            <div class="performance-header">
+                                <h3 class="performance-title">🚚 Quick Assign</h3>
+                            </div>
+                            <div class="performance-content">
+                                <div class="quick-assign">
+                                    <div class="assign-title">Available Orders</div>
+                                    <div class="assign-item">
+                                        <span>#ORD-2024-004</span>
+                                        <button class="btn btn-sm btn-primary">Assign</button>
+                                    </div>
+                                    <div class="assign-item">
+                                        <span>#ORD-2024-005</span>
+                                        <button class="btn btn-sm btn-primary">Assign</button>
+                                    </div>
+                                    <div class="assign-item">
+                                        <span>#ORD-2024-006</span>
+                                        <button class="btn btn-sm btn-primary">Assign</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="bottom-nav">
+        <div class="bottom-nav-items">
+            <!-- Navigation items will be populated by JavaScript -->
+        </div>
+    </nav>
+
+    <!-- Scripts -->
+    <script src="js/user-session.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/breadcrumb.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add filter functionality
+            const statusFilter = document.getElementById('statusFilter');
+            const searchInput = document.getElementById('searchDrivers');
+            
+            function filterDrivers() {
+                const statusValue = statusFilter.value.toLowerCase();
+                const searchValue = searchInput.value.toLowerCase();
+                const driverCards = document.querySelectorAll('.driver-card');
+                
+                driverCards.forEach(card => {
+                    const driverName = card.querySelector('.driver-name').textContent.toLowerCase();
+                    const driverStatus = card.querySelector('.status-badge').textContent.toLowerCase();
+                    
+                    let shouldShow = true;
+                    
+                    // Status filter
+                    if (statusValue && !driverStatus.includes(statusValue.replace('-', ' '))) {
+                        shouldShow = false;
+                    }
+                    
+                    // Search filter
+                    if (searchValue && !driverName.includes(searchValue)) {
+                        shouldShow = false;
+                    }
+                    
+                    card.style.display = shouldShow ? 'flex' : 'none';
+                });
+            }
+            
+            statusFilter.addEventListener('change', filterDrivers);
+            searchInput.addEventListener('input', filterDrivers);
+            
+            // Add click handlers for driver cards
+            document.querySelectorAll('.driver-card').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    // Don't trigger if clicking on action buttons
+                    if (e.target.closest('.driver-actions')) return;
+                    
+                    const driverId = this.dataset.driver;
+                    viewDriver(driverId);
+                });
+            });
+        });
+        
+        function addDriver() {
+            alert('Add new driver form would open here with fields for:\n- Personal information\n- License details\n- Contact information\n- Vehicle assignment\n- Emergency contacts');
+        }
+        
+        function importDrivers() {
+            alert('Driver import functionality would allow:\n- CSV file upload\n- Bulk driver data import\n- Validation and error handling\n- Progress tracking');
+        }
+        
+        function callDriver(driverName) {
+            alert(`Initiating call to ${driverName}...\nThis would integrate with VoIP system or mobile dialer.`);
+        }
+        
+        function messageDriver(driverName) {
+            alert(`Opening message interface for ${driverName}...\nThis would open SMS/WhatsApp integration or internal messaging.`);
+        }
+        
+        function viewDriver(driverId) {
+            alert(`Opening detailed driver profile for ${driverId}...\nThis would show:\n- Complete profile\n- Performance history\n- Current assignments\n- Document management\n- Training records`);
+        }
+        
+        function logout() {
+            if (window.userSessionController) {
+                window.userSessionController.logout();
+            } else {
+                sessionStorage.clear();
+                window.location.href = '01-login-european.html';
+            }
+        }
+    </script>
+</body>
+</html>
