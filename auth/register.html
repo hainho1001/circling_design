@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Circling Logistics</title>
+    <meta name="description" content="Join Circling Logistics today and connect with reliable logistics partners across Europe.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="../assets/css/design-system-european.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="../" class="navbar-brand">🚛 Circling Logistics</a>
+                
+                <!-- Desktop Navigation -->
+                <ul class="navbar-nav" id="navbarNav">
+                    <li><a href="../#services" class="nav-link">Services</a></li>
+                    <li><a href="../#about" class="nav-link">About</a></li>
+                    <li><a href="../#contact" class="nav-link">Contact</a></li>
+                    <li><a href="login.html" class="nav-link">Login</a></li>
+                </ul>
+                
+                <!-- Mobile Menu Toggle -->
+                <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle navigation">
+                    ☰
+                </button>
+                
+                <!-- Mobile Navigation -->
+                <div class="mobile-nav" id="mobileNav">
+                    <ul class="navbar-nav">
+                        <li><a href="../#services" class="nav-link">Services</a></li>
+                        <li><a href="../#about" class="nav-link">About</a></li>
+                        <li><a href="../#contact" class="nav-link">Contact</a></li>
+                        <li><a href="login.html" class="nav-link">Login</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container" style="max-width: 600px; margin-top: 3rem; margin-bottom: 3rem;">
+        <div class="card">
+            <div class="card-body">
+                <div class="text-center mb-6">
+                    <h1>Join Circling Logistics</h1>
+                    <p class="text-muted">Create your account to start optimizing your logistics operations</p>
+                </div>
+
+                <!-- Role Selection -->
+                <div class="mb-6">
+                    <label class="form-label">I want to: *</label>
+                    <div class="grid grid-cols-2" style="gap: 1rem; margin-top: 1rem;">
+                        <label class="role-option" for="roleCargoOwner">
+                            <input type="radio" name="role" value="cargo" id="roleCargoOwner" required>
+                            <div class="role-card">
+                                <div style="font-size: 2rem; margin-bottom: 0.5rem;">📦</div>
+                                <h4>Ship Cargo</h4>
+                                <p class="text-sm text-muted">I need to transport goods and find reliable carriers</p>
+                            </div>
+                        </label>
+                        
+                        <label class="role-option" for="roleFleetOwner">
+                            <input type="radio" name="role" value="fleet" id="roleFleetOwner" required>
+                            <div class="role-card">
+                                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🚛</div>
+                                <h4>Provide Transport</h4>
+                                <p class="text-sm text-muted">I have vehicles and want to find cargo opportunities</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <form id="registerForm" novalidate>
+                    <!-- Personal Information -->
+                    <div class="form-group">
+                        <label for="name" class="form-label">Full Name *</label>
+                        <input 
+                            type="text" 
+                            id="name" 
+                            name="name" 
+                            class="form-control" 
+                            placeholder="John Doe"
+                            required
+                            autocomplete="name"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address *</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            class="form-control" 
+                            placeholder="your@email.com"
+                            required
+                            autocomplete="email"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone" class="form-label">Phone Number *</label>
+                        <input 
+                            type="tel" 
+                            id="phone" 
+                            name="phone" 
+                            class="form-control" 
+                            placeholder="+49 123 456 7890"
+                            required
+                            autocomplete="tel"
+                        >
+                    </div>
+
+                    <!-- Company Information -->
+                    <div class="form-group">
+                        <label for="company" class="form-label">Company Name *</label>
+                        <input 
+                            type="text" 
+                            id="company" 
+                            name="company" 
+                            class="form-control" 
+                            placeholder="Your Company GmbH"
+                            required
+                            autocomplete="organization"
+                        >
+                    </div>
+
+                    <div class="grid grid-cols-2" style="gap: 1rem;">
+                        <div class="form-group">
+                            <label for="country" class="form-label">Country *</label>
+                            <select id="country" name="country" class="form-control" required>
+                                <option value="">Select Country</option>
+                                <option value="DE">Germany</option>
+                                <option value="FR">France</option>
+                                <option value="IT">Italy</option>
+                                <option value="ES">Spain</option>
+                                <option value="NL">Netherlands</option>
+                                <option value="BE">Belgium</option>
+                                <option value="AT">Austria</option>
+                                <option value="CH">Switzerland</option>
+                                <option value="PL">Poland</option>
+                                <option value="CZ">Czech Republic</option>
+                                <option value="Other">Other EU Country</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="city" class="form-label">City *</label>
+                            <input 
+                                type="text" 
+                                id="city" 
+                                name="city" 
+                                class="form-control" 
+                                placeholder="Frankfurt"
+                                required
+                                autocomplete="address-level2"
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Role-specific fields -->
+                    <div id="cargoOwnerFields" class="role-specific-fields" style="display: none;">
+                        <div class="form-group">
+                            <label for="monthlyVolume" class="form-label">Monthly Shipping Volume</label>
+                            <select id="monthlyVolume" name="monthlyVolume" class="form-control">
+                                <option value="">Select volume</option>
+                                <option value="1-10">1-10 shipments</option>
+                                <option value="11-50">11-50 shipments</option>
+                                <option value="51-100">51-100 shipments</option>
+                                <option value="100+">100+ shipments</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cargoTypes" class="form-label">Primary Cargo Types</label>
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; margin-top: 0.5rem;">
+                                <label class="flex items-center"><input type="checkbox" name="cargoTypes" value="general" style="margin-right: 8px;"> General Cargo</label>
+                                <label class="flex items-center"><input type="checkbox" name="cargoTypes" value="refrigerated" style="margin-right: 8px;"> Refrigerated</label>
+                                <label class="flex items-center"><input type="checkbox" name="cargoTypes" value="hazardous" style="margin-right: 8px;"> Hazardous</label>
+                                <label class="flex items-center"><input type="checkbox" name="cargoTypes" value="oversized" style="margin-right: 8px;"> Oversized</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="fleetOwnerFields" class="role-specific-fields" style="display: none;">
+                        <div class="form-group">
+                            <label for="fleetSize" class="form-label">Fleet Size</label>
+                            <select id="fleetSize" name="fleetSize" class="form-control">
+                                <option value="">Select fleet size</option>
+                                <option value="1-5">1-5 vehicles</option>
+                                <option value="6-20">6-20 vehicles</option>
+                                <option value="21-50">21-50 vehicles</option>
+                                <option value="50+">50+ vehicles</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="vehicleTypes" class="form-label">Vehicle Types</label>
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; margin-top: 0.5rem;">
+                                <label class="flex items-center"><input type="checkbox" name="vehicleTypes" value="truck" style="margin-right: 8px;"> Standard Trucks</label>
+                                <label class="flex items-center"><input type="checkbox" name="vehicleTypes" value="trailer" style="margin-right: 8px;"> Trailers</label>
+                                <label class="flex items-center"><input type="checkbox" name="vehicleTypes" value="refrigerated" style="margin-right: 8px;"> Refrigerated</label>
+                                <label class="flex items-center"><input type="checkbox" name="vehicleTypes" value="specialized" style="margin-right: 8px;"> Specialized</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="form-group">
+                        <label for="password" class="form-label">Password *</label>
+                        <div style="position: relative;">
+                            <input 
+                                type="password" 
+                                id="password" 
+                                name="password" 
+                                class="form-control" 
+                                placeholder="Create a strong password"
+                                required
+                                autocomplete="new-password"
+                                minlength="8"
+                            >
+                            <button 
+                                type="button" 
+                                id="togglePassword" 
+                                style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--neutral-500); cursor: pointer;"
+                                aria-label="Toggle password visibility"
+                            >
+                                👁️
+                            </button>
+                        </div>
+                        <div class="form-text">Password must be at least 8 characters long</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword" class="form-label">Confirm Password *</label>
+                        <input 
+                            type="password" 
+                            id="confirmPassword" 
+                            name="confirmPassword" 
+                            class="form-control" 
+                            placeholder="Confirm your password"
+                            required
+                            autocomplete="new-password"
+                        >
+                    </div>
+
+                    <!-- Terms and Conditions -->
+                    <div class="form-group">
+                        <label class="flex items-center">
+                            <input type="checkbox" id="terms" name="terms" required style="margin-right: 8px;">
+                            <span class="text-sm">
+                                I agree to the <a href="#" class="text-primary">Terms of Service</a> and 
+                                <a href="#" class="text-primary">Privacy Policy</a> *
+                            </span>
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="flex items-center">
+                            <input type="checkbox" id="newsletter" name="newsletter" style="margin-right: 8px;">
+                            <span class="text-sm">
+                                Subscribe to our newsletter for updates and industry insights
+                            </span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-lg" id="registerBtn">
+                        <span class="btn-text">Create Account</span>
+                        <span class="spinner" style="display: none;"></span>
+                    </button>
+
+                    <div class="text-center mt-6">
+                        <p class="text-muted">
+                            Already have an account? 
+                            <a href="login.html" class="text-primary font-semibold">Sign in here</a>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- JavaScript -->
+    <script src="../assets/js/app.js"></script>
+    <script>
+        // Role-based field visibility
+        document.querySelectorAll('input[name="role"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                // Hide all role-specific fields
+                document.querySelectorAll('.role-specific-fields').forEach(fields => {
+                    fields.style.display = 'none';
+                });
+                
+                // Show fields for selected role
+                if (this.value === 'cargo') {
+                    document.getElementById('cargoOwnerFields').style.display = 'block';
+                } else if (this.value === 'fleet') {
+                    document.getElementById('fleetOwnerFields').style.display = 'block';
+                }
+            });
+        });
+
+        // Password toggle functionality
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const passwordField = document.getElementById('password');
+            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordField.setAttribute('type', type);
+            this.textContent = type === 'password' ? '👁️' : '🙈';
+        });
+
+        // Password confirmation validation
+        document.getElementById('confirmPassword').addEventListener('input', function() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = this.value;
+            
+            if (confirmPassword && password !== confirmPassword) {
+                this.setCustomValidity('Passwords do not match');
+            } else {
+                this.setCustomValidity('');
+            }
+        });
+
+        // Form submission with loading state
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            const registerBtn = document.getElementById('registerBtn');
+            const btnText = registerBtn.querySelector('.btn-text');
+            const spinner = registerBtn.querySelector('.spinner');
+            
+            // Check if role is selected
+            const roleSelected = document.querySelector('input[name="role"]:checked');
+            if (!roleSelected) {
+                e.preventDefault();
+                app.showNotification('Please select whether you want to ship cargo or provide transport', 'warning');
+                return;
+            }
+            
+            // Show loading state
+            registerBtn.disabled = true;
+            btnText.style.display = 'none';
+            spinner.style.display = 'inline-block';
+            
+            // Reset after form processing
+            setTimeout(() => {
+                registerBtn.disabled = false;
+                btnText.style.display = 'inline-block';
+                spinner.style.display = 'none';
+            }, 2000);
+        });
+
+        // Pre-select role from URL parameter
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const role = urlParams.get('role');
+            
+            if (role === 'cargo' || role === 'fleet') {
+                const roleRadio = document.getElementById(role === 'cargo' ? 'roleCargoOwner' : 'roleFleetOwner');
+                roleRadio.checked = true;
+                roleRadio.dispatchEvent(new Event('change'));
+            }
+            
+            // Focus first input
+            document.getElementById('name').focus();
+        });
+
+        // Check if user is already logged in
+        if (app.currentUser) {
+            app.redirectToDashboard(app.currentRole);
+        }
+    </script>
+
+    <style>
+        .role-option {
+            cursor: pointer;
+        }
+        
+        .role-option input[type="radio"] {
+            display: none;
+        }
+        
+        .role-card {
+            border: 2px solid var(--neutral-200);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            text-align: center;
+            transition: all var(--transition-fast);
+            height: 100%;
+        }
+        
+        .role-option:hover .role-card {
+            border-color: var(--primary-blue);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .role-option input[type="radio"]:checked + .role-card {
+            border-color: var(--primary-blue);
+            background-color: rgba(37, 99, 235, 0.05);
+        }
+        
+        .role-card h4 {
+            margin-bottom: 0.5rem;
+            color: var(--neutral-800);
+        }
+        
+        .role-card p {
+            margin-bottom: 0;
+        }
+    </style>
+</body>
+</html>

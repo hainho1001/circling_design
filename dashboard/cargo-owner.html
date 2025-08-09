@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cargo Owner Dashboard - Circling Logistics</title>
+    <meta name="description" content="Manage your shipments, track orders, and access logistics insights from your Circling Logistics dashboard.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="../assets/css/design-system-european.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="../" class="navbar-brand">🚛 Circling Logistics</a>
+                
+                <!-- Desktop Navigation -->
+                <ul class="navbar-nav" id="navbarNav">
+                    <li><a href="/dashboard/cargo-owner.html" class="nav-link active">Dashboard</a></li>
+                    <li><a href="../orders/create.html" class="nav-link">Create Order</a></li>
+                    <li><a href="../orders/list.html" class="nav-link">My Orders</a></li>
+                    <li><a href="../payment/methods.html" class="nav-link">Payment</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="userDropdown">
+                            <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--primary-blue); color: white; display: inline-flex; align-items: center; justify-content: center; margin-right: 8px; font-weight: 600;">
+                                U
+                            </div>
+                            John Doe
+                        </a>
+                        <ul class="dropdown-menu" style="display: none;">
+                            <li><a href="../profile/settings.html" class="dropdown-item">Profile Settings</a></li>
+                            <li><a href="../profile/notifications.html" class="dropdown-item">Notifications</a></li>
+                            <li><a href="../profile/support.html" class="dropdown-item">Help & Support</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a href="#" class="dropdown-item" onclick="app.logout()">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <!-- Mobile Menu Toggle -->
+                <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle navigation">
+                    ☰
+                </button>
+                
+                <!-- Mobile Navigation -->
+                <div class="mobile-nav" id="mobileNav">
+                    <ul class="navbar-nav">
+                        <li><a href="/dashboard/cargo-owner.html" class="nav-link active">Dashboard</a></li>
+                        <li><a href="../orders/create.html" class="nav-link">Create Order</a></li>
+                        <li><a href="../orders/list.html" class="nav-link">My Orders</a></li>
+                        <li><a href="../payment/methods.html" class="nav-link">Payment</a></li>
+                        <li><a href="../profile/settings.html" class="nav-link">Profile Settings</a></li>
+                        <li><a href="#" class="nav-link" onclick="app.logout()">Logout</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container" style="margin-top: 2rem; margin-bottom: 2rem;">
+        <!-- Welcome Section -->
+        <div class="mb-8">
+            <h1>Welcome back, John! 👋</h1>
+            <p class="text-muted">Here's what's happening with your shipments today</p>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="card mb-8">
+            <div class="card-body">
+                <h3 class="mb-4">Quick Actions</h3>
+                <div class="grid grid-cols-4" style="gap: 1rem;">
+                    <a href="../orders/create.html" class="btn btn-primary">
+                        📦 Create New Order
+                    </a>
+                    <a href="../orders/list.html" class="btn btn-secondary">
+                        📋 View All Orders
+                    </a>
+                    <a href="../payment/methods.html" class="btn btn-secondary">
+                        💳 Payment Methods
+                    </a>
+                    <a href="../profile/support.html" class="btn btn-secondary">
+                        💬 Get Support
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="dashboard-stats mb-8">
+            <div class="stat-card">
+                <div class="stat-value">15</div>
+                <div class="stat-label">Active Orders</div>
+                <div class="mt-2">
+                    <span class="badge badge-success">+3 this week</span>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-value">€24,500</div>
+                <div class="stat-label">Monthly Spend</div>
+                <div class="mt-2">
+                    <span class="badge badge-info">12% vs last month</span>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-value">98%</div>
+                <div class="stat-label">On-time Delivery</div>
+                <div class="mt-2">
+                    <span class="badge badge-success">Excellent</span>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-value">4.8/5</div>
+                <div class="stat-label">Avg. Rating</div>
+                <div class="mt-2">
+                    <span class="badge badge-success">⭐⭐⭐⭐⭐</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Orders & Notifications Grid -->
+        <div class="grid grid-cols-2" style="gap: 2rem;">
+            <!-- Recent Orders -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="flex justify-between items-center">
+                        <h3 class="mb-0">Recent Orders</h3>
+                        <a href="../orders/list.html" class="btn btn-sm btn-outline">View All</a>
+                    </div>
+                </div>
+                <div class="card-body" style="padding: 0;">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Route</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>#ORD-2024-001</strong></td>
+                                    <td>Frankfurt → Milan</td>
+                                    <td><span class="badge badge-info">In Transit</span></td>
+                                    <td><a href="../orders/details.html?id=001" class="btn btn-sm btn-outline">Track</a></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>#ORD-2024-002</strong></td>
+                                    <td>Hamburg → Paris</td>
+                                    <td><span class="badge badge-warning">Pending</span></td>
+                                    <td><a href="../orders/details.html?id=002" class="btn btn-sm btn-outline">View</a></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>#ORD-2024-003</strong></td>
+                                    <td>Berlin → Amsterdam</td>
+                                    <td><span class="badge badge-success">Delivered</span></td>
+                                    <td><a href="../orders/details.html?id=003" class="btn btn-sm btn-outline">Details</a></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>#ORD-2024-004</strong></td>
+                                    <td>Munich → Barcelona</td>
+                                    <td><span class="badge badge-info">In Transit</span></td>
+                                    <td><a href="../orders/details.html?id=004" class="btn btn-sm btn-outline">Track</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notifications & Updates -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="flex justify-between items-center">
+                        <h3 class="mb-0">Notifications</h3>
+                        <a href="../profile/notifications.html" class="btn btn-sm btn-outline">View All</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div style="space-y: 1rem;">
+                        <div class="alert alert-info" style="margin-bottom: 1rem;">
+                            <strong>Order #ORD-2024-001</strong><br>
+                            Your shipment has arrived in Milan and is ready for pickup.
+                            <div style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--neutral-500);">
+                                2 hours ago
+                            </div>
+                        </div>
+                        
+                        <div class="alert alert-success" style="margin-bottom: 1rem;">
+                            <strong>Payment Processed</strong><br>
+                            Your payment for order #ORD-2024-003 has been successfully processed.
+                            <div style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--neutral-500);">
+                                5 hours ago
+                            </div>
+                        </div>
+                        
+                        <div class="alert alert-warning" style="margin-bottom: 1rem;">
+                            <strong>New Bid Received</strong><br>
+                            You have received 3 new bids for your Hamburg → Paris shipment.
+                            <div style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--neutral-500);">
+                                1 day ago
+                            </div>
+                        </div>
+
+                        <div style="text-align: center; margin-top: 1rem;">
+                            <a href="../profile/notifications.html" class="text-primary">View all notifications →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Analytics -->
+        <div class="card mt-8">
+            <div class="card-header">
+                <h3 class="mb-0">Performance Analytics</h3>
+            </div>
+            <div class="card-body">
+                <div class="grid grid-cols-3" style="gap: 2rem;">
+                    <div>
+                        <h4>Shipping Volume</h4>
+                        <div style="margin-bottom: 1rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span>This Month</span>
+                                <span class="font-semibold">45 orders</span>
+                            </div>
+                            <div style="width: 100%; height: 8px; background: var(--neutral-200); border-radius: 4px;">
+                                <div style="width: 75%; height: 100%; background: var(--primary-blue); border-radius: 4px;"></div>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span>Last Month</span>
+                                <span class="font-semibold">38 orders</span>
+                            </div>
+                            <div style="width: 100%; height: 8px; background: var(--neutral-200); border-radius: 4px;">
+                                <div style="width: 63%; height: 100%; background: var(--neutral-400); border-radius: 4px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4>Cost Efficiency</h4>
+                        <div style="text-align: center;">
+                            <div style="font-size: 2rem; font-weight: 700; color: var(--success); margin-bottom: 0.5rem;">
+                                €1.85/km
+                            </div>
+                            <p class="text-muted">Average cost per kilometer</p>
+                            <span class="badge badge-success">12% better than industry avg</span>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4>Popular Routes</h4>
+                        <div style="space-y: 0.5rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span>Frankfurt → Milan</span>
+                                <span class="badge badge-info">8 orders</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span>Hamburg → Amsterdam</span>
+                                <span class="badge badge-info">6 orders</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span>Berlin → Paris</span>
+                                <span class="badge badge-info">5 orders</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tips & Recommendations -->
+        <div class="card mt-8">
+            <div class="card-header">
+                <h3 class="mb-0">💡 Tips & Recommendations</h3>
+            </div>
+            <div class="card-body">
+                <div class="grid grid-cols-2" style="gap: 2rem;">
+                    <div>
+                        <h4>Optimize Your Shipping</h4>
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="margin-bottom: 0.5rem;">✅ Consider consolidating shipments to reduce costs</li>
+                            <li style="margin-bottom: 0.5rem;">✅ Book shipments 3-5 days in advance for better rates</li>
+                            <li style="margin-bottom: 0.5rem;">✅ Use our API integration for automated booking</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Account Security</h4>
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="margin-bottom: 0.5rem;">🔐 Enable two-factor authentication</li>
+                            <li style="margin-bottom: 0.5rem;">🔐 Review payment methods regularly</li>
+                            <li style="margin-bottom: 0.5rem;">🔐 Update your contact information</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- JavaScript -->
+    <script src="../assets/js/app.js"></script>
+    <script>
+        // Ensure user is authenticated as cargo owner
+        if (!app.currentUser || app.currentRole !== 'cargo') {
+            // If not authenticated, redirect to login
+            if (!app.currentUser) {
+                window.location.href = '../auth/login.html';
+            } else {
+                // If wrong role, redirect to appropriate dashboard
+                app.redirectToDashboard(app.currentRole);
+            }
+        }
+
+        // Initialize dashboard-specific features
+        document.addEventListener('DOMContentLoaded', function() {
+            // Simulate loading user name
+            const userName = app.currentUser?.name || 'John Doe';
+            document.querySelector('h1').textContent = `Welcome back, ${userName}! 👋`;
+            
+            // Update dropdown with user info
+            const userDropdown = document.getElementById('userDropdown');
+            if (userDropdown && app.currentUser) {
+                const avatar = userDropdown.querySelector('div');
+                if (avatar) {
+                    avatar.textContent = app.currentUser.name.charAt(0).toUpperCase();
+                }
+                userDropdown.childNodes[2].textContent = app.currentUser.name;
+            }
+
+            // Initialize dropdown functionality
+            initDropdown();
+        });
+
+        function initDropdown() {
+            const dropdown = document.querySelector('.dropdown');
+            const dropdownMenu = dropdown?.querySelector('.dropdown-menu');
+            
+            if (dropdown && dropdownMenu) {
+                dropdown.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+                });
+                
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!dropdown.contains(e.target)) {
+                        dropdownMenu.style.display = 'none';
+                    }
+                });
+            }
+        }
+
+        // Auto-refresh notifications every 30 seconds
+        setInterval(() => {
+            // In a real app, this would fetch new notifications from the server
+            console.log('Refreshing notifications...');
+        }, 30000);
+    </script>
+
+    <style>
+        .dropdown {
+            position: relative;
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border: 1px solid var(--neutral-200);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            min-width: 200px;
+            z-index: var(--z-dropdown);
+            padding: 0.5rem 0;
+        }
+        
+        .dropdown-item {
+            display: block;
+            padding: 0.5rem 1rem;
+            color: var(--neutral-700);
+            text-decoration: none;
+            transition: background-color var(--transition-fast);
+        }
+        
+        .dropdown-item:hover {
+            background-color: var(--neutral-100);
+            color: var(--neutral-800);
+        }
+        
+        .dropdown-divider {
+            margin: 0.5rem 0;
+            border: none;
+            border-top: 1px solid var(--neutral-200);
+        }
+        
+        @media (max-width: 768px) {
+            .dropdown-menu {
+                display: none !important;
+            }
+        }
+    </style>
+</body>
+</html>
