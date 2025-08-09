@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fleet Dashboard - Circling Logistics</title>
+    <link rel="stylesheet" href="css/design-system-european.css">
+    <link rel="stylesheet" href="css/navigation.css">
+    <style>
+        .dashboard-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .main-content {
+            flex: 1;
+            background: var(--neutral-light);
+        }
+        
+        .dashboard-header {
+            background: var(--white);
+            padding: var(--space-6);
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .fleet-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-6);
+            margin-bottom: var(--space-8);
+        }
+        
+        .fleet-card {
+            background: var(--white);
+            padding: var(--space-6);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .fleet-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue));
+        }
+        
+        .fleet-stat {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--space-4);
+        }
+        
+        .fleet-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-2xl);
+        }
+        
+        .fleet-icon.vehicles {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--secondary-blue);
+        }
+        
+        .fleet-icon.drivers {
+            background: rgba(5, 150, 105, 0.1);
+            color: var(--success-green);
+        }
+        
+        .fleet-icon.revenue {
+            background: rgba(217, 119, 6, 0.1);
+            color: var(--warning-amber);
+        }
+        
+        .fleet-icon.utilization {
+            background: rgba(220, 38, 38, 0.1);
+            color: var(--error-red);
+        }
+        
+        .fleet-number {
+            font-size: var(--font-size-4xl);
+            font-weight: 700;
+            color: var(--neutral-dark);
+            margin-bottom: var(--space-1);
+        }
+        
+        .fleet-label {
+            color: var(--neutral-medium);
+            font-size: var(--font-size-sm);
+            margin-bottom: var(--space-3);
+        }
+        
+        .fleet-progress {
+            background: var(--neutral-light);
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: var(--space-2);
+        }
+        
+        .fleet-progress-bar {
+            height: 100%;
+            border-radius: 4px;
+            transition: width var(--transition-normal);
+        }
+        
+        .progress-vehicles {
+            background: var(--secondary-blue);
+        }
+        
+        .progress-drivers {
+            background: var(--success-green);
+        }
+        
+        .progress-revenue {
+            background: var(--warning-amber);
+        }
+        
+        .progress-utilization {
+            background: var(--error-red);
+        }
+        
+        .fleet-details {
+            font-size: var(--font-size-xs);
+            color: var(--neutral-medium);
+        }
+        
+        .fleet-sections {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: var(--space-6);
+        }
+        
+        .vehicle-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: var(--space-4);
+        }
+        
+        .vehicle-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: all var(--transition-fast);
+        }
+        
+        .vehicle-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .vehicle-header {
+            padding: var(--space-4);
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: var(--white);
+        }
+        
+        .vehicle-id {
+            font-weight: 600;
+            margin-bottom: var(--space-1);
+        }
+        
+        .vehicle-type {
+            font-size: var(--font-size-sm);
+            opacity: 0.9;
+        }
+        
+        .vehicle-body {
+            padding: var(--space-4);
+        }
+        
+        .vehicle-status {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--space-3);
+        }
+        
+        .vehicle-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-3);
+            font-size: var(--font-size-sm);
+        }
+        
+        .info-item {
+            color: var(--neutral-medium);
+        }
+        
+        .info-value {
+            font-weight: 500;
+            color: var(--neutral-dark);
+        }
+        
+        .quick-actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-4);
+            margin-bottom: var(--space-6);
+        }
+        
+        .action-button {
+            background: var(--white);
+            border: 1px solid #e5e7eb;
+            border-radius: var(--radius-lg);
+            padding: var(--space-4);
+            text-decoration: none;
+            color: inherit;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+        }
+        
+        .action-button:hover {
+            border-color: var(--secondary-blue);
+            background: var(--accent-blue);
+            text-decoration: none;
+            transform: translateY(-1px);
+        }
+        
+        .driver-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .driver-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            padding: var(--space-3);
+            border-bottom: 1px solid #f3f4f6;
+            transition: background-color var(--transition-fast);
+        }
+        
+        .driver-item:hover {
+            background: var(--neutral-light);
+        }
+        
+        .driver-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 600;
+            font-size: var(--font-size-sm);
+        }
+        
+        .driver-info {
+            flex: 1;
+        }
+        
+        .driver-name {
+            font-weight: 500;
+            margin-bottom: var(--space-1);
+        }
+        
+        .driver-status {
+            font-size: var(--font-size-xs);
+            color: var(--neutral-medium);
+        }
+        
+        .map-container {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            margin-bottom: var(--space-6);
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--neutral-medium);
+            border: 1px solid #e5e7eb;
+        }
+        
+        .map-placeholder {
+            text-align: center;
+            padding: var(--space-8);
+        }
+
+        @media (max-width: 1024px) {
+            .fleet-sections {
+                grid-template-columns: 1fr;
+            }
+            
+            .vehicle-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 640px) {
+            .fleet-overview {
+                grid-template-columns: 1fr;
+            }
+            
+            .quick-actions-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .vehicle-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <div class="navigation-wrapper">
+        <nav class="navbar">
+            <a href="06-home-page-european.html" class="navbar-brand">
+                <div class="navbar-logo">CL</div>
+                Circling Logistics
+            </a>
+            
+            <div class="navbar-search">
+                <input type="text" class="search-input" placeholder="Search vehicles, drivers...">
+                <span class="search-icon">🔍</span>
+            </div>
+            
+            <ul class="navbar-nav">
+                <!-- Navigation items will be populated by JavaScript -->
+            </ul>
+            
+            <div class="navbar-user">
+                <div class="user-profile">
+                    <!-- User profile will be populated by JavaScript -->
+                </div>
+                <div class="dropdown-menu">
+                    <a href="14-profile-settings-european.html" class="dropdown-item">Profile Settings</a>
+                    <a href="15-notifications-european.html" class="dropdown-item">Notifications</a>
+                    <div class="dropdown-divider"></div>
+                    <button class="dropdown-item" onclick="logout()">Sign Out</button>
+                </div>
+            </div>
+            
+            <button class="mobile-menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb-container">
+        <nav class="container">
+            <ol class="breadcrumb">
+                <!-- Breadcrumb items will be populated by JavaScript -->
+            </ol>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="dashboard-layout">
+        <main class="main-content page-transition">
+            <div class="dashboard-header">
+                <h1 class="dashboard-title">Fleet Dashboard</h1>
+                <p class="dashboard-subtitle">Manage your fleet operations and monitor performance</p>
+            </div>
+            
+            <div class="dashboard-content">
+                <!-- Quick Actions -->
+                <div class="quick-actions-grid">
+                    <a href="17-vehicle-management-european.html" class="action-button">
+                        <div class="action-icon blue">
+                            <span>🚛</span>
+                        </div>
+                        <div>
+                            <div class="action-title">Manage Vehicles</div>
+                            <div class="action-subtitle">Add, edit, or view vehicles</div>
+                        </div>
+                    </a>
+                    
+                    <a href="18-driver-management-european.html" class="action-button">
+                        <div class="action-icon green">
+                            <span>👤</span>
+                        </div>
+                        <div>
+                            <div class="action-title">Manage Drivers</div>
+                            <div class="action-subtitle">Driver assignments and performance</div>
+                        </div>
+                    </a>
+                    
+                    <a href="07-orders-european.html" class="action-button">
+                        <div class="action-icon amber">
+                            <span>📦</span>
+                        </div>
+                        <div>
+                            <div class="action-title">Available Orders</div>
+                            <div class="action-subtitle">Browse shipping opportunities</div>
+                        </div>
+                    </a>
+                    
+                    <a href="19-fleet-dashboard-european.html" class="action-button">
+                        <div class="action-icon red">
+                            <span>📊</span>
+                        </div>
+                        <div>
+                            <div class="action-title">Fleet Analytics</div>
+                            <div class="action-subtitle">Performance metrics and reports</div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Fleet Overview Stats -->
+                <div class="fleet-overview">
+                    <div class="fleet-card">
+                        <div class="fleet-stat">
+                            <div class="fleet-icon vehicles">🚛</div>
+                        </div>
+                        <div class="fleet-number">24</div>
+                        <div class="fleet-label">Total Vehicles</div>
+                        <div class="fleet-progress">
+                            <div class="fleet-progress-bar progress-vehicles" style="width: 85%"></div>
+                        </div>
+                        <div class="fleet-details">20 active, 4 maintenance</div>
+                    </div>
+                    
+                    <div class="fleet-card">
+                        <div class="fleet-stat">
+                            <div class="fleet-icon drivers">👤</div>
+                        </div>
+                        <div class="fleet-number">32</div>
+                        <div class="fleet-label">Active Drivers</div>
+                        <div class="fleet-progress">
+                            <div class="fleet-progress-bar progress-drivers" style="width: 75%"></div>
+                        </div>
+                        <div class="fleet-details">24 on duty, 8 off duty</div>
+                    </div>
+                    
+                    <div class="fleet-card">
+                        <div class="fleet-stat">
+                            <div class="fleet-icon revenue">💰</div>
+                        </div>
+                        <div class="fleet-number">€45K</div>
+                        <div class="fleet-label">Monthly Revenue</div>
+                        <div class="fleet-progress">
+                            <div class="fleet-progress-bar progress-revenue" style="width: 60%"></div>
+                        </div>
+                        <div class="fleet-details">€75K target for this month</div>
+                    </div>
+                    
+                    <div class="fleet-card">
+                        <div class="fleet-stat">
+                            <div class="fleet-icon utilization">📈</div>
+                        </div>
+                        <div class="fleet-number">78%</div>
+                        <div class="fleet-label">Fleet Utilization</div>
+                        <div class="fleet-progress">
+                            <div class="fleet-progress-bar progress-utilization" style="width: 78%"></div>
+                        </div>
+                        <div class="fleet-details">Target: 85% utilization</div>
+                    </div>
+                </div>
+
+                <!-- Real-time Fleet Map -->
+                <div class="map-container">
+                    <div class="map-placeholder">
+                        <h3>🗺️ Real-time Fleet Tracking</h3>
+                        <p>Interactive map showing vehicle locations and routes would be displayed here</p>
+                        <p class="text-muted">Integration with GPS tracking system</p>
+                    </div>
+                </div>
+
+                <!-- Fleet Sections -->
+                <div class="fleet-sections">
+                    <!-- Active Vehicles -->
+                    <div class="section-card">
+                        <div class="section-header">
+                            <h2 class="section-title">Active Vehicles</h2>
+                            <a href="17-vehicle-management-european.html" class="btn btn-sm btn-secondary">Manage All</a>
+                        </div>
+                        <div class="section-content">
+                            <div class="vehicle-grid">
+                                <div class="vehicle-card">
+                                    <div class="vehicle-header">
+                                        <div class="vehicle-id">VH-001</div>
+                                        <div class="vehicle-type">Mercedes Actros</div>
+                                    </div>
+                                    <div class="vehicle-body">
+                                        <div class="vehicle-status">
+                                            <span class="status-badge status-active">In Transit</span>
+                                            <span class="text-muted">📍 Hamburg</span>
+                                        </div>
+                                        <div class="vehicle-info">
+                                            <div class="info-item">
+                                                <span>Driver:</span>
+                                                <div class="info-value">Hans Mueller</div>
+                                            </div>
+                                            <div class="info-item">
+                                                <span>Load:</span>
+                                                <div class="info-value">15.2 / 18t</div>
+                                            </div>
+                                            <div class="info-item">
+                                                <span>ETA:</span>
+                                                <div class="info-value">4h 30m</div>
+                                            </div>
+                                            <div class="info-item">
+                                                <span>Fuel:</span>
+                                                <div class="info-value">75%</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="vehicle-card">
+                                    <div class="vehicle-header">
+                                        <div class="vehicle-id">VH-002</div>
+                                        <div class="vehicle-type">Volvo FH</div>
+                                    </div>
+                                    <div class="vehicle-body">
+                                        <div class="vehicle-status">
+                                            <span class="status-badge status-pending">Loading</span>
+                                            <span class="text-muted">📍 Berlin</span>
+                                        </div>
+                                        <div class="vehicle-info">
+                                            <div class="info-item">
+                                                <span>Driver:</span>
+                                                <div class="info-value">Klaus Weber</div>
+                                            </div>
+                                            <div class="info-item">
+                                                <span>Load:</span>
+                                                <div class="info-value">8.5 / 20t</div>
+                                            </div>
+                                            <div class="info-item">
+                                                <span>Departure:</span>
+                                                <div class="info-value">2h 15m</div>
+                                            </div>
+                                            <div class="info-item">
+                                                <span>Fuel:</span>
+                                                <div class="info-value">85%</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="vehicle-card">
+                                    <div class="vehicle-header">
+                                        <div class="vehicle-id">VH-003</div>
+                                        <div class="vehicle-type">Scania R-Series</div>
+                                    </div>
+                                    <div class="vehicle-body">
+                                        <div class="vehicle-status">
+                                            <span class="status-badge status-inactive">Maintenance</span>
+                                            <span class="text-muted">📍 Munich</span>
+                                        </div>
+                                        <div class="vehicle-info">
+                                            <div class="info-item">
+                                                <span>Issue:</span>
+                                                <div class="info-value">Brake Service</div>
+                                            </div>
+                                            <div class="info-item">
+                                                <span>Return:</span>
+                                                <div class="info-value">Tomorrow</div>
+                                            </div>
+                                            <div class="info-item">
+                                                <span>Cost:</span>
+                                                <div class="info-value">€450</div>
+                                            </div>
+                                            <div class="info-item">
+                                                <span>Progress:</span>
+                                                <div class="info-value">60%</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Driver Status -->
+                    <div class="section-card">
+                        <div class="section-header">
+                            <h2 class="section-title">Driver Status</h2>
+                            <a href="18-driver-management-european.html" class="btn btn-sm btn-secondary">Manage All</a>
+                        </div>
+                        <div class="section-content">
+                            <div class="driver-list">
+                                <div class="driver-item">
+                                    <div class="driver-avatar">HM</div>
+                                    <div class="driver-info">
+                                        <div class="driver-name">Hans Mueller</div>
+                                        <div class="driver-status">🚛 On route to Amsterdam</div>
+                                    </div>
+                                    <span class="status-badge status-active">Active</span>
+                                </div>
+                                
+                                <div class="driver-item">
+                                    <div class="driver-avatar">KW</div>
+                                    <div class="driver-info">
+                                        <div class="driver-name">Klaus Weber</div>
+                                        <div class="driver-status">📦 Loading in Berlin</div>
+                                    </div>
+                                    <span class="status-badge status-pending">Loading</span>
+                                </div>
+                                
+                                <div class="driver-item">
+                                    <div class="driver-avatar">MS</div>
+                                    <div class="driver-info">
+                                        <div class="driver-name">Maria Schmidt</div>
+                                        <div class="driver-status">🏠 Rest period</div>
+                                    </div>
+                                    <span class="status-badge status-inactive">Resting</span>
+                                </div>
+                                
+                                <div class="driver-item">
+                                    <div class="driver-avatar">JH</div>
+                                    <div class="driver-info">
+                                        <div class="driver-name">Jürgen Hoffmann</div>
+                                        <div class="driver-status">✅ Available</div>
+                                    </div>
+                                    <span class="status-badge status-active">Available</span>
+                                </div>
+                                
+                                <div class="driver-item">
+                                    <div class="driver-avatar">AK</div>
+                                    <div class="driver-info">
+                                        <div class="driver-name">Andreas Klein</div>
+                                        <div class="driver-status">🏖️ On vacation</div>
+                                    </div>
+                                    <span class="status-badge status-inactive">Vacation</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="bottom-nav">
+        <div class="bottom-nav-items">
+            <!-- Navigation items will be populated by JavaScript -->
+        </div>
+    </nav>
+
+    <!-- Scripts -->
+    <script src="js/user-session.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/breadcrumb.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click handlers for vehicle cards
+            document.querySelectorAll('.vehicle-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const vehicleId = this.querySelector('.vehicle-id').textContent;
+                    window.location.href = `17-vehicle-management-european.html?vehicle=${vehicleId}`;
+                });
+            });
+            
+            // Add click handlers for driver items
+            document.querySelectorAll('.driver-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const driverName = this.querySelector('.driver-name').textContent;
+                    window.location.href = `18-driver-management-european.html?driver=${encodeURIComponent(driverName)}`;
+                });
+            });
+            
+            // Simulate real-time updates
+            setInterval(updateFleetData, 30000); // Update every 30 seconds
+        });
+        
+        function updateFleetData() {
+            // This would fetch real-time data from the server
+            console.log('Updating fleet data...');
+        }
+        
+        function logout() {
+            if (window.userSessionController) {
+                window.userSessionController.logout();
+            } else {
+                sessionStorage.clear();
+                window.location.href = '01-login-european.html';
+            }
+        }
+    </script>
+</body>
+</html>

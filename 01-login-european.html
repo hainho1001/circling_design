@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Circling Logistics</title>
+    <link rel="stylesheet" href="css/design-system-european.css">
+    <link rel="stylesheet" href="css/navigation.css">
+    <style>
+        .login-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-4);
+        }
+        
+        .login-card {
+            width: 100%;
+            max-width: 400px;
+            background: var(--white);
+            border-radius: var(--radius-2xl);
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+        }
+        
+        .login-header {
+            text-align: center;
+            padding: var(--space-8) var(--space-6) var(--space-6);
+            background: var(--white);
+        }
+        
+        .login-logo {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto var(--space-4);
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: var(--font-size-2xl);
+            font-weight: bold;
+        }
+        
+        .login-title {
+            font-size: var(--font-size-2xl);
+            font-weight: 700;
+            margin-bottom: var(--space-2);
+        }
+        
+        .login-subtitle {
+            color: var(--neutral-medium);
+            font-size: var(--font-size-sm);
+        }
+        
+        .login-form {
+            padding: 0 var(--space-6) var(--space-8);
+        }
+        
+        .form-group {
+            margin-bottom: var(--space-4);
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: var(--space-2);
+            color: var(--neutral-dark);
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: var(--space-4);
+            border: 1px solid #d1d5db;
+            border-radius: var(--radius-lg);
+            font-size: var(--font-size-base);
+            transition: all var(--transition-fast);
+        }
+        
+        .form-input:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+        }
+        
+        .form-checkbox {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            margin: var(--space-6) 0;
+        }
+        
+        .login-actions {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-4);
+            margin-top: var(--space-6);
+        }
+        
+        .login-footer {
+            text-align: center;
+            padding: var(--space-6);
+            border-top: 1px solid #e5e7eb;
+            background: var(--neutral-light);
+        }
+        
+        .role-selector {
+            display: flex;
+            gap: var(--space-2);
+            margin-bottom: var(--space-4);
+        }
+        
+        .role-option {
+            flex: 1;
+            padding: var(--space-3);
+            border: 2px solid #e5e7eb;
+            border-radius: var(--radius-md);
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            background: var(--white);
+        }
+        
+        .role-option:hover {
+            border-color: var(--secondary-blue);
+        }
+        
+        .role-option.active {
+            border-color: var(--primary-blue);
+            background: var(--accent-blue);
+        }
+        
+        .role-icon {
+            font-size: var(--font-size-xl);
+            margin-bottom: var(--space-1);
+            display: block;
+        }
+        
+        .role-label {
+            font-size: var(--font-size-sm);
+            font-weight: 500;
+        }
+        
+        .demo-credentials {
+            background: var(--accent-blue);
+            padding: var(--space-4);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-4);
+            font-size: var(--font-size-sm);
+        }
+        
+        .demo-credentials h4 {
+            margin-bottom: var(--space-2);
+            font-size: var(--font-size-sm);
+            font-weight: 600;
+        }
+        
+        .demo-credentials code {
+            background: var(--white);
+            padding: var(--space-1) var(--space-2);
+            border-radius: var(--radius-sm);
+            font-family: var(--font-family-mono);
+            font-size: var(--font-size-xs);
+        }
+
+        @media (max-width: 640px) {
+            .login-container {
+                padding: var(--space-2);
+            }
+            
+            .role-selector {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="login-logo">CL</div>
+                <h1 class="login-title">Welcome Back</h1>
+                <p class="login-subtitle">Sign in to your Circling Logistics account</p>
+            </div>
+            
+            <form class="login-form" id="loginForm">
+                <!-- Role Selector -->
+                <div class="form-group">
+                    <label class="form-label">Select Your Role</label>
+                    <div class="role-selector">
+                        <div class="role-option active" data-role="shipper">
+                            <span class="role-icon">📦</span>
+                            <div class="role-label">Shipper</div>
+                        </div>
+                        <div class="role-option" data-role="fleet">
+                            <span class="role-icon">🚛</span>
+                            <div class="role-label">Fleet Owner</div>
+                        </div>
+                        <div class="role-option" data-role="admin">
+                            <span class="role-icon">👑</span>
+                            <div class="role-label">Admin</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Demo Credentials -->
+                <div class="demo-credentials">
+                    <h4>Demo Credentials:</h4>
+                    <p><strong>Email:</strong> <code id="demoEmail">demo@shipper.com</code></p>
+                    <p><strong>Password:</strong> <code>demo123</code></p>
+                </div>
+                
+                <!-- Email Field -->
+                <div class="form-group">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="email" id="email" class="form-input" required placeholder="Enter your email">
+                </div>
+                
+                <!-- Password Field -->
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" id="password" class="form-input" required placeholder="Enter your password">
+                </div>
+                
+                <!-- Remember Me -->
+                <div class="form-checkbox">
+                    <input type="checkbox" id="remember" class="checkbox">
+                    <label for="remember">Remember me for 30 days</label>
+                </div>
+                
+                <!-- Login Actions -->
+                <div class="login-actions">
+                    <button type="submit" class="btn btn-primary btn-lg">Sign In</button>
+                    <a href="#" class="text-center text-muted">Forgot your password?</a>
+                </div>
+            </form>
+            
+            <div class="login-footer">
+                <p>Don't have an account? <a href="04-register-european.html" class="text-primary font-medium">Sign up here</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/user-session.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('loginForm');
+            const roleOptions = document.querySelectorAll('.role-option');
+            const demoEmail = document.getElementById('demoEmail');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            
+            let selectedRole = 'shipper';
+            
+            // Demo credentials for different roles
+            const demoCredentials = {
+                shipper: { email: 'demo@shipper.com', name: 'John Shipper' },
+                fleet: { email: 'demo@fleet.com', name: 'Mike Fleet' },
+                admin: { email: 'demo@admin.com', name: 'Sarah Admin' }
+            };
+            
+            // Handle role selection
+            roleOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    roleOptions.forEach(o => o.classList.remove('active'));
+                    this.classList.add('active');
+                    selectedRole = this.dataset.role;
+                    
+                    // Update demo credentials
+                    const credentials = demoCredentials[selectedRole];
+                    demoEmail.textContent = credentials.email;
+                    emailInput.value = credentials.email;
+                });
+            });
+            
+            // Auto-fill demo credentials
+            emailInput.value = demoCredentials.shipper.email;
+            passwordInput.value = 'demo123';
+            
+            // Handle form submission
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const email = emailInput.value;
+                const password = passwordInput.value;
+                const rememberMe = document.getElementById('remember').checked;
+                
+                // Simple validation for demo
+                if (email && password) {
+                    // Create user session
+                    const userData = {
+                        id: Math.floor(Math.random() * 1000),
+                        name: demoCredentials[selectedRole].name,
+                        email: email,
+                        role: selectedRole
+                    };
+                    
+                    // Use session controller if available
+                    if (window.userSessionController) {
+                        window.userSessionController.createSession(userData, rememberMe);
+                    } else {
+                        // Fallback to basic session storage
+                        sessionStorage.setItem('circling_user_session', JSON.stringify(userData));
+                    }
+                    
+                    // Show loading state
+                    const submitBtn = document.querySelector('button[type="submit"]');
+                    submitBtn.textContent = 'Signing In...';
+                    submitBtn.disabled = true;
+                    
+                    // Redirect based on role after short delay
+                    setTimeout(() => {
+                        let redirectUrl;
+                        switch (selectedRole) {
+                            case 'fleet':
+                                redirectUrl = '03-dashboard-fleet-european.html';
+                                break;
+                            case 'admin':
+                                redirectUrl = '05-admin-european.html';
+                                break;
+                            default:
+                                redirectUrl = '02-dashboard-european.html';
+                        }
+                        
+                        window.location.href = redirectUrl;
+                    }, 1000);
+                } else {
+                    alert('Please enter valid credentials');
+                }
+            });
+            
+            // Handle demo credential clicking
+            demoEmail.addEventListener('click', function() {
+                emailInput.value = this.textContent;
+                emailInput.focus();
+            });
+        });
+    </script>
+</body>
+</html>

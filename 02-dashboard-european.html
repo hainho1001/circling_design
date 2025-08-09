@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Circling Logistics</title>
+    <link rel="stylesheet" href="css/design-system-european.css">
+    <link rel="stylesheet" href="css/navigation.css">
+    <style>
+        .dashboard-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .main-content {
+            flex: 1;
+            background: var(--neutral-light);
+        }
+        
+        .dashboard-header {
+            background: var(--white);
+            padding: var(--space-6);
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .dashboard-title {
+            margin: 0;
+            font-size: var(--font-size-3xl);
+            font-weight: 700;
+            color: var(--neutral-dark);
+        }
+        
+        .dashboard-subtitle {
+            color: var(--neutral-medium);
+            margin-top: var(--space-2);
+        }
+        
+        .dashboard-content {
+            padding: var(--space-6);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-6);
+            margin-bottom: var(--space-8);
+        }
+        
+        .stat-card {
+            background: var(--white);
+            padding: var(--space-6);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            transition: transform var(--transition-fast);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .stat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--space-4);
+        }
+        
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-xl);
+        }
+        
+        .stat-icon.blue {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--secondary-blue);
+        }
+        
+        .stat-icon.green {
+            background: rgba(5, 150, 105, 0.1);
+            color: var(--success-green);
+        }
+        
+        .stat-icon.amber {
+            background: rgba(217, 119, 6, 0.1);
+            color: var(--warning-amber);
+        }
+        
+        .stat-icon.red {
+            background: rgba(220, 38, 38, 0.1);
+            color: var(--error-red);
+        }
+        
+        .stat-value {
+            font-size: var(--font-size-3xl);
+            font-weight: 700;
+            color: var(--neutral-dark);
+            margin-bottom: var(--space-1);
+        }
+        
+        .stat-label {
+            color: var(--neutral-medium);
+            font-size: var(--font-size-sm);
+            margin-bottom: var(--space-2);
+        }
+        
+        .stat-change {
+            font-size: var(--font-size-xs);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: var(--space-1);
+        }
+        
+        .stat-change.positive {
+            color: var(--success-green);
+        }
+        
+        .stat-change.negative {
+            color: var(--error-red);
+        }
+        
+        .dashboard-sections {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: var(--space-6);
+        }
+        
+        .section-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+        
+        .section-header {
+            padding: var(--space-6);
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .section-title {
+            font-size: var(--font-size-lg);
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .section-content {
+            padding: var(--space-6);
+        }
+        
+        .order-item {
+            display: flex;
+            align-items: center;
+            justify-content: between;
+            padding: var(--space-4);
+            border: 1px solid #e5e7eb;
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-3);
+            transition: all var(--transition-fast);
+        }
+        
+        .order-item:hover {
+            border-color: var(--secondary-blue);
+            background: var(--accent-blue);
+        }
+        
+        .order-info {
+            flex: 1;
+        }
+        
+        .order-id {
+            font-weight: 600;
+            color: var(--neutral-dark);
+            margin-bottom: var(--space-1);
+        }
+        
+        .order-route {
+            color: var(--neutral-medium);
+            font-size: var(--font-size-sm);
+        }
+        
+        .order-meta {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: var(--space-1);
+        }
+        
+        .activity-item {
+            display: flex;
+            gap: var(--space-3);
+            padding: var(--space-3) 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-sm);
+            flex-shrink: 0;
+        }
+        
+        .activity-content {
+            flex: 1;
+        }
+        
+        .activity-text {
+            font-size: var(--font-size-sm);
+            color: var(--neutral-dark);
+            margin-bottom: var(--space-1);
+        }
+        
+        .activity-time {
+            font-size: var(--font-size-xs);
+            color: var(--neutral-medium);
+        }
+        
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-4);
+            margin-bottom: var(--space-6);
+        }
+        
+        .action-card {
+            background: var(--white);
+            padding: var(--space-4);
+            border-radius: var(--radius-lg);
+            border: 1px solid #e5e7eb;
+            text-decoration: none;
+            color: inherit;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+        }
+        
+        .action-card:hover {
+            border-color: var(--secondary-blue);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+            text-decoration: none;
+        }
+        
+        .action-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-lg);
+        }
+        
+        .action-text {
+            flex: 1;
+        }
+        
+        .action-title {
+            font-weight: 600;
+            margin-bottom: var(--space-1);
+        }
+        
+        .action-subtitle {
+            font-size: var(--font-size-xs);
+            color: var(--neutral-medium);
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-sections {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+        }
+
+        @media (max-width: 640px) {
+            .dashboard-content {
+                padding: var(--space-4);
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <div class="navigation-wrapper">
+        <nav class="navbar">
+            <a href="06-home-page-european.html" class="navbar-brand">
+                <div class="navbar-logo">CL</div>
+                Circling Logistics
+            </a>
+            
+            <div class="navbar-search">
+                <input type="text" class="search-input" placeholder="Search orders, routes...">
+                <span class="search-icon">🔍</span>
+            </div>
+            
+            <ul class="navbar-nav">
+                <!-- Navigation items will be populated by JavaScript -->
+            </ul>
+            
+            <div class="navbar-user">
+                <div class="user-profile">
+                    <!-- User profile will be populated by JavaScript -->
+                </div>
+                <div class="dropdown-menu">
+                    <a href="14-profile-settings-european.html" class="dropdown-item">Profile Settings</a>
+                    <a href="15-notifications-european.html" class="dropdown-item">Notifications</a>
+                    <div class="dropdown-divider"></div>
+                    <button class="dropdown-item" onclick="logout()">Sign Out</button>
+                </div>
+            </div>
+            
+            <button class="mobile-menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb-container">
+        <nav class="container">
+            <ol class="breadcrumb">
+                <!-- Breadcrumb items will be populated by JavaScript -->
+            </ol>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="dashboard-layout">
+        <main class="main-content page-transition">
+            <div class="dashboard-header">
+                <h1 class="dashboard-title">Welcome back, <span id="userName">John</span>!</h1>
+                <p class="dashboard-subtitle">Here's your shipping overview for today</p>
+            </div>
+            
+            <div class="dashboard-content">
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <a href="09-create-order-european.html" class="action-card">
+                        <div class="action-icon blue">
+                            <span>📦</span>
+                        </div>
+                        <div class="action-text">
+                            <div class="action-title">Create Order</div>
+                            <div class="action-subtitle">Start a new shipment</div>
+                        </div>
+                    </a>
+                    
+                    <a href="07-orders-european.html" class="action-card">
+                        <div class="action-icon green">
+                            <span>📋</span>
+                        </div>
+                        <div class="action-text">
+                            <div class="action-title">View Orders</div>
+                            <div class="action-subtitle">Manage your shipments</div>
+                        </div>
+                    </a>
+                    
+                    <a href="20-order-tracking-european.html" class="action-card">
+                        <div class="action-icon amber">
+                            <span>📍</span>
+                        </div>
+                        <div class="action-text">
+                            <div class="action-title">Track Orders</div>
+                            <div class="action-subtitle">Monitor deliveries</div>
+                        </div>
+                    </a>
+                    
+                    <a href="10-bidding-european.html" class="action-card">
+                        <div class="action-icon red">
+                            <span>💰</span>
+                        </div>
+                        <div class="action-text">
+                            <div class="action-title">View Bids</div>
+                            <div class="action-subtitle">Check carrier offers</div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Statistics Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon blue">📦</div>
+                        </div>
+                        <div class="stat-value">24</div>
+                        <div class="stat-label">Active Orders</div>
+                        <div class="stat-change positive">
+                            <span>↗</span> +12% from last month
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon green">✅</div>
+                        </div>
+                        <div class="stat-value">156</div>
+                        <div class="stat-label">Completed Orders</div>
+                        <div class="stat-change positive">
+                            <span>↗</span> +8% from last month
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon amber">⏱️</div>
+                        </div>
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">Pending Bids</div>
+                        <div class="stat-change negative">
+                            <span>↘</span> -2 from yesterday
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon red">💰</div>
+                        </div>
+                        <div class="stat-value">€18,750</div>
+                        <div class="stat-label">Monthly Spending</div>
+                        <div class="stat-change positive">
+                            <span>↗</span> +15% from last month
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dashboard Sections -->
+                <div class="dashboard-sections">
+                    <!-- Recent Orders -->
+                    <div class="section-card">
+                        <div class="section-header">
+                            <h2 class="section-title">Recent Orders</h2>
+                            <a href="07-orders-european.html" class="btn btn-sm btn-secondary">View All</a>
+                        </div>
+                        <div class="section-content">
+                            <div class="order-item">
+                                <div class="order-info">
+                                    <div class="order-id">#ORD-2024-001</div>
+                                    <div class="order-route">Berlin → Amsterdam</div>
+                                </div>
+                                <div class="order-meta">
+                                    <span class="status-badge status-active">In Transit</span>
+                                    <span class="text-muted">€1,250</span>
+                                </div>
+                            </div>
+                            
+                            <div class="order-item">
+                                <div class="order-info">
+                                    <div class="order-id">#ORD-2024-002</div>
+                                    <div class="order-route">Paris → London</div>
+                                </div>
+                                <div class="order-meta">
+                                    <span class="status-badge status-pending">Pending</span>
+                                    <span class="text-muted">€2,100</span>
+                                </div>
+                            </div>
+                            
+                            <div class="order-item">
+                                <div class="order-info">
+                                    <div class="order-id">#ORD-2024-003</div>
+                                    <div class="order-route">Madrid → Rome</div>
+                                </div>
+                                <div class="order-meta">
+                                    <span class="status-badge status-active">Delivered</span>
+                                    <span class="text-muted">€1,850</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="section-card">
+                        <div class="section-header">
+                            <h2 class="section-title">Recent Activity</h2>
+                            <a href="15-notifications-european.html" class="btn btn-sm btn-secondary">View All</a>
+                        </div>
+                        <div class="section-content">
+                            <div class="activity-item">
+                                <div class="activity-icon blue">📦</div>
+                                <div class="activity-content">
+                                    <div class="activity-text">New order #ORD-2024-004 created</div>
+                                    <div class="activity-time">2 hours ago</div>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon green">💰</div>
+                                <div class="activity-content">
+                                    <div class="activity-text">Payment received for #ORD-2024-001</div>
+                                    <div class="activity-time">4 hours ago</div>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon amber">🚛</div>
+                                <div class="activity-content">
+                                    <div class="activity-text">New bid received on #ORD-2024-002</div>
+                                    <div class="activity-time">6 hours ago</div>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon red">✅</div>
+                                <div class="activity-content">
+                                    <div class="activity-text">Order #ORD-2023-156 delivered</div>
+                                    <div class="activity-time">1 day ago</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="bottom-nav">
+        <div class="bottom-nav-items">
+            <!-- Navigation items will be populated by JavaScript -->
+        </div>
+    </nav>
+
+    <!-- Scripts -->
+    <script src="js/user-session.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/breadcrumb.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update user name from session
+            const currentUser = window.userSessionController?.getCurrentUser();
+            if (currentUser) {
+                const userNameElement = document.getElementById('userName');
+                if (userNameElement) {
+                    userNameElement.textContent = currentUser.name.split(' ')[0];
+                }
+            }
+            
+            // Add click handlers for order items
+            document.querySelectorAll('.order-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const orderId = this.querySelector('.order-id').textContent;
+                    window.location.href = `08-order-details-european.html?id=${orderId}`;
+                });
+            });
+            
+            // Add click handlers for activity items
+            document.querySelectorAll('.activity-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    window.location.href = '15-notifications-european.html';
+                });
+            });
+        });
+        
+        function logout() {
+            if (window.userSessionController) {
+                window.userSessionController.logout();
+            } else {
+                sessionStorage.clear();
+                window.location.href = '01-login-european.html';
+            }
+        }
+    </script>
+</body>
+</html>
