@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết đơn hàng - Circling Logistics</title>
+    <link rel="stylesheet" href="css/design-system-european.css">
+</head>
+<body>
+    <!-- Main Navigation -->
+    <nav class="main-nav">
+        <!-- Navigation will be dynamically created by navigation.js -->
+    </nav>
+
+    <!-- Breadcrumb Navigation -->
+    <!-- Breadcrumb will be dynamically created by navigation.js -->
+
+    <!-- Page Content -->
+    <main class="page-content">
+        <div class="container">
+            <header class="page-header">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h1 class="page-title">Chi tiết đơn hàng <span id="order-id">DH001</span></h1>
+                        <p class="page-subtitle">Thông tin chi tiết và trạng thái đơn hàng</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="goBack()" class="btn btn-secondary">
+                            ← Quay lại
+                        </button>
+                        <button onclick="editOrder()" class="btn btn-primary">
+                            ✏️ Chỉnh sửa
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Order Status Timeline -->
+            <div class="bg-white rounded shadow p-6 mb-6">
+                <h3 class="text-lg font-semibold mb-4">Trạng thái đơn hàng</h3>
+                <div class="timeline">
+                    <div class="timeline-item completed">
+                        <div class="timeline-marker">✓</div>
+                        <div class="timeline-content">
+                            <h4>Đơn hàng được tạo</h4>
+                            <p class="text-sm text-gray-600">15/11/2024 - 09:30</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item completed">
+                        <div class="timeline-marker">✓</div>
+                        <div class="timeline-content">
+                            <h4>Đã phân công xe</h4>
+                            <p class="text-sm text-gray-600">15/11/2024 - 14:20</p>
+                            <p class="text-sm text-blue-600">Xe: 29A-12345 - Tài xế: Nguyễn Văn A</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item active">
+                        <div class="timeline-marker">🚛</div>
+                        <div class="timeline-content">
+                            <h4>Đang vận chuyển</h4>
+                            <p class="text-sm text-gray-600">15/11/2024 - 16:45</p>
+                            <p class="text-sm text-orange-600">Hiện tại: Đồng Nai</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item pending">
+                        <div class="timeline-marker">📍</div>
+                        <div class="timeline-content">
+                            <h4>Giao hàng thành công</h4>
+                            <p class="text-sm text-gray-600">Dự kiến: 16/11/2024</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-3 gap-6">
+                <!-- Order Information -->
+                <div class="col-span-2">
+                    <div class="bg-white rounded shadow p-6 mb-6">
+                        <h3 class="text-lg font-semibold mb-4">Thông tin đơn hàng</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-sm font-medium text-gray-700">Mã đơn hàng</label>
+                                <p class="mt-1 text-gray-900" id="display-order-id">DH001</p>
+                            </div>
+                            <div>
+                                <label class="text-sm font-medium text-gray-700">Khách hàng</label>
+                                <p class="mt-1 text-gray-900">Công ty ABC</p>
+                            </div>
+                            <div>
+                                <label class="text-sm font-medium text-gray-700">Ngày tạo</label>
+                                <p class="mt-1 text-gray-900">15/11/2024</p>
+                            </div>
+                            <div>
+                                <label class="text-sm font-medium text-gray-700">Giá trị đơn hàng</label>
+                                <p class="mt-1 text-gray-900 font-semibold">₫8,500,000</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pickup Information -->
+                    <div class="bg-white rounded shadow p-6 mb-6">
+                        <h3 class="text-lg font-semibold mb-4 flex items-center">
+                            📤 Thông tin lấy hàng
+                        </h3>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="text-sm font-medium text-gray-700">Địa chỉ</label>
+                                <p class="mt-1 text-gray-900">123 Đường Nguyễn Huệ, Quận 1, TP.HCM</p>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="text-sm font-medium text-gray-700">Người liên hệ</label>
+                                    <p class="mt-1 text-gray-900">Nguyễn Văn A</p>
+                                </div>
+                                <div>
+                                    <label class="text-sm font-medium text-gray-700">Số điện thoại</label>
+                                    <p class="mt-1 text-gray-900">0901234567</p>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="text-sm font-medium text-gray-700">Ngày lấy hàng</label>
+                                    <p class="mt-1 text-gray-900">15/11/2024</p>
+                                </div>
+                                <div>
+                                    <label class="text-sm font-medium text-gray-700">Thời gian</label>
+                                    <p class="mt-1 text-gray-900">08:00 - 17:00</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Delivery Information -->
+                    <div class="bg-white rounded shadow p-6 mb-6">
+                        <h3 class="text-lg font-semibold mb-4 flex items-center">
+                            📥 Thông tin giao hàng
+                        </h3>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="text-sm font-medium text-gray-700">Địa chỉ</label>
+                                <p class="mt-1 text-gray-900">456 Đường Láng, Quận Đống Đa, Hà Nội</p>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="text-sm font-medium text-gray-700">Người liên hệ</label>
+                                    <p class="mt-1 text-gray-900">Trần Văn B</p>
+                                </div>
+                                <div>
+                                    <label class="text-sm font-medium text-gray-700">Số điện thoại</label>
+                                    <p class="mt-1 text-gray-900">0987654321</p>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="text-sm font-medium text-gray-700">Ngày giao hàng</label>
+                                    <p class="mt-1 text-gray-900">16/11/2024</p>
+                                </div>
+                                <div>
+                                    <label class="text-sm font-medium text-gray-700">Thời gian</label>
+                                    <p class="mt-1 text-gray-900">09:00 - 18:00</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cargo Information -->
+                    <div class="bg-white rounded shadow p-6">
+                        <h3 class="text-lg font-semibold mb-4 flex items-center">
+                            📦 Thông tin hàng hóa
+                        </h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-sm font-medium text-gray-700">Loại hàng hóa</label>
+                                <p class="mt-1 text-gray-900">Thiết bị điện tử</p>
+                            </div>
+                            <div>
+                                <label class="text-sm font-medium text-gray-700">Trọng lượng</label>
+                                <p class="mt-1 text-gray-900">1,200 kg</p>
+                            </div>
+                            <div>
+                                <label class="text-sm font-medium text-gray-700">Giá trị hàng hóa</label>
+                                <p class="mt-1 text-gray-900">₫150,000,000</p>
+                            </div>
+                            <div>
+                                <label class="text-sm font-medium text-gray-700">Loại xe yêu cầu</label>
+                                <p class="mt-1 text-gray-900">Xe tải 5 tấn</p>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <label class="text-sm font-medium text-gray-700">Mô tả</label>
+                            <p class="mt-1 text-gray-900">
+                                Hàng điện tử cao cấp, cần xử lý cẩn thận. Bao gồm laptop, máy tính, 
+                                và các thiết bị văn phòng. Yêu cầu bảo hiểm đầy đủ.
+                            </p>
+                        </div>
+                        <div class="mt-4">
+                            <label class="text-sm font-medium text-gray-700">Yêu cầu đặc biệt</label>
+                            <div class="mt-2 flex flex-wrap gap-2">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                    Hàng dễ vỡ
+                                </span>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                    Hàng gấp
+                                </span>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                    Có bảo hiểm
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar Information -->
+                <div class="col-span-1">
+                    <!-- Vehicle Assignment -->
+                    <div class="bg-white rounded shadow p-6 mb-6">
+                        <h3 class="text-lg font-semibold mb-4">Phương tiện vận chuyển</h3>
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                🚛
+                            </div>
+                            <h4 class="font-medium">29A-12345</h4>
+                            <p class="text-sm text-gray-600">Xe tải 5 tấn</p>
+                            <div class="mt-4 space-y-2">
+                                <div>
+                                    <label class="text-sm font-medium text-gray-700">Tài xế</label>
+                                    <p class="text-gray-900">Nguyễn Văn A</p>
+                                </div>
+                                <div>
+                                    <label class="text-sm font-medium text-gray-700">Số điện thoại</label>
+                                    <p class="text-blue-600">0901111111</p>
+                                </div>
+                                <div>
+                                    <label class="text-sm font-medium text-gray-700">Vị trí hiện tại</label>
+                                    <p class="text-orange-600">Đồng Nai</p>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <button class="btn btn-sm btn-secondary w-full mb-2">
+                                    📞 Gọi tài xế
+                                </button>
+                                <button class="btn btn-sm btn-secondary w-full">
+                                    📍 Theo dõi vị trí
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Information -->
+                    <div class="bg-white rounded shadow p-6 mb-6">
+                        <h3 class="text-lg font-semibold mb-4">Thông tin thanh toán</h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Phí vận chuyển:</span>
+                                <span class="font-medium">₫8,000,000</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Phí bảo hiểm:</span>
+                                <span class="font-medium">₫300,000</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Phí khẩn cấp:</span>
+                                <span class="font-medium">₫200,000</span>
+                            </div>
+                            <hr class="my-2">
+                            <div class="flex justify-between font-semibold text-lg">
+                                <span>Tổng cộng:</span>
+                                <span class="text-blue-600">₫8,500,000</span>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <div class="text-sm">
+                                <span class="text-gray-600">Trạng thái:</span>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 ml-2">
+                                    Đã thanh toán
+                                </span>
+                            </div>
+                            <div class="text-sm mt-1">
+                                <span class="text-gray-600">Phương thức:</span>
+                                <span class="text-gray-900 ml-2">Chuyển khoản</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="bg-white rounded shadow p-6">
+                        <h3 class="text-lg font-semibold mb-4">Thao tác</h3>
+                        <div class="space-y-3">
+                            <button onclick="printOrder()" class="btn btn-secondary w-full">
+                                🖨️ In đơn hàng
+                            </button>
+                            <button onclick="downloadPDF()" class="btn btn-secondary w-full">
+                                📄 Tải PDF
+                            </button>
+                            <button onclick="shareOrder()" class="btn btn-secondary w-full">
+                                📤 Chia sẻ
+                            </button>
+                            <hr class="my-2">
+                            <button onclick="cancelOrder()" class="btn btn-danger w-full">
+                                ❌ Hủy đơn hàng
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="js/navigation.js"></script>
+    <script>
+        // Get order ID from URL
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const orderId = urlParams.get('id') || 'DH001';
+            
+            document.getElementById('order-id').textContent = orderId;
+            document.getElementById('display-order-id').textContent = orderId;
+            
+            // Update page title
+            document.title = `Chi tiết đơn hàng ${orderId} - Circling Logistics`;
+            
+            // Simulate real-time updates
+            startRealTimeUpdates();
+        });
+
+        function goBack() {
+            if (window.circlingNav) {
+                window.circlingNav.goBack();
+            } else {
+                window.history.back();
+            }
+        }
+
+        function editOrder() {
+            const orderId = document.getElementById('order-id').textContent;
+            showNotification(`Chỉnh sửa đơn hàng ${orderId}`, 'info');
+        }
+
+        function printOrder() {
+            window.print();
+        }
+
+        function downloadPDF() {
+            showNotification('Đang tạo file PDF...', 'info');
+            setTimeout(() => {
+                showNotification('Đã tải xuống file PDF thành công!', 'success');
+            }, 2000);
+        }
+
+        function shareOrder() {
+            const orderId = document.getElementById('order-id').textContent;
+            const url = window.location.href;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: `Đơn hàng ${orderId}`,
+                    text: `Chi tiết đơn hàng ${orderId}`,
+                    url: url
+                });
+            } else {
+                // Fallback: copy to clipboard
+                navigator.clipboard.writeText(url).then(() => {
+                    showNotification('Đã copy link đơn hàng vào clipboard!', 'success');
+                });
+            }
+        }
+
+        function cancelOrder() {
+            const orderId = document.getElementById('order-id').textContent;
+            if (confirm(`Bạn có chắc chắn muốn hủy đơn hàng ${orderId}?`)) {
+                showNotification(`Đơn hàng ${orderId} đã được hủy`, 'error');
+                
+                // Update status display
+                setTimeout(() => {
+                    const activeItem = document.querySelector('.timeline-item.active');
+                    if (activeItem) {
+                        activeItem.classList.remove('active');
+                        activeItem.classList.add('cancelled');
+                        activeItem.querySelector('h4').textContent = 'Đơn hàng đã bị hủy';
+                        activeItem.querySelector('.timeline-marker').textContent = '❌';
+                    }
+                }, 1000);
+            }
+        }
+
+        function showNotification(message, type = 'info') {
+            const bgColor = {
+                'success': 'bg-green-500',
+                'error': 'bg-red-500',
+                'info': 'bg-blue-500'
+            }[type] || 'bg-blue-500';
+            
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 ${bgColor} text-white p-3 rounded shadow-lg z-50`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        function startRealTimeUpdates() {
+            // Simulate location updates every 30 seconds
+            setInterval(() => {
+                const locations = ['Đồng Nai', 'Bình Thuận', 'Ninh Thuận', 'Khánh Hòa', 'Phú Yên'];
+                const currentLocation = locations[Math.floor(Math.random() * locations.length)];
+                
+                const locationElement = document.querySelector('.text-orange-600');
+                if (locationElement && Math.random() > 0.7) {
+                    locationElement.textContent = `Hiện tại: ${currentLocation}`;
+                    showNotification(`Xe đã cập nhật vị trí: ${currentLocation}`);
+                }
+            }, 30000);
+        }
+    </script>
+
+    <style>
+        .grid {
+            display: grid;
+        }
+        
+        .grid-cols-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        .grid-cols-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        
+        .col-span-1 {
+            grid-column: span 1;
+        }
+        
+        .col-span-2 {
+            grid-column: span 2;
+        }
+        
+        .gap-2 {
+            gap: var(--space-2);
+        }
+        
+        .gap-4 {
+            gap: var(--space-4);
+        }
+        
+        .gap-6 {
+            gap: var(--space-6);
+        }
+        
+        .space-y-3 > :not([hidden]) ~ :not([hidden]) {
+            margin-top: 0.75rem;
+        }
+        
+        .w-full {
+            width: 100%;
+        }
+        
+        .z-50 {
+            z-index: 50;
+        }
+        
+        .btn-danger {
+            background-color: var(--error-color);
+            color: var(--white);
+            border-color: var(--error-color);
+        }
+        
+        .btn-danger:hover {
+            background-color: #b91c1c;
+            border-color: #b91c1c;
+        }
+        
+        .btn-sm {
+            padding: var(--space-1) var(--space-2);
+            font-size: var(--font-size-xs);
+        }
+        
+        /* Timeline Styles */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0.75rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--gray-300);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+        
+        .timeline-marker {
+            position: absolute;
+            left: -2rem;
+            top: 0;
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 50%;
+            background-color: var(--gray-300);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            color: white;
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px var(--gray-300);
+        }
+        
+        .timeline-item.completed .timeline-marker {
+            background-color: var(--success-color);
+            box-shadow: 0 0 0 3px var(--success-color);
+        }
+        
+        .timeline-item.active .timeline-marker {
+            background-color: var(--primary-color);
+            box-shadow: 0 0 0 3px var(--primary-color);
+        }
+        
+        .timeline-item.cancelled .timeline-marker {
+            background-color: var(--error-color);
+            box-shadow: 0 0 0 3px var(--error-color);
+        }
+        
+        .timeline-content h4 {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        @media (max-width: 768px) {
+            .grid-cols-2, .grid-cols-3 {
+                grid-template-columns: 1fr;
+            }
+            
+            .col-span-1, .col-span-2 {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</body>
+</html>

@@ -46,7 +46,26 @@ class CirclingNavigation {
     getCurrentPage() {
         const path = window.location.pathname;
         const filename = path.split('/').pop() || 'index.html';
-        return filename.replace('.html', '').replace('-european', '');
+        const pageName = filename.replace('.html', '').replace('-european', '');
+        
+        // Map specific pages to their navigation config IDs
+        const pageMapping = {
+            '01-login': 'login',
+            '02-dashboard': 'dashboard', 
+            '03-dashboard-fleet': 'dashboard-fleet',
+            '06-home-page': 'home',
+            '07-orders': 'orders',
+            '08-order-details': 'order-details',
+            '09-create-order': 'create-order',
+            '10-bidding': 'bidding',
+            '11-payment-methods': 'payment-methods',
+            '14-profile-settings': 'profile-settings',
+            '15-notifications': 'notifications',
+            '16-help-support': 'help-support',
+            '17-vehicle-management': 'vehicle-management'
+        };
+        
+        return pageMapping[pageName] || pageName;
     }
 
     /**

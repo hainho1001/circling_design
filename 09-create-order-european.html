@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tạo đơn hàng mới - Circling Logistics</title>
+    <link rel="stylesheet" href="css/design-system-european.css">
+</head>
+<body>
+    <!-- Main Navigation -->
+    <nav class="main-nav">
+        <!-- Navigation will be dynamically created by navigation.js -->
+    </nav>
+
+    <!-- Breadcrumb Navigation -->
+    <!-- Breadcrumb will be dynamically created by navigation.js -->
+
+    <!-- Page Content -->
+    <main class="page-content">
+        <div class="container">
+            <header class="page-header">
+                <h1 class="page-title">Tạo đơn hàng mới</h1>
+                <p class="page-subtitle">Tạo đơn hàng vận chuyển mới với thông tin chi tiết</p>
+            </header>
+
+            <form class="bg-white rounded shadow p-6" onsubmit="handleCreateOrder(event)">
+                <div class="space-y-6">
+                    <!-- Order Information -->
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Thông tin đơn hàng</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="order-name" class="block text-sm font-medium text-gray-700 mb-1">
+                                    Tên đơn hàng *
+                                </label>
+                                <input type="text" id="order-name" name="order-name" required
+                                       class="w-full p-2 border border-gray-300 rounded"
+                                       placeholder="Vận chuyển hàng điện tử">
+                            </div>
+                            <div>
+                                <label for="customer-name" class="block text-sm font-medium text-gray-700 mb-1">
+                                    Tên khách hàng *
+                                </label>
+                                <input type="text" id="customer-name" name="customer-name" required
+                                       class="w-full p-2 border border-gray-300 rounded"
+                                       placeholder="Công ty ABC">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pickup Information -->
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Thông tin lấy hàng</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="pickup-address" class="block text-sm font-medium text-gray-700 mb-1">
+                                    Địa chỉ lấy hàng *
+                                </label>
+                                <textarea id="pickup-address" name="pickup-address" required rows="3"
+                                          class="w-full p-2 border border-gray-300 rounded"
+                                          placeholder="123 Đường ABC, Quận 1, TP.HCM"></textarea>
+                            </div>
+                            <div>
+                                <label for="pickup-contact" class="block text-sm font-medium text-gray-700 mb-1">
+                                    Người liên hệ lấy hàng *
+                                </label>
+                                <input type="text" id="pickup-contact" name="pickup-contact" required
+                                       class="w-full p-2 border border-gray-300 rounded mb-2"
+                                       placeholder="Nguyễn Văn A">
+                                <input type="tel" id="pickup-phone" name="pickup-phone" required
+                                       class="w-full p-2 border border-gray-300 rounded"
+                                       placeholder="0901234567">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 mt-4">
+                            <div>
+                                <label for="pickup-date" class="block text-sm font-medium text-gray-700 mb-1">
+                                    Ngày lấy hàng *
+                                </label>
+                                <input type="date" id="pickup-date" name="pickup-date" required
+                                       class="w-full p-2 border border-gray-300 rounded">
+                            </div>
+                            <div>
+                                <label for="pickup-time" class="block text-sm font-medium text-gray-700 mb-1">
+                                    Thời gian lấy hàng
+                                </label>
+                                <input type="time" id="pickup-time" name="pickup-time"
+                                       class="w-full p-2 border border-gray-300 rounded">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Delivery Information -->
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Thông tin giao hàng</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="delivery-address" class="block text-sm font-medium text-gray-700 mb-1">
+                                    Địa chỉ giao hàng *
+                                </label>
+                                <textarea id="delivery-address" name="delivery-address" required rows="3"
+                                          class="w-full p-2 border border-gray-300 rounded"
+                                          placeholder="456 Đường XYZ, Quận Ba Đình, Hà Nội"></textarea>
+                            </div>
+                            <div>
+                                <label for="delivery-contact" class="block text-sm font-medium text-gray-700 mb-1">
+                                    Người liên hệ giao hàng *
+                                </label>
+                                <input type="text" id="delivery-contact" name="delivery-contact" required
+                                       class="w-full p-2 border border-gray-300 rounded mb-2"
+                                       placeholder="Trần Văn B">
+                                <input type="tel" id="delivery-phone" name="delivery-phone" required
+                                       class="w-full p-2 border border-gray-300 rounded"
+                                       placeholder="0987654321">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 mt-4">
+                            <div>
+                                <label for="delivery-date" class="block text-sm font-medium text-gray-700 mb-1">
+                                    Ngày giao hàng mong muốn
+                                </label>
+                                <input type="date" id="delivery-date" name="delivery-date"
+                                       class="w-full p-2 border border-gray-300 rounded">
+                            </div>
+                            <div>
+                                <label for="delivery-time" class="block text-sm font-medium text-gray-700 mb-1">
+                                    Thời gian giao hàng
+                                </label>
+                                <input type="time" id="delivery-time" name="delivery-time"
+                                       class="w-full p-2 border border-gray-300 rounded">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cargo Information -->
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Thông tin hàng hóa</h3>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div>
+                                <label for="cargo-type" class="block text-sm font-medium text-gray-700 mb-1">
+                                    Loại hàng hóa *
+                                </label>
+                                <select id="cargo-type" name="cargo-type" required
+                                        class="w-full p-2 border border-gray-300 rounded">
+                                    <option value="">Chọn loại hàng hóa</option>
+                                    <option value="electronics">Điện tử</option>
+                                    <option value="furniture">Nội thất</option>
+                                    <option value="food">Thực phẩm</option>
+                                    <option value="clothing">Quần áo</option>
+                                    <option value="machinery">Máy móc</option>
+                                    <option value="other">Khác</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="cargo-weight" class="block text-sm font-medium text-gray-700 mb-1">
+                                    Trọng lượng (kg) *
+                                </label>
+                                <input type="number" id="cargo-weight" name="cargo-weight" required min="1"
+                                       class="w-full p-2 border border-gray-300 rounded"
+                                       placeholder="1000">
+                            </div>
+                            <div>
+                                <label for="cargo-value" class="block text-sm font-medium text-gray-700 mb-1">
+                                    Giá trị hàng hóa (VND)
+                                </label>
+                                <input type="number" id="cargo-value" name="cargo-value" min="0"
+                                       class="w-full p-2 border border-gray-300 rounded"
+                                       placeholder="10000000">
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <label for="cargo-description" class="block text-sm font-medium text-gray-700 mb-1">
+                                Mô tả hàng hóa
+                            </label>
+                            <textarea id="cargo-description" name="cargo-description" rows="3"
+                                      class="w-full p-2 border border-gray-300 rounded"
+                                      placeholder="Mô tả chi tiết về hàng hóa, yêu cầu đặc biệt..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Vehicle Requirements -->
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Yêu cầu phương tiện</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="vehicle-type" class="block text-sm font-medium text-gray-700 mb-1">
+                                    Loại xe yêu cầu
+                                </label>
+                                <select id="vehicle-type" name="vehicle-type"
+                                        class="w-full p-2 border border-gray-300 rounded">
+                                    <option value="">Không yêu cầu cụ thể</option>
+                                    <option value="truck-5t">Xe tải 5 tấn</option>
+                                    <option value="truck-10t">Xe tải 10 tấn</option>
+                                    <option value="truck-15t">Xe tải 15 tấn</option>
+                                    <option value="container">Container</option>
+                                    <option value="refrigerated">Xe lạnh</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="budget" class="block text-sm font-medium text-gray-700 mb-1">
+                                    Ngân sách dự kiến (VND)
+                                </label>
+                                <input type="number" id="budget" name="budget" min="0"
+                                       class="w-full p-2 border border-gray-300 rounded"
+                                       placeholder="5000000">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Special Requirements -->
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Yêu cầu đặc biệt</h3>
+                        <div class="space-y-2">
+                            <label class="flex items-center">
+                                <input type="checkbox" name="requirements" value="fragile" class="mr-2">
+                                <span>Hàng dễ vỡ - cần xử lý cẩn thận</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" name="requirements" value="urgent" class="mr-2">
+                                <span>Hàng gấp - ưu tiên vận chuyển</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" name="requirements" value="insurance" class="mr-2">
+                                <span>Yêu cầu bảo hiểm hàng hóa</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" name="requirements" value="signature" class="mr-2">
+                                <span>Yêu cầu chữ ký xác nhận giao hàng</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Notes -->
+                    <div>
+                        <label for="notes" class="block text-sm font-medium text-gray-700 mb-1">
+                            Ghi chú thêm
+                        </label>
+                        <textarea id="notes" name="notes" rows="3"
+                                  class="w-full p-2 border border-gray-300 rounded"
+                                  placeholder="Các yêu cầu hoặc lưu ý khác..."></textarea>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex gap-4 justify-end pt-6 border-t">
+                        <button type="button" onclick="goBack()" class="btn btn-secondary">
+                            ← Quay lại
+                        </button>
+                        <button type="button" onclick="saveDraft()" class="btn btn-secondary">
+                            💾 Lưu nháp
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            ✓ Tạo đơn hàng
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="js/navigation.js"></script>
+    <script>
+        // Set default dates
+        document.addEventListener('DOMContentLoaded', () => {
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            
+            const formatDate = (date) => date.toISOString().split('T')[0];
+            
+            document.getElementById('pickup-date').value = formatDate(tomorrow);
+            
+            const nextWeek = new Date(today);
+            nextWeek.setDate(nextWeek.getDate() + 7);
+            document.getElementById('delivery-date').value = formatDate(nextWeek);
+        });
+
+        function handleCreateOrder(event) {
+            event.preventDefault();
+            
+            // Show loading state
+            const submitBtn = event.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '⏳ Đang tạo đơn...';
+            submitBtn.disabled = true;
+            
+            // Simulate API call
+            setTimeout(() => {
+                // Generate order ID
+                const orderId = 'DH' + Date.now().toString().slice(-6);
+                
+                showNotification(`Đã tạo thành công đơn hàng ${orderId}!`, 'success');
+                
+                // Redirect to order details after successful creation
+                setTimeout(() => {
+                    window.location.href = `08-order-details-european.html?id=${orderId}`;
+                }, 2000);
+            }, 2000);
+        }
+
+        function saveDraft() {
+            showNotification('Đã lưu nháp đơn hàng', 'info');
+        }
+
+        function goBack() {
+            if (window.circlingNav) {
+                window.circlingNav.goBack();
+            } else {
+                window.history.back();
+            }
+        }
+
+        function showNotification(message, type = 'info') {
+            const bgColor = {
+                'success': 'bg-green-500',
+                'error': 'bg-red-500',
+                'info': 'bg-blue-500'
+            }[type] || 'bg-blue-500';
+            
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 ${bgColor} text-white p-3 rounded shadow-lg z-50`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Auto-calculate distance and estimated cost (demo)
+        function updateEstimates() {
+            const pickupAddress = document.getElementById('pickup-address').value;
+            const deliveryAddress = document.getElementById('delivery-address').value;
+            
+            if (pickupAddress && deliveryAddress) {
+                // Simulate distance calculation
+                const distance = Math.floor(Math.random() * 500) + 100; // 100-600 km
+                const estimatedCost = distance * 15000; // 15,000 VND per km
+                
+                // Update budget field with estimate
+                const budgetField = document.getElementById('budget');
+                if (!budgetField.value) {
+                    budgetField.value = estimatedCost;
+                    budgetField.placeholder = `Ước tính: ${estimatedCost.toLocaleString('vi-VN')} VND (${distance} km)`;
+                }
+            }
+        }
+
+        // Add event listeners for auto-calculation
+        document.getElementById('pickup-address').addEventListener('blur', updateEstimates);
+        document.getElementById('delivery-address').addEventListener('blur', updateEstimates);
+    </script>
+
+    <style>
+        .grid {
+            display: grid;
+        }
+        
+        .grid-cols-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        .grid-cols-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        
+        .gap-4 {
+            gap: var(--space-4);
+        }
+        
+        .space-y-6 > :not([hidden]) ~ :not([hidden]) {
+            margin-top: 1.5rem;
+        }
+        
+        .space-y-2 > :not([hidden]) ~ :not([hidden]) {
+            margin-top: 0.5rem;
+        }
+        
+        .w-full {
+            width: 100%;
+        }
+        
+        .z-50 {
+            z-index: 50;
+        }
+        
+        input, select, textarea {
+            border: 1px solid var(--gray-300);
+            border-radius: var(--border-radius);
+            transition: border-color var(--transition-fast);
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        @media (max-width: 768px) {
+            .grid-cols-2, .grid-cols-3 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</body>
+</html>
