@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details - Circling Logistics</title>
+    <link rel="stylesheet" href="css/design-system-european.css">
+    <link rel="stylesheet" href="css/navigation.css">
+    <style>
+        .order-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .main-content {
+            flex: 1;
+            background: var(--neutral-light);
+        }
+        
+        .order-header {
+            background: var(--white);
+            padding: var(--space-6);
+            border-bottom: 1px solid #e5e7eb;
+            position: relative;
+        }
+        
+        .order-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue));
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: var(--space-4);
+        }
+        
+        .order-info {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .order-id {
+            font-size: var(--font-size-3xl);
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: var(--space-2);
+        }
+        
+        .order-meta {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+            color: var(--neutral-medium);
+            font-size: var(--font-size-sm);
+        }
+        
+        .order-actions {
+            display: flex;
+            gap: var(--space-3);
+            align-items: center;
+        }
+        
+        .status-large {
+            padding: var(--space-3) var(--space-6);
+            border-radius: var(--radius-xl);
+            font-weight: 600;
+            font-size: var(--font-size-lg);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .status-in-transit {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--secondary-blue);
+            border: 2px solid rgba(59, 130, 246, 0.3);
+        }
+        
+        .status-pending {
+            background: rgba(217, 119, 6, 0.1);
+            color: var(--warning-amber);
+            border: 2px solid rgba(217, 119, 6, 0.3);
+        }
+        
+        .status-delivered {
+            background: rgba(5, 150, 105, 0.1);
+            color: var(--success-green);
+            border: 2px solid rgba(5, 150, 105, 0.3);
+        }
+        
+        .order-content {
+            padding: var(--space-6);
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: var(--space-6);
+        }
+        
+        .section-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            margin-bottom: var(--space-6);
+        }
+        
+        .section-header {
+            padding: var(--space-4) var(--space-6);
+            background: var(--neutral-light);
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .section-title {
+            font-size: var(--font-size-lg);
+            font-weight: 600;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+        
+        .section-content {
+            padding: var(--space-6);
+        }
+        
+        .route-visualization {
+            display: flex;
+            align-items: center;
+            gap: var(--space-6);
+            margin-bottom: var(--space-6);
+            padding: var(--space-6);
+            background: linear-gradient(135deg, var(--accent-blue), rgba(59, 130, 246, 0.05));
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+        
+        .route-point {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+        
+        .route-icon-large {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-2xl);
+            margin: 0 auto var(--space-3);
+            color: var(--white);
+        }
+        
+        .route-from .route-icon-large {
+            background: var(--success-green);
+        }
+        
+        .route-to .route-icon-large {
+            background: var(--error-red);
+        }
+        
+        .route-location {
+            font-size: var(--font-size-xl);
+            font-weight: 600;
+            margin-bottom: var(--space-2);
+            color: var(--neutral-dark);
+        }
+        
+        .route-datetime {
+            color: var(--neutral-medium);
+            font-size: var(--font-size-sm);
+        }
+        
+        .route-connector {
+            flex: 0 0 100px;
+            position: relative;
+            height: 4px;
+            background: linear-gradient(90deg, var(--success-green), var(--error-red));
+            border-radius: 2px;
+            margin: 30px 0;
+        }
+        
+        .route-connector::after {
+            content: '🚛';
+            position: absolute;
+            right: -15px;
+            top: -15px;
+            font-size: var(--font-size-lg);
+        }
+        
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-6);
+        }
+        
+        .detail-group {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-2);
+        }
+        
+        .detail-label {
+            font-size: var(--font-size-xs);
+            color: var(--neutral-medium);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 500;
+        }
+        
+        .detail-value {
+            font-size: var(--font-size-lg);
+            font-weight: 600;
+            color: var(--neutral-dark);
+        }
+        
+        .detail-value.highlight {
+            color: var(--primary-blue);
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: var(--space-6);
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 12px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #e5e7eb;
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: var(--space-6);
+            padding-left: var(--space-6);
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -7px;
+            top: 4px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--white);
+            border: 3px solid var(--neutral-medium);
+        }
+        
+        .timeline-item.completed::before {
+            background: var(--success-green);
+            border-color: var(--success-green);
+        }
+        
+        .timeline-item.current::before {
+            background: var(--secondary-blue);
+            border-color: var(--secondary-blue);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+        }
+        
+        .timeline-content {
+            background: var(--white);
+            padding: var(--space-4);
+            border-radius: var(--radius-md);
+            border: 1px solid #e5e7eb;
+        }
+        
+        .timeline-title {
+            font-weight: 600;
+            margin-bottom: var(--space-1);
+            color: var(--neutral-dark);
+        }
+        
+        .timeline-description {
+            color: var(--neutral-medium);
+            font-size: var(--font-size-sm);
+            margin-bottom: var(--space-2);
+        }
+        
+        .timeline-meta {
+            font-size: var(--font-size-xs);
+            color: var(--neutral-medium);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .contact-card {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            padding: var(--space-4);
+            background: var(--neutral-light);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-4);
+        }
+        
+        .contact-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 600;
+            font-size: var(--font-size-lg);
+        }
+        
+        .contact-info {
+            flex: 1;
+        }
+        
+        .contact-name {
+            font-weight: 600;
+            margin-bottom: var(--space-1);
+        }
+        
+        .contact-details {
+            color: var(--neutral-medium);
+            font-size: var(--font-size-sm);
+        }
+        
+        .contact-actions {
+            display: flex;
+            gap: var(--space-2);
+        }
+        
+        .contact-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-blue);
+            color: var(--white);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+        
+        .contact-btn:hover {
+            background: #1e40af;
+            transform: scale(1.05);
+        }
+        
+        .documents-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-3);
+        }
+        
+        .document-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            padding: var(--space-3);
+            background: var(--neutral-light);
+            border-radius: var(--radius-md);
+            transition: all var(--transition-fast);
+        }
+        
+        .document-item:hover {
+            background: #e5e7eb;
+        }
+        
+        .document-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-md);
+            background: var(--primary-blue);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-lg);
+        }
+        
+        .document-info {
+            flex: 1;
+        }
+        
+        .document-name {
+            font-weight: 500;
+            margin-bottom: var(--space-1);
+        }
+        
+        .document-meta {
+            color: var(--neutral-medium);
+            font-size: var(--font-size-xs);
+        }
+
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .route-visualization {
+                flex-direction: column;
+                gap: var(--space-4);
+            }
+            
+            .route-connector {
+                transform: rotate(90deg);
+                margin: var(--space-4) 0;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .header-content {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .order-actions {
+                justify-content: stretch;
+            }
+            
+            .order-actions .btn {
+                flex: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <div class="navigation-wrapper">
+        <nav class="navbar">
+            <a href="06-home-page-european.html" class="navbar-brand">
+                <div class="navbar-logo">CL</div>
+                Circling Logistics
+            </a>
+            
+            <div class="navbar-search">
+                <input type="text" class="search-input" placeholder="Search orders...">
+                <span class="search-icon">🔍</span>
+            </div>
+            
+            <ul class="navbar-nav">
+                <!-- Navigation items will be populated by JavaScript -->
+            </ul>
+            
+            <div class="navbar-user">
+                <div class="user-profile">
+                    <!-- User profile will be populated by JavaScript -->
+                </div>
+                <div class="dropdown-menu">
+                    <a href="14-profile-settings-european.html" class="dropdown-item">Profile Settings</a>
+                    <a href="15-notifications-european.html" class="dropdown-item">Notifications</a>
+                    <div class="dropdown-divider"></div>
+                    <button class="dropdown-item" onclick="logout()">Sign Out</button>
+                </div>
+            </div>
+            
+            <button class="mobile-menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb-container">
+        <nav class="container">
+            <ol class="breadcrumb">
+                <!-- Breadcrumb items will be populated by JavaScript -->
+            </ol>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="order-layout">
+        <main class="main-content page-transition">
+            <div class="order-header">
+                <div class="header-content">
+                    <div class="order-info">
+                        <div class="order-id" id="orderId">#ORD-2024-001</div>
+                        <div class="order-meta">
+                            <span>📅 Created: Dec 6, 2024</span>
+                            <span>👤 By: John Shipper</span>
+                            <span>🏢 TechCorp GmbH</span>
+                        </div>
+                    </div>
+                    <div class="order-actions">
+                        <span class="status-large status-in-transit" id="orderStatus">In Transit</span>
+                        <a href="20-order-tracking-european.html?id=ORD-2024-001" class="btn btn-primary">
+                            📍 Track Live
+                        </a>
+                        <button class="btn btn-secondary" onclick="editOrder()">
+                            ✏️ Edit
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="order-content">
+                <!-- Route Visualization -->
+                <div class="section-card">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <span>🗺️</span> Route Information
+                        </h2>
+                        <span class="text-muted">650 km • 8.5 hours estimated</span>
+                    </div>
+                    <div class="section-content">
+                        <div class="route-visualization">
+                            <div class="route-point route-from">
+                                <div class="route-icon-large">🏭</div>
+                                <div class="route-location">Berlin, Germany</div>
+                                <div class="route-datetime">
+                                    <strong>Pickup:</strong> Dec 8, 2024 at 9:00 AM
+                                </div>
+                            </div>
+                            
+                            <div class="route-connector"></div>
+                            
+                            <div class="route-point route-to">
+                                <div class="route-icon-large">🏪</div>
+                                <div class="route-location">Amsterdam, Netherlands</div>
+                                <div class="route-datetime">
+                                    <strong>Delivery:</strong> Dec 10, 2024 by 6:00 PM
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="details-grid">
+                            <div class="detail-group">
+                                <div class="detail-label">Cargo Type</div>
+                                <div class="detail-value">Electronics & Components</div>
+                            </div>
+                            <div class="detail-group">
+                                <div class="detail-label">Weight</div>
+                                <div class="detail-value">15.2 tons</div>
+                            </div>
+                            <div class="detail-group">
+                                <div class="detail-label">Dimensions</div>
+                                <div class="detail-value">12m × 2.4m × 2.6m</div>
+                            </div>
+                            <div class="detail-group">
+                                <div class="detail-label">Value</div>
+                                <div class="detail-value">€125,000</div>
+                            </div>
+                            <div class="detail-group">
+                                <div class="detail-label">Transport Cost</div>
+                                <div class="detail-value highlight">€1,250</div>
+                            </div>
+                            <div class="detail-group">
+                                <div class="detail-label">Insurance</div>
+                                <div class="detail-value">€2,500 coverage</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-grid">
+                    <!-- Order Timeline -->
+                    <div class="section-card">
+                        <div class="section-header">
+                            <h2 class="section-title">
+                                <span>📋</span> Order Timeline
+                            </h2>
+                            <span class="text-muted">Real-time updates</span>
+                        </div>
+                        <div class="section-content">
+                            <div class="timeline">
+                                <div class="timeline-item completed">
+                                    <div class="timeline-content">
+                                        <div class="timeline-title">Order Created</div>
+                                        <div class="timeline-description">
+                                            Order placed and details confirmed
+                                        </div>
+                                        <div class="timeline-meta">
+                                            <span>Dec 6, 2024 - 2:30 PM</span>
+                                            <span class="status-badge status-active">Completed</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="timeline-item completed">
+                                    <div class="timeline-content">
+                                        <div class="timeline-title">Carrier Assigned</div>
+                                        <div class="timeline-description">
+                                            EuroTransport GmbH selected and confirmed
+                                        </div>
+                                        <div class="timeline-meta">
+                                            <span>Dec 7, 2024 - 11:15 AM</span>
+                                            <span class="status-badge status-active">Completed</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="timeline-item completed">
+                                    <div class="timeline-content">
+                                        <div class="timeline-title">Pickup Completed</div>
+                                        <div class="timeline-description">
+                                            Cargo loaded and transport started
+                                        </div>
+                                        <div class="timeline-meta">
+                                            <span>Dec 8, 2024 - 9:15 AM</span>
+                                            <span class="status-badge status-active">Completed</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="timeline-item current">
+                                    <div class="timeline-content">
+                                        <div class="timeline-title">In Transit</div>
+                                        <div class="timeline-description">
+                                            Currently passing through Düsseldorf
+                                        </div>
+                                        <div class="timeline-meta">
+                                            <span>Dec 8, 2024 - 3:45 PM</span>
+                                            <span class="status-badge status-pending">Current</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-content">
+                                        <div class="timeline-title">Delivery Scheduled</div>
+                                        <div class="timeline-description">
+                                            Expected arrival at destination
+                                        </div>
+                                        <div class="timeline-meta">
+                                            <span>Dec 10, 2024 - 6:00 PM</span>
+                                            <span class="status-badge status-inactive">Pending</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Information -->
+                    <div class="section-card">
+                        <div class="section-header">
+                            <h2 class="section-title">
+                                <span>👥</span> Contacts
+                            </h2>
+                        </div>
+                        <div class="section-content">
+                            <div class="contact-card">
+                                <div class="contact-avatar">HM</div>
+                                <div class="contact-info">
+                                    <div class="contact-name">Hans Mueller</div>
+                                    <div class="contact-details">Driver • EuroTransport GmbH</div>
+                                </div>
+                                <div class="contact-actions">
+                                    <button class="contact-btn" title="Call">📞</button>
+                                    <button class="contact-btn" title="Message">💬</button>
+                                </div>
+                            </div>
+                            
+                            <div class="contact-card">
+                                <div class="contact-avatar">MP</div>
+                                <div class="contact-info">
+                                    <div class="contact-name">Michael Peters</div>
+                                    <div class="contact-details">Fleet Manager • EuroTransport GmbH</div>
+                                </div>
+                                <div class="contact-actions">
+                                    <button class="contact-btn" title="Call">📞</button>
+                                    <button class="contact-btn" title="Email">📧</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Documents -->
+                    <div class="section-card">
+                        <div class="section-header">
+                            <h2 class="section-title">
+                                <span>📄</span> Documents
+                            </h2>
+                            <button class="btn btn-sm btn-secondary">Upload</button>
+                        </div>
+                        <div class="section-content">
+                            <div class="documents-list">
+                                <div class="document-item">
+                                    <div class="document-icon">📋</div>
+                                    <div class="document-info">
+                                        <div class="document-name">Bill of Lading</div>
+                                        <div class="document-meta">PDF • 245 KB • Dec 8, 2024</div>
+                                    </div>
+                                    <button class="btn btn-sm btn-secondary">Download</button>
+                                </div>
+                                
+                                <div class="document-item">
+                                    <div class="document-icon">📜</div>
+                                    <div class="document-info">
+                                        <div class="document-name">Insurance Certificate</div>
+                                        <div class="document-meta">PDF • 180 KB • Dec 7, 2024</div>
+                                    </div>
+                                    <button class="btn btn-sm btn-secondary">Download</button>
+                                </div>
+                                
+                                <div class="document-item">
+                                    <div class="document-icon">📸</div>
+                                    <div class="document-info">
+                                        <div class="document-name">Pickup Photos</div>
+                                        <div class="document-meta">3 Images • 2.1 MB • Dec 8, 2024</div>
+                                    </div>
+                                    <button class="btn btn-sm btn-secondary">View</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="bottom-nav">
+        <div class="bottom-nav-items">
+            <!-- Navigation items will be populated by JavaScript -->
+        </div>
+    </nav>
+
+    <!-- Scripts -->
+    <script src="js/user-session.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/breadcrumb.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get order ID from URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const orderId = urlParams.get('id') || 'ORD-2024-001';
+            
+            // Update order ID in the header
+            document.getElementById('orderId').textContent = `#${orderId}`;
+            
+            // Update page title
+            document.title = `${orderId} - Order Details - Circling Logistics`;
+            
+            // Add click handlers for contact buttons
+            document.querySelectorAll('.contact-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const action = this.title.toLowerCase();
+                    alert(`${action} functionality would be implemented here.`);
+                });
+            });
+            
+            // Add click handlers for document items
+            document.querySelectorAll('.document-item button').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const action = this.textContent.toLowerCase();
+                    const docName = this.closest('.document-item').querySelector('.document-name').textContent;
+                    alert(`${action} "${docName}" would be implemented here.`);
+                });
+            });
+            
+            // Simulate real-time updates
+            setInterval(updateOrderStatus, 30000); // Update every 30 seconds
+        });
+        
+        function updateOrderStatus() {
+            // This would fetch real-time order data from the server
+            console.log('Checking for order updates...');
+        }
+        
+        function editOrder() {
+            const orderId = document.getElementById('orderId').textContent.replace('#', '');
+            window.location.href = `09-create-order-european.html?edit=${orderId}`;
+        }
+        
+        function logout() {
+            if (window.userSessionController) {
+                window.userSessionController.logout();
+            } else {
+                sessionStorage.clear();
+                window.location.href = '01-login-european.html';
+            }
+        }
+    </script>
+</body>
+</html>

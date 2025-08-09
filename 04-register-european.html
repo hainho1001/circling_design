@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Circling Logistics</title>
+    <link rel="stylesheet" href="css/design-system-european.css">
+    <link rel="stylesheet" href="css/navigation.css">
+    <style>
+        .register-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-4);
+        }
+        
+        .register-card {
+            width: 100%;
+            max-width: 500px;
+            background: var(--white);
+            border-radius: var(--radius-2xl);
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+        }
+        
+        .register-header {
+            text-align: center;
+            padding: var(--space-8) var(--space-6) var(--space-6);
+            background: var(--white);
+        }
+        
+        .register-logo {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto var(--space-4);
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: var(--font-size-2xl);
+            font-weight: bold;
+        }
+        
+        .register-title {
+            font-size: var(--font-size-2xl);
+            font-weight: 700;
+            margin-bottom: var(--space-2);
+        }
+        
+        .register-subtitle {
+            color: var(--neutral-medium);
+            font-size: var(--font-size-sm);
+        }
+        
+        .register-form {
+            padding: 0 var(--space-6) var(--space-8);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-4);
+            margin-bottom: var(--space-4);
+        }
+        
+        .form-group {
+            margin-bottom: var(--space-4);
+        }
+        
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: var(--space-2);
+            color: var(--neutral-dark);
+        }
+        
+        .form-input, .form-select {
+            width: 100%;
+            padding: var(--space-4);
+            border: 1px solid #d1d5db;
+            border-radius: var(--radius-lg);
+            font-size: var(--font-size-base);
+            transition: all var(--transition-fast);
+        }
+        
+        .form-input:focus, .form-select:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+        }
+        
+        .form-help {
+            font-size: var(--font-size-xs);
+            color: var(--neutral-medium);
+            margin-top: var(--space-1);
+        }
+        
+        .role-selection {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-4);
+            margin-bottom: var(--space-6);
+        }
+        
+        .role-card {
+            border: 2px solid #e5e7eb;
+            border-radius: var(--radius-lg);
+            padding: var(--space-4);
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            background: var(--white);
+        }
+        
+        .role-card:hover {
+            border-color: var(--secondary-blue);
+        }
+        
+        .role-card.selected {
+            border-color: var(--primary-blue);
+            background: var(--accent-blue);
+        }
+        
+        .role-icon {
+            font-size: var(--font-size-3xl);
+            margin-bottom: var(--space-2);
+            display: block;
+        }
+        
+        .role-title {
+            font-weight: 600;
+            margin-bottom: var(--space-1);
+        }
+        
+        .role-description {
+            font-size: var(--font-size-xs);
+            color: var(--neutral-medium);
+            line-height: 1.4;
+        }
+        
+        .terms-checkbox {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-2);
+            margin: var(--space-6) 0;
+        }
+        
+        .terms-checkbox input {
+            margin-top: 2px;
+        }
+        
+        .terms-text {
+            font-size: var(--font-size-sm);
+            line-height: 1.5;
+        }
+        
+        .register-actions {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-4);
+            margin-top: var(--space-6);
+        }
+        
+        .register-footer {
+            text-align: center;
+            padding: var(--space-6);
+            border-top: 1px solid #e5e7eb;
+            background: var(--neutral-light);
+        }
+        
+        .password-requirements {
+            background: var(--neutral-light);
+            border-radius: var(--radius-md);
+            padding: var(--space-3);
+            margin-top: var(--space-2);
+            font-size: var(--font-size-xs);
+        }
+        
+        .requirement {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            margin-bottom: var(--space-1);
+        }
+        
+        .requirement.met {
+            color: var(--success-green);
+        }
+        
+        .requirement.unmet {
+            color: var(--neutral-medium);
+        }
+        
+        .progress-steps {
+            display: flex;
+            justify-content: center;
+            margin-bottom: var(--space-6);
+            gap: var(--space-2);
+        }
+        
+        .step {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            transition: background-color var(--transition-fast);
+        }
+        
+        .step.active {
+            background: var(--primary-blue);
+        }
+        
+        .step.completed {
+            background: var(--success-green);
+        }
+
+        @media (max-width: 640px) {
+            .register-container {
+                padding: var(--space-2);
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .role-selection {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-card">
+            <div class="register-header">
+                <div class="register-logo">CL</div>
+                <h1 class="register-title">Join Circling Logistics</h1>
+                <p class="register-subtitle">Create your account to start shipping efficiently</p>
+                
+                <div class="progress-steps">
+                    <div class="step active"></div>
+                    <div class="step"></div>
+                    <div class="step"></div>
+                </div>
+            </div>
+            
+            <form class="register-form" id="registerForm">
+                <!-- Account Type Selection -->
+                <div class="form-group full-width">
+                    <label class="form-label">What type of account do you need?</label>
+                    <div class="role-selection">
+                        <div class="role-card selected" data-role="shipper">
+                            <span class="role-icon">📦</span>
+                            <div class="role-title">Shipper</div>
+                            <div class="role-description">I need to ship goods and find carriers</div>
+                        </div>
+                        
+                        <div class="role-card" data-role="fleet">
+                            <span class="role-icon">🚛</span>
+                            <div class="role-title">Fleet Owner</div>
+                            <div class="role-description">I have vehicles and want to offer shipping services</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Personal Information -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName" class="form-label">First Name</label>
+                        <input type="text" id="firstName" class="form-input" required placeholder="Enter your first name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="lastName" class="form-label">Last Name</label>
+                        <input type="text" id="lastName" class="form-input" required placeholder="Enter your last name">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="email" id="email" class="form-input" required placeholder="Enter your email address">
+                    <div class="form-help">We'll use this for account verification and important updates</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone" class="form-label">Phone Number</label>
+                    <input type="tel" id="phone" class="form-input" required placeholder="+49 xxx xxxx xxx">
+                    <div class="form-help">Include country code for international numbers</div>
+                </div>
+                
+                <!-- Company Information -->
+                <div class="form-group">
+                    <label for="company" class="form-label">Company Name</label>
+                    <input type="text" id="company" class="form-input" required placeholder="Enter your company name">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="country" class="form-label">Country</label>
+                        <select id="country" class="form-select" required>
+                            <option value="">Select country</option>
+                            <option value="DE">Germany</option>
+                            <option value="FR">France</option>
+                            <option value="IT">Italy</option>
+                            <option value="ES">Spain</option>
+                            <option value="NL">Netherlands</option>
+                            <option value="BE">Belgium</option>
+                            <option value="AT">Austria</option>
+                            <option value="CH">Switzerland</option>
+                            <option value="PL">Poland</option>
+                            <option value="CZ">Czech Republic</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="city" class="form-label">City</label>
+                        <input type="text" id="city" class="form-input" required placeholder="Enter your city">
+                    </div>
+                </div>
+                
+                <!-- Password -->
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" id="password" class="form-input" required placeholder="Create a strong password">
+                    <div class="password-requirements">
+                        <div class="requirement unmet" id="req-length">
+                            <span>•</span> At least 8 characters
+                        </div>
+                        <div class="requirement unmet" id="req-uppercase">
+                            <span>•</span> One uppercase letter
+                        </div>
+                        <div class="requirement unmet" id="req-number">
+                            <span>•</span> One number
+                        </div>
+                        <div class="requirement unmet" id="req-special">
+                            <span>•</span> One special character
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirmPassword" class="form-label">Confirm Password</label>
+                    <input type="password" id="confirmPassword" class="form-input" required placeholder="Confirm your password">
+                </div>
+                
+                <!-- Terms and Conditions -->
+                <div class="terms-checkbox">
+                    <input type="checkbox" id="terms" required>
+                    <label for="terms" class="terms-text">
+                        I agree to the <a href="#" class="text-primary">Terms of Service</a> and 
+                        <a href="#" class="text-primary">Privacy Policy</a>. I understand that 
+                        my account will be reviewed before activation.
+                    </label>
+                </div>
+                
+                <div class="terms-checkbox">
+                    <input type="checkbox" id="marketing">
+                    <label for="marketing" class="terms-text">
+                        I would like to receive email updates about new features, 
+                        shipping opportunities, and industry news.
+                    </label>
+                </div>
+                
+                <!-- Register Actions -->
+                <div class="register-actions">
+                    <button type="submit" class="btn btn-primary btn-lg">Create Account</button>
+                    <p class="text-center text-muted">
+                        Account verification may take 1-2 business days
+                    </p>
+                </div>
+            </form>
+            
+            <div class="register-footer">
+                <p>Already have an account? <a href="01-login-european.html" class="text-primary font-medium">Sign in here</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/user-session.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const registerForm = document.getElementById('registerForm');
+            const roleCards = document.querySelectorAll('.role-card');
+            const passwordInput = document.getElementById('password');
+            const confirmPasswordInput = document.getElementById('confirmPassword');
+            
+            let selectedRole = 'shipper';
+            
+            // Handle role selection
+            roleCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    roleCards.forEach(c => c.classList.remove('selected'));
+                    this.classList.add('selected');
+                    selectedRole = this.dataset.role;
+                });
+            });
+            
+            // Password validation
+            const requirements = {
+                length: { element: document.getElementById('req-length'), test: (pwd) => pwd.length >= 8 },
+                uppercase: { element: document.getElementById('req-uppercase'), test: (pwd) => /[A-Z]/.test(pwd) },
+                number: { element: document.getElementById('req-number'), test: (pwd) => /\d/.test(pwd) },
+                special: { element: document.getElementById('req-special'), test: (pwd) => /[!@#$%^&*(),.?":{}|<>]/.test(pwd) }
+            };
+            
+            passwordInput.addEventListener('input', function() {
+                const password = this.value;
+                
+                Object.values(requirements).forEach(req => {
+                    if (req.test(password)) {
+                        req.element.classList.remove('unmet');
+                        req.element.classList.add('met');
+                    } else {
+                        req.element.classList.remove('met');
+                        req.element.classList.add('unmet');
+                    }
+                });
+            });
+            
+            // Confirm password validation
+            confirmPasswordInput.addEventListener('input', function() {
+                if (this.value && this.value !== passwordInput.value) {
+                    this.setCustomValidity('Passwords do not match');
+                } else {
+                    this.setCustomValidity('');
+                }
+            });
+            
+            // Form submission
+            registerForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Validate password requirements
+                const password = passwordInput.value;
+                const allRequirementsMet = Object.values(requirements).every(req => req.test(password));
+                
+                if (!allRequirementsMet) {
+                    alert('Please ensure your password meets all requirements');
+                    return;
+                }
+                
+                if (passwordInput.value !== confirmPasswordInput.value) {
+                    alert('Passwords do not match');
+                    return;
+                }
+                
+                // Collect form data
+                const formData = {
+                    role: selectedRole,
+                    firstName: document.getElementById('firstName').value,
+                    lastName: document.getElementById('lastName').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    company: document.getElementById('company').value,
+                    country: document.getElementById('country').value,
+                    city: document.getElementById('city').value,
+                    marketingOptIn: document.getElementById('marketing').checked
+                };
+                
+                // Show loading state
+                const submitBtn = document.querySelector('button[type="submit"]');
+                submitBtn.textContent = 'Creating Account...';
+                submitBtn.disabled = true;
+                
+                // Simulate account creation
+                setTimeout(() => {
+                    alert('Account created successfully! Please check your email for verification instructions.');
+                    
+                    // Create a basic session for demo
+                    const userData = {
+                        id: Math.floor(Math.random() * 1000),
+                        name: `${formData.firstName} ${formData.lastName}`,
+                        email: formData.email,
+                        role: formData.role,
+                        company: formData.company,
+                        verified: false
+                    };
+                    
+                    if (window.userSessionController) {
+                        window.userSessionController.createSession(userData, false);
+                    } else {
+                        sessionStorage.setItem('circling_user_session', JSON.stringify(userData));
+                    }
+                    
+                    // Redirect to appropriate dashboard
+                    let redirectUrl;
+                    switch (selectedRole) {
+                        case 'fleet':
+                            redirectUrl = '03-dashboard-fleet-european.html';
+                            break;
+                        default:
+                            redirectUrl = '02-dashboard-european.html';
+                    }
+                    
+                    window.location.href = redirectUrl;
+                }, 2000);
+            });
+            
+            // Auto-format phone number
+            document.getElementById('phone').addEventListener('input', function() {
+                let value = this.value.replace(/\D/g, '');
+                if (value.length > 0 && !value.startsWith('+')) {
+                    value = '+' + value;
+                }
+                this.value = value;
+            });
+        });
+    </script>
+</body>
+</html>
