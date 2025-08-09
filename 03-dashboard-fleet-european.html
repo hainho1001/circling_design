@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fleet Owner Dashboard - Circling Logistics</title>
+    <meta name="description" content="Manage your fleet operations, track vehicles, and optimize routes with Circling Logistics.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Design System -->
+    <link rel="stylesheet" href="design-system-european.css">
+    
+    <style>
+        /* Fleet dashboard specific styles */
+        .dashboard-layout {
+            display: flex;
+            min-height: 100vh;
+            background-color: var(--color-background-light);
+        }
+        
+        .sidebar {
+            width: 280px;
+            background: var(--color-background);
+            border-right: 1px solid var(--color-border);
+            flex-shrink: 0;
+        }
+        
+        .sidebar-header {
+            padding: var(--space-6);
+            border-bottom: 1px solid var(--color-border);
+        }
+        
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-primary);
+            text-decoration: none;
+        }
+        
+        .sidebar-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: var(--font-weight-bold);
+        }
+        
+        .main-content {
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .top-nav {
+            background: var(--color-background);
+            border-bottom: 1px solid var(--color-border);
+            padding: var(--space-4) var(--space-6);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+        }
+        
+        .breadcrumb-separator {
+            color: var(--color-neutral-400);
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+        }
+        
+        .notifications-btn {
+            position: relative;
+            background: none;
+            border: none;
+            padding: var(--space-2);
+            border-radius: var(--radius-base);
+            cursor: pointer;
+            color: var(--color-text-secondary);
+            transition: all var(--transition-fast);
+        }
+        
+        .notifications-btn:hover {
+            background: var(--color-neutral-100);
+            color: var(--color-primary);
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--color-secondary);
+            color: white;
+            border-radius: var(--radius-full);
+            width: 18px;
+            height: 18px;
+            font-size: var(--font-size-xs);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: var(--font-weight-medium);
+        }
+        
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-full);
+            background: linear-gradient(135deg, var(--color-warning) 0%, var(--color-warning-light) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: var(--font-weight-semibold);
+            cursor: pointer;
+        }
+        
+        .dashboard-content {
+            flex: 1;
+            padding: var(--space-6);
+            overflow-y: auto;
+        }
+        
+        .dashboard-header {
+            margin-bottom: var(--space-8);
+        }
+        
+        .dashboard-title {
+            font-size: var(--font-size-3xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-2);
+        }
+        
+        .dashboard-subtitle {
+            color: var(--color-text-secondary);
+            font-size: var(--font-size-lg);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-6);
+            margin-bottom: var(--space-8);
+        }
+        
+        .stat-card {
+            background: var(--color-background);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            transition: all var(--transition-base);
+        }
+        
+        .stat-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+        
+        .stat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--space-4);
+        }
+        
+        .stat-title {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            color: var(--color-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-lg);
+        }
+        
+        .stat-icon.primary {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+            color: white;
+        }
+        
+        .stat-icon.success {
+            background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-light) 100%);
+            color: white;
+        }
+        
+        .stat-icon.warning {
+            background: linear-gradient(135deg, var(--color-warning) 0%, var(--color-warning-light) 100%);
+            color: white;
+        }
+        
+        .stat-icon.danger {
+            background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-secondary-light) 100%);
+            color: white;
+        }
+        
+        .stat-value {
+            font-size: var(--font-size-3xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-2);
+        }
+        
+        .stat-change {
+            display: flex;
+            align-items: center;
+            gap: var(--space-1);
+            font-size: var(--font-size-sm);
+        }
+        
+        .stat-change.positive {
+            color: var(--color-accent);
+        }
+        
+        .stat-change.negative {
+            color: var(--color-secondary);
+        }
+        
+        .stat-change-icon {
+            font-size: var(--font-size-xs);
+        }
+        
+        .quick-actions {
+            margin-bottom: var(--space-8);
+        }
+        
+        .section-title {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-4);
+        }
+        
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-4);
+        }
+        
+        .action-card {
+            background: var(--color-background);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-5);
+            text-align: center;
+            transition: all var(--transition-base);
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .action-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+            text-decoration: none;
+        }
+        
+        .action-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: var(--radius-xl);
+            background: var(--color-neutral-100);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-2xl);
+            margin: 0 auto var(--space-3);
+        }
+        
+        .action-title {
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-1);
+        }
+        
+        .action-description {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: var(--space-6);
+        }
+        
+        .fleet-vehicles {
+            background: var(--color-background);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+        
+        .card-header {
+            padding: var(--space-6);
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .vehicles-grid {
+            padding: var(--space-6);
+            display: grid;
+            gap: var(--space-4);
+        }
+        
+        .vehicle-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+            padding: var(--space-4);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            transition: all var(--transition-base);
+        }
+        
+        .vehicle-item:hover {
+            background: var(--color-background-light);
+            border-color: var(--color-primary-light);
+        }
+        
+        .vehicle-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-xl);
+            background: var(--color-neutral-100);
+        }
+        
+        .vehicle-info {
+            flex: 1;
+        }
+        
+        .vehicle-id {
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-1);
+        }
+        
+        .vehicle-details {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+        }
+        
+        .vehicle-status {
+            text-align: right;
+        }
+        
+        .vehicle-location {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-1);
+        }
+        
+        .earnings-panel {
+            background: var(--color-background);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+        }
+        
+        .earnings-item {
+            padding: var(--space-4);
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .earnings-item:last-child {
+            border-bottom: none;
+        }
+        
+        .earnings-label {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+        }
+        
+        .earnings-value {
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+        }
+        
+        .earnings-change {
+            font-size: var(--font-size-xs);
+            color: var(--color-accent);
+        }
+        
+        /* Mobile responsiveness */
+        @media (max-width: 1024px) {
+            .dashboard-layout {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+            }
+            
+            .sidebar-nav {
+                display: flex;
+                overflow-x: auto;
+                padding: var(--space-2) var(--space-4);
+            }
+            
+            .sidebar-nav-item {
+                margin-bottom: 0;
+                margin-right: var(--space-2);
+            }
+            
+            .sidebar-nav-link {
+                white-space: nowrap;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+            
+            .actions-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .dashboard-content {
+                padding: var(--space-4);
+            }
+            
+            .top-nav {
+                padding: var(--space-3) var(--space-4);
+            }
+            
+            .user-menu {
+                gap: var(--space-2);
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .actions-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .vehicle-item {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .vehicle-status {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Skip link for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <div class="dashboard-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" role="navigation" aria-label="Main navigation">
+            <div class="sidebar-header">
+                <a href="06-home-page-european.html" class="sidebar-logo">
+                    <div class="sidebar-logo-icon">C</div>
+                    <span>Circling Logistics</span>
+                </a>
+            </div>
+            
+            <nav class="sidebar-nav" role="navigation">
+                <ul class="sidebar-nav">
+                    <li class="sidebar-nav-item">
+                        <a href="#" class="sidebar-nav-link active">
+                            <span>📊</span>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="#" class="sidebar-nav-link">
+                            <span>🚛</span>
+                            <span>Fleet</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="10-bidding-european.html" class="sidebar-nav-link">
+                            <span>🎯</span>
+                            <span>Bidding</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="#" class="sidebar-nav-link">
+                            <span>🗺️</span>
+                            <span>Routes</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="#" class="sidebar-nav-link">
+                            <span>💰</span>
+                            <span>Earnings</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="#" class="sidebar-nav-link">
+                            <span>👥</span>
+                            <span>Drivers</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="#" class="sidebar-nav-link">
+                            <span>⚙️</span>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Navigation -->
+            <header class="top-nav">
+                <nav class="breadcrumb" aria-label="Breadcrumb">
+                    <span>Fleet Owner</span>
+                    <span class="breadcrumb-separator">/</span>
+                    <span>Dashboard</span>
+                </nav>
+                
+                <div class="user-menu">
+                    <button class="notifications-btn" aria-label="Notifications">
+                        <span>🔔</span>
+                        <span class="notification-badge">5</span>
+                    </button>
+                    
+                    <div class="user-avatar" title="Maria Schmidt - Fleet Owner">
+                        MS
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Dashboard Content -->
+            <div class="dashboard-content" id="main-content">
+                <!-- Dashboard Header -->
+                <div class="dashboard-header">
+                    <h1 class="dashboard-title">Fleet Operations Overview 🚛</h1>
+                    <p class="dashboard-subtitle">Monitor your vehicles, drivers, and earnings in real-time</p>
+                </div>
+                
+                <!-- Statistics Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-title">Active Vehicles</div>
+                            <div class="stat-icon primary">🚛</div>
+                        </div>
+                        <div class="stat-value">42</div>
+                        <div class="stat-change positive">
+                            <span class="stat-change-icon">↗</span>
+                            <span>85% utilization rate</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-title">On Route</div>
+                            <div class="stat-icon warning">🗺️</div>
+                        </div>
+                        <div class="stat-value">36</div>
+                        <div class="stat-change positive">
+                            <span class="stat-change-icon">↗</span>
+                            <span>+8 from yesterday</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-title">Jobs Completed</div>
+                            <div class="stat-icon success">✅</div>
+                        </div>
+                        <div class="stat-value">284</div>
+                        <div class="stat-change positive">
+                            <span class="stat-change-icon">↗</span>
+                            <span>+15% this week</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-title">Monthly Revenue</div>
+                            <div class="stat-icon success">💰</div>
+                        </div>
+                        <div class="stat-value">€89,350</div>
+                        <div class="stat-change positive">
+                            <span class="stat-change-icon">↗</span>
+                            <span>+22% from last month</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Quick Actions -->
+                <section class="quick-actions">
+                    <h2 class="section-title">Quick Actions</h2>
+                    <div class="actions-grid">
+                        <a href="10-bidding-european.html" class="action-card">
+                            <div class="action-icon">🎯</div>
+                            <div class="action-title">View Bids</div>
+                            <div class="action-description">Check available jobs</div>
+                        </a>
+                        
+                        <a href="#" class="action-card">
+                            <div class="action-icon">🚛</div>
+                            <div class="action-title">Dispatch Vehicle</div>
+                            <div class="action-description">Assign new route</div>
+                        </a>
+                        
+                        <a href="#" class="action-card">
+                            <div class="action-icon">👥</div>
+                            <div class="action-title">Manage Drivers</div>
+                            <div class="action-description">View driver status</div>
+                        </a>
+                        
+                        <a href="#" class="action-card">
+                            <div class="action-icon">📊</div>
+                            <div class="action-title">Performance</div>
+                            <div class="action-description">View analytics</div>
+                        </a>
+                    </div>
+                </section>
+                
+                <!-- Dashboard Grid -->
+                <div class="dashboard-grid">
+                    <!-- Fleet Vehicles -->
+                    <section class="fleet-vehicles">
+                        <div class="card-header">
+                            <h3 class="section-title mb-0">Active Vehicles</h3>
+                            <a href="#" class="btn btn-ghost btn-sm">View All Fleet</a>
+                        </div>
+                        
+                        <div class="vehicles-grid">
+                            <div class="vehicle-item">
+                                <div class="vehicle-icon">🚛</div>
+                                <div class="vehicle-info">
+                                    <div class="vehicle-id">EU-TRK-001</div>
+                                    <div class="vehicle-details">MAN TGX 18.480 • Driver: Hans Mueller</div>
+                                </div>
+                                <div class="vehicle-status">
+                                    <div class="vehicle-location">Hamburg → Munich</div>
+                                    <span class="badge badge-success">On Route</span>
+                                </div>
+                            </div>
+                            
+                            <div class="vehicle-item">
+                                <div class="vehicle-icon">🚛</div>
+                                <div class="vehicle-info">
+                                    <div class="vehicle-id">EU-TRK-002</div>
+                                    <div class="vehicle-details">Volvo FH16 • Driver: Klaus Weber</div>
+                                </div>
+                                <div class="vehicle-status">
+                                    <div class="vehicle-location">Amsterdam Depot</div>
+                                    <span class="badge badge-warning">Loading</span>
+                                </div>
+                            </div>
+                            
+                            <div class="vehicle-item">
+                                <div class="vehicle-icon">🚛</div>
+                                <div class="vehicle-info">
+                                    <div class="vehicle-id">EU-TRK-003</div>
+                                    <div class="vehicle-details">Scania R 450 • Driver: Erik Larsen</div>
+                                </div>
+                                <div class="vehicle-status">
+                                    <div class="vehicle-location">Prague → Vienna</div>
+                                    <span class="badge badge-success">On Route</span>
+                                </div>
+                            </div>
+                            
+                            <div class="vehicle-item">
+                                <div class="vehicle-icon">🚛</div>
+                                <div class="vehicle-info">
+                                    <div class="vehicle-id">EU-TRK-004</div>
+                                    <div class="vehicle-details">Mercedes Actros • Driver: Pierre Dubois</div>
+                                </div>
+                                <div class="vehicle-status">
+                                    <div class="vehicle-location">Paris Service Center</div>
+                                    <span class="badge badge-danger">Maintenance</span>
+                                </div>
+                            </div>
+                            
+                            <div class="vehicle-item">
+                                <div class="vehicle-icon">🚛</div>
+                                <div class="vehicle-info">
+                                    <div class="vehicle-id">EU-TRK-005</div>
+                                    <div class="vehicle-details">DAF XF • Driver: Giovanni Rossi</div>
+                                </div>
+                                <div class="vehicle-status">
+                                    <div class="vehicle-location">Milan → Rome</div>
+                                    <span class="badge badge-success">On Route</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- Earnings Panel -->
+                    <section class="earnings-panel">
+                        <div class="card-header">
+                            <h3 class="section-title mb-0">Earnings Summary</h3>
+                        </div>
+                        
+                        <div>
+                            <div class="earnings-item">
+                                <div>
+                                    <div class="earnings-label">Today's Revenue</div>
+                                    <div class="earnings-change">+12% vs yesterday</div>
+                                </div>
+                                <div class="earnings-value">€3,450</div>
+                            </div>
+                            
+                            <div class="earnings-item">
+                                <div>
+                                    <div class="earnings-label">This Week</div>
+                                    <div class="earnings-change">+8% vs last week</div>
+                                </div>
+                                <div class="earnings-value">€18,920</div>
+                            </div>
+                            
+                            <div class="earnings-item">
+                                <div>
+                                    <div class="earnings-label">This Month</div>
+                                    <div class="earnings-change">+22% vs last month</div>
+                                </div>
+                                <div class="earnings-value">€89,350</div>
+                            </div>
+                            
+                            <div class="earnings-item">
+                                <div>
+                                    <div class="earnings-label">Pending Payments</div>
+                                    <div class="earnings-change">7 invoices</div>
+                                </div>
+                                <div class="earnings-value">€12,650</div>
+                            </div>
+                            
+                            <div class="earnings-item">
+                                <div>
+                                    <div class="earnings-label">Fuel Costs</div>
+                                    <div class="earnings-change">-5% optimization</div>
+                                </div>
+                                <div class="earnings-value">€15,840</div>
+                            </div>
+                            
+                            <div class="earnings-item">
+                                <div>
+                                    <div class="earnings-label">Net Profit Margin</div>
+                                    <div class="earnings-change">+3% improvement</div>
+                                </div>
+                                <div class="earnings-value">18.5%</div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        // Fleet dashboard functionality
+        class FleetOwnerDashboard {
+            constructor() {
+                this.init();
+            }
+            
+            init() {
+                // Initialize components
+                this.initNotifications();
+                this.initRealtimeUpdates();
+                this.initUserMenu();
+                this.initVehicleTracking();
+                
+                // Check authentication
+                this.checkAuth();
+            }
+            
+            checkAuth() {
+                const isAuthenticated = sessionStorage.getItem('isAuthenticated');
+                const userRole = sessionStorage.getItem('userRole');
+                
+                if (!isAuthenticated || userRole !== 'fleet-owner') {
+                    // Redirect to login if not authenticated or wrong role
+                    window.location.href = '01-login-european.html';
+                    return;
+                }
+                
+                // Set user info in the UI
+                this.updateUserInfo();
+            }
+            
+            updateUserInfo() {
+                // In a real app, this would fetch user data from an API
+                const userAvatar = document.querySelector('.user-avatar');
+                if (userAvatar) {
+                    userAvatar.textContent = 'MS';
+                    userAvatar.title = 'Maria Schmidt - Fleet Owner';
+                }
+            }
+            
+            initNotifications() {
+                const notificationBtn = document.querySelector('.notifications-btn');
+                if (notificationBtn) {
+                    notificationBtn.addEventListener('click', this.showNotifications.bind(this));
+                }
+            }
+            
+            showNotifications() {
+                // Fleet-specific notifications
+                const notifications = [
+                    'Vehicle EU-TRK-004 requires maintenance',
+                    'New job opportunity available on Hamburg-Berlin route',
+                    'Driver Hans Mueller completed delivery',
+                    'Fuel prices updated for route optimization',
+                    'Weekly performance report ready'
+                ];
+                
+                alert('Fleet Notifications:\n\n' + notifications.join('\n'));
+            }
+            
+            initUserMenu() {
+                const userAvatar = document.querySelector('.user-avatar');
+                if (userAvatar) {
+                    userAvatar.addEventListener('click', this.showUserMenu.bind(this));
+                }
+            }
+            
+            showUserMenu() {
+                const options = ['Fleet Settings', 'Driver Management', 'Vehicle Maintenance', 'Sign Out'];
+                const choice = prompt('Fleet Menu:\n\n' + options.map((opt, i) => `${i + 1}. ${opt}`).join('\n') + '\n\nEnter option number:');
+                
+                if (choice === '4') {
+                    this.signOut();
+                } else if (choice && choice !== '4') {
+                    alert('This feature will be available in the full implementation.');
+                }
+            }
+            
+            signOut() {
+                sessionStorage.removeItem('isAuthenticated');
+                sessionStorage.removeItem('userRole');
+                window.location.href = '01-login-european.html';
+            }
+            
+            initRealtimeUpdates() {
+                // Simulate real-time updates for fleet dashboard
+                setInterval(() => {
+                    this.updateVehicleStatus();
+                    this.updateEarnings();
+                }, 45000); // Update every 45 seconds
+            }
+            
+            updateVehicleStatus() {
+                // Simulate vehicle status changes
+                const vehicleItems = document.querySelectorAll('.vehicle-item');
+                vehicleItems.forEach(item => {
+                    if (Math.random() > 0.9) {
+                        const badge = item.querySelector('.badge');
+                        const statuses = ['On Route', 'Loading', 'Delivered', 'Available'];
+                        const badgeClasses = ['badge-success', 'badge-warning', 'badge-primary', 'badge-info'];
+                        
+                        const randomIndex = Math.floor(Math.random() * statuses.length);
+                        badge.textContent = statuses[randomIndex];
+                        badge.className = `badge ${badgeClasses[randomIndex]}`;
+                    }
+                });
+            }
+            
+            updateEarnings() {
+                // Simulate earnings updates
+                const earningsValues = document.querySelectorAll('.earnings-value');
+                earningsValues.forEach(value => {
+                    if (Math.random() > 0.85 && value.textContent.includes('€')) {
+                        const currentValue = parseFloat(value.textContent.replace(/[€,]/g, ''));
+                        const change = (Math.random() - 0.5) * 100; // Random change up to ±50
+                        const newValue = Math.max(0, currentValue + change);
+                        value.textContent = `€${newValue.toLocaleString()}`;
+                    }
+                });
+            }
+            
+            initVehicleTracking() {
+                // Add click handlers for vehicle items
+                const vehicleItems = document.querySelectorAll('.vehicle-item');
+                vehicleItems.forEach(item => {
+                    item.addEventListener('click', () => {
+                        const vehicleId = item.querySelector('.vehicle-id').textContent;
+                        this.showVehicleDetails(vehicleId);
+                    });
+                    
+                    // Make it clear these are clickable
+                    item.style.cursor = 'pointer';
+                });
+            }
+            
+            showVehicleDetails(vehicleId) {
+                // Simple vehicle details popup
+                const details = {
+                    'EU-TRK-001': {
+                        location: 'Currently on A9 highway, 45km from Munich',
+                        driver: 'Hans Mueller (4.8★ rating)',
+                        cargo: 'Electronics shipment to BMW facility',
+                        eta: 'Expected arrival: 14:30'
+                    },
+                    'EU-TRK-002': {
+                        location: 'Amsterdam Central Depot - Loading Bay 3',
+                        driver: 'Klaus Weber (4.9★ rating)',
+                        cargo: 'Textile goods for Berlin delivery',
+                        eta: 'Departure scheduled: 16:00'
+                    }
+                };
+                
+                const info = details[vehicleId] || {
+                    location: 'Location tracking in progress...',
+                    driver: 'Driver information loading...',
+                    cargo: 'Cargo details loading...',
+                    eta: 'ETA calculating...'
+                };
+                
+                alert(`Vehicle Details: ${vehicleId}\n\n` +
+                      `Location: ${info.location}\n` +
+                      `Driver: ${info.driver}\n` +
+                      `Cargo: ${info.cargo}\n` +
+                      `${info.eta}`);
+            }
+        }
+        
+        // Initialize dashboard when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new FleetOwnerDashboard();
+        });
+        
+        // Accessibility enhancements
+        document.addEventListener('keydown', (e) => {
+            // Escape key to close any open modals/menus
+            if (e.key === 'Escape') {
+                // Close any open elements
+            }
+            
+            // Quick navigation shortcuts for fleet operations
+            if (e.ctrlKey || e.metaKey) {
+                switch (e.key) {
+                    case '1':
+                        e.preventDefault();
+                        window.location.href = '#'; // Dashboard
+                        break;
+                    case '2':
+                        e.preventDefault();
+                        alert('Fleet management feature shortcut');
+                        break;
+                    case '3':
+                        e.preventDefault();
+                        window.location.href = '10-bidding-european.html';
+                        break;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
