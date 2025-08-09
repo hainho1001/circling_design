@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Navigation System - Circling Logistics</title>
+    <link rel="stylesheet" href="css/design-system-european.css">
+</head>
+<body>
+    <div style="padding: 2rem; max-width: 800px; margin: 0 auto;">
+        <h1>Navigation System Test</h1>
+        
+        <div class="bg-white rounded shadow p-6 mb-6">
+            <h2>Test Controls</h2>
+            <div class="flex gap-4 mb-4">
+                <button onclick="testRole('shipper')" class="btn btn-primary">Test Shipper Role</button>
+                <button onclick="testRole('carrier')" class="btn btn-secondary">Test Carrier Role</button>
+                <button onclick="testRole('admin')" class="btn btn-secondary">Test Admin Role</button>
+            </div>
+            
+            <div class="mb-4">
+                <label>Current Role: <span id="current-role" class="font-bold">-</span></label>
+            </div>
+            
+            <div class="mb-4">
+                <label>Current Page: <span id="current-page" class="font-bold">-</span></label>
+            </div>
+        </div>
+
+        <div class="bg-white rounded shadow p-6 mb-6">
+            <h2>Navigation Test</h2>
+            <div id="nav-test-area">
+                <!-- Navigation will be inserted here -->
+            </div>
+        </div>
+
+        <div class="bg-white rounded shadow p-6 mb-6">
+            <h2>Breadcrumb Test</h2>
+            <div id="breadcrumb-test-area">
+                <!-- Breadcrumb will be inserted here -->
+            </div>
+        </div>
+
+        <div class="bg-white rounded shadow p-6">
+            <h2>Test Results</h2>
+            <ul id="test-results" class="space-y-2">
+                <!-- Test results will be added here -->
+            </ul>
+        </div>
+    </div>
+
+    <script src="js/navigation.js"></script>
+    <script>
+        let testResults = [];
+
+        function addTestResult(test, status, message) {
+            const result = { test, status, message, timestamp: new Date().toISOString() };
+            testResults.push(result);
+            updateTestResults();
+        }
+
+        function updateTestResults() {
+            const container = document.getElementById('test-results');
+            container.innerHTML = testResults.map(result => {
+                const statusClass = result.status === 'pass' ? 'text-green-600' : 'text-red-600';
+                const icon = result.status === 'pass' ? '✅' : '❌';
+                return `
+                    <li class="flex items-center gap-2">
+                        <span>${icon}</span>
+                        <span class="${statusClass}">${result.test}:</span>
+                        <span>${result.message}</span>
+                    </li>
+                `;
+            }).join('');
+        }
+
+        function testRole(role) {
+            addTestResult('Role Change', 'info', `Testing role: ${role}`);
+            
+            // Test role change
+            try {
+                if (window.circlingNav) {
+                    window.circlingNav.updateNavigationForRole(role);
+                    addTestResult('Role Change', 'pass', `Successfully changed to ${role}`);
+                    
+                    // Update display
+                    document.getElementById('current-role').textContent = role;
+                    
+                    // Test navigation config
+                    testNavigationConfig(role);
+                    testBreadcrumbConfig(role);
+                } else {
+                    addTestResult('Role Change', 'fail', 'CirclingNavigation not initialized');
+                }
+            } catch (error) {
+                addTestResult('Role Change', 'fail', `Error: ${error.message}`);
+            }
+        }
+
+        function testNavigationConfig(role) {
+            try {
+                const navConfig = window.circlingNav.navigationConfig;
+                
+                if (navConfig && navConfig.length > 0) {
+                    addTestResult('Navigation Config', 'pass', `${navConfig.length} menu items for ${role}`);
+                    
+                    // Test specific role requirements
+                    switch (role) {
+                        case 'shipper':
+                            const hasCreateOrder = navConfig.some(item => item.id === 'create-order');
+                            addTestResult('Shipper Navigation', hasCreateOrder ? 'pass' : 'fail', 
+                                'Create order link ' + (hasCreateOrder ? 'found' : 'missing'));
+                            break;
+                        case 'carrier':
+                            const hasVehicles = navConfig.some(item => item.id === 'vehicles');
+                            addTestResult('Carrier Navigation', hasVehicles ? 'pass' : 'fail', 
+                                'Vehicle management link ' + (hasVehicles ? 'found' : 'missing'));
+                            break;
+                        case 'admin':
+                            const hasUsers = navConfig.some(item => item.id === 'users');
+                            addTestResult('Admin Navigation', hasUsers ? 'pass' : 'fail', 
+                                'User management link ' + (hasUsers ? 'found' : 'missing'));
+                            break;
+                    }
+                } else {
+                    addTestResult('Navigation Config', 'fail', 'No navigation items found');
+                }
+            } catch (error) {
+                addTestResult('Navigation Config', 'fail', `Error: ${error.message}`);
+            }
+        }
+
+        function testBreadcrumbConfig(role) {
+            try {
+                const breadcrumbConfig = window.circlingNav.breadcrumbConfig;
+                
+                if (breadcrumbConfig) {
+                    const homeConfig = breadcrumbConfig['home'];
+                    addTestResult('Breadcrumb Config', homeConfig ? 'pass' : 'fail', 
+                        'Home breadcrumb ' + (homeConfig ? 'configured' : 'missing'));
+                } else {
+                    addTestResult('Breadcrumb Config', 'fail', 'Breadcrumb config not found');
+                }
+            } catch (error) {
+                addTestResult('Breadcrumb Config', 'fail', `Error: ${error.message}`);
+            }
+        }
+
+        function testMobileNavigation() {
+            try {
+                const navToggle = document.querySelector('.nav-toggle');
+                const navMenu = document.querySelector('.nav-menu');
+                
+                if (navToggle && navMenu) {
+                    // Simulate mobile toggle click
+                    navToggle.click();
+                    const isVisible = navMenu.classList.contains('show');
+                    addTestResult('Mobile Navigation', isVisible ? 'pass' : 'fail', 
+                        'Mobile menu toggle ' + (isVisible ? 'working' : 'not working'));
+                    
+                    // Hide menu again
+                    if (isVisible) {
+                        navToggle.click();
+                    }
+                } else {
+                    addTestResult('Mobile Navigation', 'fail', 'Mobile navigation elements not found');
+                }
+            } catch (error) {
+                addTestResult('Mobile Navigation', 'fail', `Error: ${error.message}`);
+            }
+        }
+
+        // Initialize tests
+        document.addEventListener('DOMContentLoaded', () => {
+            addTestResult('Initialization', 'info', 'Starting navigation system tests');
+            
+            if (window.circlingNav) {
+                addTestResult('Navigation Init', 'pass', 'CirclingNavigation initialized successfully');
+                document.getElementById('current-role').textContent = window.circlingNav.currentRole;
+                document.getElementById('current-page').textContent = window.circlingNav.currentPage;
+                
+                // Run initial tests
+                setTimeout(() => {
+                    testMobileNavigation();
+                    testRole('shipper'); // Start with shipper role test
+                }, 1000);
+            } else {
+                addTestResult('Navigation Init', 'fail', 'CirclingNavigation failed to initialize');
+            }
+        });
+    </script>
+
+    <style>
+        .space-y-2 > :not([hidden]) ~ :not([hidden]) {
+            margin-top: 0.5rem;
+        }
+    </style>
+</body>
+</html>

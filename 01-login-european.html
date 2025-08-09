@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập - Circling Logistics</title>
+    <link rel="stylesheet" href="css/design-system-european.css">
+</head>
+<body class="bg-gray-100">
+    <!-- Simple Header for Login -->
+    <header class="bg-white shadow-sm">
+        <div class="container py-4">
+            <div class="flex items-center justify-between">
+                <h1 class="text-2xl font-bold text-primary-color">Circling Logistics</h1>
+                <p class="text-gray-600">Hệ thống vận tải thông minh</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Login Content -->
+    <main class="flex items-center justify-center min-h-screen py-12">
+        <div class="max-w-md w-full space-y-8">
+            <div class="bg-white rounded-lg shadow-md p-8">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-gray-900">Đăng nhập</h2>
+                    <p class="mt-2 text-gray-600">Chào mừng bạn quay trở lại</p>
+                </div>
+
+                <form class="space-y-6" onsubmit="handleLogin(event)">
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700">
+                            Email
+                        </label>
+                        <input id="email" name="email" type="email" autocomplete="email" required
+                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm 
+                                      placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                               placeholder="your@email.com">
+                    </div>
+
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700">
+                            Mật khẩu
+                        </label>
+                        <input id="password" name="password" type="password" autocomplete="current-password" required
+                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm 
+                                      placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                               placeholder="••••••••">
+                    </div>
+
+                    <div>
+                        <label for="role" class="block text-sm font-medium text-gray-700">
+                            Vai trò
+                        </label>
+                        <select id="role" name="role" required
+                                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm 
+                                       focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                            <option value="">Chọn vai trò của bạn</option>
+                            <option value="shipper">Chủ hàng</option>
+                            <option value="carrier">Chủ xe</option>
+                            <option value="admin">Quản trị viên</option>
+                        </select>
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <input id="remember-me" name="remember-me" type="checkbox"
+                                   class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                            <label for="remember-me" class="ml-2 block text-sm text-gray-900">
+                                Ghi nhớ đăng nhập
+                            </label>
+                        </div>
+
+                        <div class="text-sm">
+                            <a href="#" class="font-medium text-blue-600 hover:text-blue-500">
+                                Quên mật khẩu?
+                            </a>
+                        </div>
+                    </div>
+
+                    <div>
+                        <button type="submit" 
+                                class="group relative w-full flex justify-center py-2 px-4 border border-transparent 
+                                       text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 
+                                       focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                                🔒
+                            </span>
+                            Đăng nhập
+                        </button>
+                    </div>
+
+                    <div class="mt-6">
+                        <div class="relative">
+                            <div class="absolute inset-0 flex items-center">
+                                <div class="w-full border-t border-gray-300"></div>
+                            </div>
+                            <div class="relative flex justify-center text-sm">
+                                <span class="px-2 bg-white text-gray-500">Hoặc</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-6">
+                            <p class="text-center text-sm text-gray-600">
+                                Chưa có tài khoản?
+                                <a href="#" class="font-medium text-blue-600 hover:text-blue-500">
+                                    Đăng ký ngay
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Demo Login Buttons -->
+                <div class="mt-8 border-t pt-6">
+                    <p class="text-center text-sm text-gray-600 mb-4">Demo đăng nhập nhanh:</p>
+                    <div class="space-y-2">
+                        <button onclick="quickLogin('shipper')" 
+                                class="w-full btn btn-secondary">
+                            🏭 Đăng nhập với vai trò Chủ hàng
+                        </button>
+                        <button onclick="quickLogin('carrier')" 
+                                class="w-full btn btn-secondary">
+                            🚛 Đăng nhập với vai trò Chủ xe
+                        </button>
+                        <button onclick="quickLogin('admin')" 
+                                class="w-full btn btn-secondary">
+                            👑 Đăng nhập với vai trò Admin
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature Highlights -->
+            <div class="bg-white rounded-lg shadow-md p-6 mt-6">
+                <h3 class="text-lg font-semibold mb-4">Tính năng nổi bật</h3>
+                <div class="space-y-3">
+                    <div class="flex items-center space-x-3">
+                        <span class="text-green-500">✓</span>
+                        <span class="text-sm">Quản lý đơn hàng thông minh</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <span class="text-green-500">✓</span>
+                        <span class="text-sm">Hệ thống đấu giá tự động</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <span class="text-green-500">✓</span>
+                        <span class="text-sm">Theo dõi vận chuyển real-time</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <span class="text-green-500">✓</span>
+                        <span class="text-sm">Giao diện responsive, thân thiện</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script>
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(event.target);
+            const email = formData.get('email');
+            const password = formData.get('password');
+            const role = formData.get('role');
+
+            if (!email || !password || !role) {
+                alert('Vui lòng điền đầy đủ thông tin');
+                return;
+            }
+
+            // Simulate login process
+            showLoginProcess(role);
+        }
+
+        function quickLogin(role) {
+            showLoginProcess(role);
+        }
+
+        function showLoginProcess(role) {
+            // Show loading
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = 'Đang đăng nhập...';
+            button.disabled = true;
+
+            // Simulate authentication delay
+            setTimeout(() => {
+                // Set role and redirect to appropriate dashboard
+                localStorage.setItem('userRole', role);
+                localStorage.setItem('isLoggedIn', 'true');
+                
+                // Redirect based on role
+                const redirectUrls = {
+                    'shipper': '02-dashboard-european.html',
+                    'carrier': '03-dashboard-fleet-european.html', 
+                    'admin': '02-dashboard-european.html'
+                };
+
+                const redirectUrl = redirectUrls[role] || '06-home-page-european.html';
+                window.location.href = `${redirectUrl}?role=${role}`;
+            }, 1500);
+        }
+
+        // Check if already logged in
+        document.addEventListener('DOMContentLoaded', () => {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            const userRole = localStorage.getItem('userRole');
+            
+            if (isLoggedIn && userRole) {
+                // Show option to continue or logout
+                const continueDiv = document.createElement('div');
+                continueDiv.className = 'bg-blue-50 border border-blue-200 rounded-md p-4 mb-4';
+                continueDiv.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-blue-700">
+                                Bạn đã đăng nhập với vai trò: <strong>${getRoleDisplayName(userRole)}</strong>
+                            </p>
+                        </div>
+                        <div class="space-x-2">
+                            <button onclick="continueSession('${userRole}')" class="btn btn-sm btn-primary">
+                                Tiếp tục
+                            </button>
+                            <button onclick="logout()" class="btn btn-sm btn-secondary">
+                                Đăng xuất
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                const form = document.querySelector('form');
+                form.parentNode.insertBefore(continueDiv, form);
+            }
+        });
+
+        function continueSession(role) {
+            const redirectUrls = {
+                'shipper': '02-dashboard-european.html',
+                'carrier': '03-dashboard-fleet-european.html',
+                'admin': '02-dashboard-european.html'
+            };
+            
+            const redirectUrl = redirectUrls[role] || '06-home-page-european.html';
+            window.location.href = `${redirectUrl}?role=${role}`;
+        }
+
+        function logout() {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('userRole');
+            location.reload();
+        }
+
+        function getRoleDisplayName(role) {
+            const roleNames = {
+                'shipper': 'Chủ hàng',
+                'carrier': 'Chủ xe',
+                'admin': 'Quản trị viên'
+            };
+            return roleNames[role] || role;
+        }
+    </script>
+
+    <style>
+        .max-w-md {
+            max-width: 28rem;
+        }
+        
+        .w-full {
+            width: 100%;
+        }
+        
+        .min-h-screen {
+            min-height: 100vh;
+        }
+        
+        .space-y-8 > :not([hidden]) ~ :not([hidden]) {
+            margin-top: 2rem;
+        }
+        
+        .space-y-6 > :not([hidden]) ~ :not([hidden]) {
+            margin-top: 1.5rem;
+        }
+        
+        .space-y-3 > :not([hidden]) ~ :not([hidden]) {
+            margin-top: 0.75rem;
+        }
+        
+        .space-y-2 > :not([hidden]) ~ :not([hidden]) {
+            margin-top: 0.5rem;
+        }
+        
+        .space-x-3 > :not([hidden]) ~ :not([hidden]) {
+            margin-left: 0.75rem;
+        }
+        
+        .space-x-2 > :not([hidden]) ~ :not([hidden]) {
+            margin-left: 0.5rem;
+        }
+        
+        input, select {
+            width: 100%;
+        }
+        
+        .btn-sm {
+            padding: var(--space-1) var(--space-2);
+            font-size: var(--font-size-xs);
+        }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+    </style>
+</body>
+</html>
