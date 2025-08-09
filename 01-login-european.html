@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập - Circling Logistics</title>
+    <link rel="stylesheet" href="css/design-system-european.css">
+    <link rel="stylesheet" href="css/navigation.css">
+    <style>
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-dark) 100%);
+            padding: var(--space-4);
+        }
+
+        .login-card {
+            background: var(--neutral-white);
+            border-radius: var(--radius-xl);
+            padding: var(--space-8);
+            box-shadow: var(--shadow-xl);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: var(--space-8);
+        }
+
+        .login-logo {
+            width: 64px;
+            height: 64px;
+            background-color: var(--primary-blue);
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--neutral-white);
+            font-weight: bold;
+            font-size: var(--text-xl);
+            margin: 0 auto var(--space-4);
+        }
+
+        .role-selection {
+            margin-bottom: var(--space-6);
+        }
+
+        .role-buttons {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-3);
+        }
+
+        .role-btn {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            padding: var(--space-4);
+            border: 2px solid var(--neutral-gray-200);
+            border-radius: var(--radius-lg);
+            background: var(--neutral-white);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            text-align: left;
+            width: 100%;
+        }
+
+        .role-btn:hover {
+            border-color: var(--primary-blue);
+            background: var(--neutral-gray-50);
+        }
+
+        .role-btn.selected {
+            border-color: var(--primary-blue);
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .role-icon {
+            font-size: var(--text-2xl);
+        }
+
+        .role-info h4 {
+            margin: 0 0 var(--space-1);
+            font-size: var(--text-base);
+            color: var(--neutral-gray-900);
+        }
+
+        .role-info p {
+            margin: 0;
+            font-size: var(--text-sm);
+            color: var(--neutral-gray-600);
+        }
+
+        .login-form {
+            margin-bottom: var(--space-6);
+        }
+
+        .demo-info {
+            background: var(--neutral-gray-50);
+            border-radius: var(--radius-md);
+            padding: var(--space-4);
+            margin-top: var(--space-6);
+            text-align: center;
+        }
+
+        .demo-info p {
+            margin: 0 0 var(--space-2);
+            font-size: var(--text-sm);
+            color: var(--neutral-gray-600);
+        }
+
+        .demo-buttons {
+            display: flex;
+            gap: var(--space-2);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .demo-btn {
+            padding: var(--space-1) var(--space-3);
+            font-size: var(--text-xs);
+            border-radius: var(--radius);
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="login-logo">CL</div>
+                <h1>Đăng nhập</h1>
+                <p class="text-secondary">Hệ thống quản lý logistics</p>
+            </div>
+
+            <form class="login-form" id="loginForm">
+                <div class="role-selection">
+                    <label class="form-label">Chọn vai trò của bạn:</label>
+                    <div class="role-buttons">
+                        <button type="button" class="role-btn" data-role="cargo_owner">
+                            <span class="role-icon">📦</span>
+                            <div class="role-info">
+                                <h4>Chủ hàng</h4>
+                                <p>Tạo và quản lý đơn hàng vận chuyển</p>
+                            </div>
+                        </button>
+                        
+                        <button type="button" class="role-btn" data-role="fleet_owner">
+                            <span class="role-icon">🚛</span>
+                            <div class="role-info">
+                                <h4>Chủ xe</h4>
+                                <p>Quản lý đội xe và nhận đơn hàng</p>
+                            </div>
+                        </button>
+                        
+                        <button type="button" class="role-btn" data-role="admin">
+                            <span class="role-icon">⚙️</span>
+                            <div class="role-info">
+                                <h4>Quản trị viên</h4>
+                                <p>Quản lý hệ thống và người dùng</p>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" class="form-input" placeholder="your@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">Mật khẩu</label>
+                    <input type="password" id="password" class="form-input" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    Đăng nhập
+                </button>
+            </form>
+
+            <div class="demo-info">
+                <p><strong>Demo - Đăng nhập nhanh:</strong></p>
+                <div class="demo-buttons">
+                    <button class="btn btn-sm demo-btn" onclick="quickLogin('cargo_owner')">Chủ hàng</button>
+                    <button class="btn btn-sm demo-btn" onclick="quickLogin('fleet_owner')">Chủ xe</button>
+                    <button class="btn btn-sm demo-btn" onclick="quickLogin('admin')">Admin</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include navigation scripts -->
+    <script src="js/user-session.js"></script>
+    <script src="js/breadcrumb.js"></script>
+    <script src="js/navigation.js"></script>
+
+    <script>
+        let selectedRole = 'cargo_owner'; // Default selection
+
+        // Handle role selection
+        document.querySelectorAll('.role-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove previous selection
+                document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('selected'));
+                
+                // Add selection to clicked button
+                btn.classList.add('selected');
+                selectedRole = btn.dataset.role;
+            });
+        });
+
+        // Set default selection
+        document.querySelector('[data-role="cargo_owner"]').classList.add('selected');
+
+        // Handle form submission
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            if (!email || !password) {
+                alert('Vui lòng nhập đầy đủ thông tin');
+                return;
+            }
+
+            performLogin(selectedRole, email);
+        });
+
+        // Quick login function for demo
+        function quickLogin(role) {
+            selectedRole = role;
+            
+            // Update role selection UI
+            document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('selected'));
+            document.querySelector(`[data-role="${role}"]`).classList.add('selected');
+            
+            const demoEmails = {
+                cargo_owner: 'chuhangg@circling.com',
+                fleet_owner: 'chuxe@circling.com',
+                admin: 'admin@circling.com'
+            };
+
+            performLogin(role, demoEmails[role]);
+        }
+
+        // Perform login and redirect
+        function performLogin(role, email) {
+            const names = {
+                cargo_owner: 'Nguyễn Văn An',
+                fleet_owner: 'Trần Thị Bảo',
+                admin: 'Admin System'
+            };
+
+            // Login user
+            window.userSession.login({
+                email: email,
+                name: names[role],
+                role: role
+            });
+
+            // Redirect based on role
+            const redirectUrls = {
+                cargo_owner: '02-dashboard-european.html',
+                fleet_owner: '03-dashboard-fleet-european.html',
+                admin: '05-admin-european.html'
+            };
+
+            // Show loading state
+            const submitBtn = document.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Đang đăng nhập...';
+            submitBtn.disabled = true;
+
+            // Simulate login delay
+            setTimeout(() => {
+                window.location.href = redirectUrls[role];
+            }, 1000);
+        }
+
+        // Hide navigation and breadcrumb on login page
+        document.addEventListener('DOMContentLoaded', () => {
+            // Hide navigation if it exists
+            const header = document.querySelector('.main-header');
+            if (header) {
+                header.style.display = 'none';
+            }
+
+            // Hide breadcrumb if it exists
+            const breadcrumb = document.querySelector('.breadcrumb-container');
+            if (breadcrumb) {
+                breadcrumb.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

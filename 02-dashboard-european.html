@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Chủ hàng - Circling Logistics</title>
+    <link rel="stylesheet" href="css/design-system-european.css">
+    <link rel="stylesheet" href="css/navigation.css">
+    <style>
+        .main-content {
+            padding: var(--space-6) 0;
+            min-height: calc(100vh - 120px);
+        }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-dark) 100%);
+            color: var(--neutral-white);
+            padding: var(--space-8) 0;
+            margin-bottom: var(--space-6);
+        }
+
+        .welcome-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--space-4);
+        }
+
+        .welcome-text h1 {
+            color: var(--neutral-white);
+            margin-bottom: var(--space-2);
+        }
+
+        .welcome-text p {
+            color: rgba(255, 255, 255, 0.9);
+            margin: 0;
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: var(--space-3);
+            flex-wrap: wrap;
+        }
+
+        .quick-action-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--neutral-white);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .quick-action-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--neutral-white);
+            text-decoration: none;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-6);
+            margin-bottom: var(--space-8);
+        }
+
+        .stat-card {
+            background: var(--neutral-white);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--neutral-gray-200);
+            transition: all var(--transition-fast);
+        }
+
+        .stat-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: var(--space-4);
+        }
+
+        .stat-icon {
+            font-size: var(--text-2xl);
+            margin-right: var(--space-3);
+        }
+
+        .stat-value {
+            font-size: var(--text-3xl);
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: var(--space-2);
+        }
+
+        .stat-label {
+            font-size: var(--text-sm);
+            color: var(--neutral-gray-600);
+            margin: 0;
+        }
+
+        .stat-change {
+            font-size: var(--text-sm);
+            font-weight: 500;
+            margin-top: var(--space-2);
+        }
+
+        .stat-change.positive {
+            color: var(--secondary-green);
+        }
+
+        .stat-change.negative {
+            color: var(--secondary-red);
+        }
+
+        .dashboard-section {
+            margin-bottom: var(--space-8);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-4);
+        }
+
+        .section-title {
+            font-size: var(--text-xl);
+            font-weight: 600;
+            color: var(--neutral-gray-900);
+            margin: 0;
+        }
+
+        .recent-orders {
+            background: var(--neutral-white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--neutral-gray-200);
+        }
+
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .orders-table th {
+            background: var(--neutral-gray-50);
+            padding: var(--space-4);
+            text-align: left;
+            font-weight: 600;
+            color: var(--neutral-gray-700);
+            border-bottom: 1px solid var(--neutral-gray-200);
+        }
+
+        .orders-table td {
+            padding: var(--space-4);
+            border-bottom: 1px solid var(--neutral-gray-100);
+        }
+
+        .orders-table tr:hover {
+            background: var(--neutral-gray-50);
+        }
+
+        .order-id {
+            font-weight: 600;
+            color: var(--primary-blue);
+        }
+
+        .order-status {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-1);
+            padding: var(--space-1) var(--space-2);
+            border-radius: var(--radius-full);
+            font-size: var(--text-xs);
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .status-pending {
+            background: rgba(234, 88, 12, 0.1);
+            color: var(--secondary-orange);
+        }
+
+        .status-in-transit {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--primary-blue);
+        }
+
+        .status-delivered {
+            background: rgba(5, 150, 105, 0.1);
+            color: var(--secondary-green);
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: var(--space-6);
+        }
+
+        .chart-card {
+            background: var(--neutral-white);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--neutral-gray-200);
+        }
+
+        .chart-placeholder {
+            height: 200px;
+            background: var(--neutral-gray-50);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--neutral-gray-500);
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .welcome-section {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .orders-table {
+                font-size: var(--text-sm);
+            }
+
+            .orders-table th,
+            .orders-table td {
+                padding: var(--space-2);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation will be inserted here by JavaScript -->
+
+    <main class="main-content">
+        <!-- Dashboard Header -->
+        <section class="dashboard-header">
+            <div class="container">
+                <div class="welcome-section">
+                    <div class="welcome-text">
+                        <h1>Chào mừng trở lại!</h1>
+                        <p id="welcome-message">Quản lý đơn hàng và theo dõi vận chuyển của bạn</p>
+                    </div>
+                    <div class="quick-actions">
+                        <a href="09-create-order-european.html" class="btn quick-action-btn">
+                            <span>➕</span> Tạo đơn mới
+                        </a>
+                        <a href="07-orders-european.html" class="btn quick-action-btn">
+                            <span>📦</span> Xem đơn hàng
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="container">
+            <!-- Statistics -->
+            <section class="dashboard-section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-icon">📦</span>
+                            <h3 class="stat-value">24</h3>
+                        </div>
+                        <p class="stat-label">Tổng đơn hàng</p>
+                        <p class="stat-change positive">↗ +12% so với tháng trước</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-icon">🚚</span>
+                            <h3 class="stat-value">8</h3>
+                        </div>
+                        <p class="stat-label">Đang vận chuyển</p>
+                        <p class="stat-change positive">↗ +3 đơn hôm nay</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-icon">✅</span>
+                            <h3 class="stat-value">16</h3>
+                        </div>
+                        <p class="stat-label">Đã giao thành công</p>
+                        <p class="stat-change positive">↗ 98% tỷ lệ thành công</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-icon">💰</span>
+                            <h3 class="stat-value">125M</h3>
+                        </div>
+                        <p class="stat-label">Tổng chi phí (VNĐ)</p>
+                        <p class="stat-change negative">↘ -5% so với tháng trước</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Orders -->
+            <section class="dashboard-section">
+                <div class="section-header">
+                    <h2 class="section-title">Đơn hàng gần đây</h2>
+                    <a href="07-orders-european.html" class="btn btn-secondary">Xem tất cả</a>
+                </div>
+                
+                <div class="recent-orders">
+                    <table class="orders-table">
+                        <thead>
+                            <tr>
+                                <th>Mã đơn</th>
+                                <th>Điểm đi</th>
+                                <th>Điểm đến</th>
+                                <th>Trạng thái</th>
+                                <th>Ngày tạo</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="order-id">#ORD-001</td>
+                                <td>Hà Nội</td>
+                                <td>TP. Hồ Chí Minh</td>
+                                <td><span class="order-status status-in-transit">🚚 Đang vận chuyển</span></td>
+                                <td>15/12/2024</td>
+                                <td><a href="08-order-details-european.html" class="btn btn-sm">Chi tiết</a></td>
+                            </tr>
+                            <tr>
+                                <td class="order-id">#ORD-002</td>
+                                <td>Đà Nẵng</td>
+                                <td>Hải Phòng</td>
+                                <td><span class="order-status status-pending">⏳ Chờ xử lý</span></td>
+                                <td>14/12/2024</td>
+                                <td><a href="08-order-details-european.html" class="btn btn-sm">Chi tiết</a></td>
+                            </tr>
+                            <tr>
+                                <td class="order-id">#ORD-003</td>
+                                <td>Cần Thơ</td>
+                                <td>Hà Nội</td>
+                                <td><span class="order-status status-delivered">✅ Đã giao</span></td>
+                                <td>13/12/2024</td>
+                                <td><a href="08-order-details-european.html" class="btn btn-sm">Chi tiết</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Charts Section -->
+            <section class="dashboard-section">
+                <div class="section-header">
+                    <h2 class="section-title">Thống kê & Báo cáo</h2>
+                </div>
+                
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <h3>Biểu đồ đơn hàng theo tháng</h3>
+                        <div class="chart-placeholder">
+                            📊 Biểu đồ cột thể hiện số lượng đơn hàng qua các tháng
+                        </div>
+                    </div>
+                    
+                    <div class="chart-card">
+                        <h3>Phân bố trạng thái</h3>
+                        <div class="chart-placeholder">
+                            🥧 Biểu đồ tròn thể hiện tỷ lệ trạng thái đơn hàng
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Include navigation scripts -->
+    <script src="js/user-session.js"></script>
+    <script src="js/breadcrumb.js"></script>
+    <script src="js/navigation.js"></script>
+
+    <script>
+        // Ensure user is logged in and has correct role
+        document.addEventListener('DOMContentLoaded', () => {
+            // Auto-login for demo if not already logged in
+            if (!window.userSession.isAuthenticated()) {
+                window.userSession.loginAsCargoOwner();
+            }
+
+            // Check if user has correct role
+            const userRole = window.userSession.getUserRole();
+            if (userRole !== 'cargo_owner') {
+                // Redirect to appropriate dashboard
+                const redirectUrls = {
+                    fleet_owner: '03-dashboard-fleet-european.html',
+                    admin: '05-admin-european.html'
+                };
+                
+                if (redirectUrls[userRole]) {
+                    window.location.href = redirectUrls[userRole];
+                    return;
+                }
+            }
+
+            // Update welcome message with user name
+            const user = window.userSession.getCurrentUser();
+            if (user) {
+                const welcomeMessage = document.getElementById('welcome-message');
+                welcomeMessage.textContent = `Chào ${user.name}! Quản lý đơn hàng và theo dõi vận chuyển của bạn`;
+            }
+
+            // Update notification count (demo)
+            window.navigationManager.updateNotificationCount(3);
+        });
+
+        // Demo: Add click handlers for order rows
+        document.querySelectorAll('.orders-table tr').forEach((row, index) => {
+            if (index > 0) { // Skip header row
+                row.style.cursor = 'pointer';
+                row.addEventListener('click', (e) => {
+                    if (!e.target.closest('.btn')) {
+                        window.location.href = '08-order-details-european.html';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
