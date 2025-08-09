@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Settings - Circling Logistics</title>
+    <meta name="description" content="Manage your account settings, preferences, and security options.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="../assets/css/design-system-european.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="../" class="navbar-brand">🚛 Circling Logistics</a>
+                
+                <!-- Desktop Navigation -->
+                <ul class="navbar-nav" id="navbarNav">
+                    <!-- Will be populated by JavaScript based on user role -->
+                </ul>
+                
+                <!-- Mobile Menu Toggle -->
+                <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle navigation">
+                    ☰
+                </button>
+                
+                <!-- Mobile Navigation -->
+                <div class="mobile-nav" id="mobileNav">
+                    <ul class="navbar-nav">
+                        <!-- Will be populated by JavaScript based on user role -->
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container" style="margin-top: 2rem; margin-bottom: 2rem;">
+        <!-- Page Header -->
+        <div class="mb-8">
+            <h1>Profile Settings</h1>
+            <p class="text-muted">Manage your account information, preferences, and security settings</p>
+        </div>
+
+        <div class="grid grid-cols-3" style="gap: 2rem;">
+            <!-- Left Sidebar - Navigation -->
+            <div>
+                <div class="card">
+                    <div class="card-body">
+                        <nav class="settings-nav">
+                            <a href="#general" class="settings-nav-item active" onclick="showSection('general')">
+                                👤 General Information
+                            </a>
+                            <a href="#company" class="settings-nav-item" onclick="showSection('company')">
+                                🏢 Company Details
+                            </a>
+                            <a href="#security" class="settings-nav-item" onclick="showSection('security')">
+                                🔒 Security & Privacy
+                            </a>
+                            <a href="#notifications" class="settings-nav-item" onclick="showSection('notifications')">
+                                🔔 Notifications
+                            </a>
+                            <a href="#preferences" class="settings-nav-item" onclick="showSection('preferences')">
+                                ⚙️ Preferences
+                            </a>
+                            <a href="#api" class="settings-nav-item" onclick="showSection('api')">
+                                🔌 API Access
+                            </a>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content Area -->
+            <div style="grid-column: span 2;">
+                <!-- General Information Section -->
+                <div id="general-section" class="settings-section">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="mb-0">👤 General Information</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="generalForm">
+                                <!-- Profile Picture -->
+                                <div class="form-group">
+                                    <label class="form-label">Profile Picture</label>
+                                    <div class="flex items-center" style="gap: 1rem;">
+                                        <div class="profile-avatar">
+                                            <div style="width: 80px; height: 80px; border-radius: 50%; background: var(--primary-blue); color: white; display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: 600;">
+                                                J
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <button type="button" class="btn btn-outline mb-2">Change Photo</button>
+                                            <br>
+                                            <button type="button" class="btn btn-sm btn-error">Remove</button>
+                                            <div class="form-text mt-1">JPG or PNG, max 2MB</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-2" style="gap: 1rem;">
+                                    <div class="form-group">
+                                        <label for="firstName" class="form-label">First Name *</label>
+                                        <input type="text" id="firstName" name="firstName" class="form-control" value="John" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="lastName" class="form-label">Last Name *</label>
+                                        <input type="text" id="lastName" name="lastName" class="form-control" value="Doe" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email" class="form-label">Email Address *</label>
+                                    <input type="email" id="email" name="email" class="form-control" value="john.doe@company.com" required>
+                                    <div class="form-text">This email is used for login and important notifications</div>
+                                </div>
+
+                                <div class="grid grid-cols-2" style="gap: 1rem;">
+                                    <div class="form-group">
+                                        <label for="phone" class="form-label">Phone Number *</label>
+                                        <input type="tel" id="phone" name="phone" class="form-control" value="+49 123 456 7890" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="language" class="form-label">Preferred Language</label>
+                                        <select id="language" name="language" class="form-control">
+                                            <option value="en" selected>English</option>
+                                            <option value="de">Deutsch</option>
+                                            <option value="fr">Français</option>
+                                            <option value="es">Español</option>
+                                            <option value="it">Italiano</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="timezone" class="form-label">Timezone</label>
+                                    <select id="timezone" name="timezone" class="form-control">
+                                        <option value="Europe/Berlin" selected>Central European Time (CET)</option>
+                                        <option value="Europe/London">Greenwich Mean Time (GMT)</option>
+                                        <option value="Europe/Paris">Central European Time (CET)</option>
+                                        <option value="Europe/Rome">Central European Time (CET)</option>
+                                        <option value="Europe/Madrid">Central European Time (CET)</option>
+                                    </select>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Company Details Section -->
+                <div id="company-section" class="settings-section" style="display: none;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="mb-0">🏢 Company Details</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="companyForm">
+                                <div class="form-group">
+                                    <label for="companyName" class="form-label">Company Name *</label>
+                                    <input type="text" id="companyName" name="companyName" class="form-control" value="Acme Logistics GmbH" required>
+                                </div>
+
+                                <div class="grid grid-cols-2" style="gap: 1rem;">
+                                    <div class="form-group">
+                                        <label for="companyType" class="form-label">Company Type</label>
+                                        <select id="companyType" name="companyType" class="form-control">
+                                            <option value="gmbh" selected>GmbH</option>
+                                            <option value="ag">AG</option>
+                                            <option value="kg">KG</option>
+                                            <option value="ohg">OHG</option>
+                                            <option value="ug">UG</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="vatNumber" class="form-label">VAT Number</label>
+                                        <input type="text" id="vatNumber" name="vatNumber" class="form-control" value="DE123456789" placeholder="DE123456789">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="industry" class="form-label">Industry *</label>
+                                    <select id="industry" name="industry" class="form-control" required>
+                                        <option value="">Select industry</option>
+                                        <option value="automotive" selected>Automotive</option>
+                                        <option value="electronics">Electronics</option>
+                                        <option value="food">Food & Beverage</option>
+                                        <option value="textile">Textile & Fashion</option>
+                                        <option value="machinery">Machinery</option>
+                                        <option value="chemicals">Chemicals</option>
+                                        <option value="retail">Retail</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="companySize" class="form-label">Company Size</label>
+                                    <select id="companySize" name="companySize" class="form-control">
+                                        <option value="1-10" selected>1-10 employees</option>
+                                        <option value="11-50">11-50 employees</option>
+                                        <option value="51-200">51-200 employees</option>
+                                        <option value="201-1000">201-1000 employees</option>
+                                        <option value="1000+">1000+ employees</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="website" class="form-label">Company Website</label>
+                                    <input type="url" id="website" name="website" class="form-control" value="https://acme-logistics.com" placeholder="https://yourcompany.com">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="description" class="form-label">Company Description</label>
+                                    <textarea id="description" name="description" class="form-control" rows="3" placeholder="Brief description of your company and business...">Leading logistics solutions provider specializing in automotive parts distribution across Europe.</textarea>
+                                </div>
+
+                                <h4 class="mt-6 mb-4">Address Information</h4>
+
+                                <div class="form-group">
+                                    <label for="address" class="form-label">Street Address *</label>
+                                    <input type="text" id="address" name="address" class="form-control" value="123 Business Street" required>
+                                </div>
+
+                                <div class="grid grid-cols-3" style="gap: 1rem;">
+                                    <div class="form-group">
+                                        <label for="city" class="form-label">City *</label>
+                                        <input type="text" id="city" name="city" class="form-control" value="Frankfurt" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="postalCode" class="form-label">Postal Code *</label>
+                                        <input type="text" id="postalCode" name="postalCode" class="form-control" value="60322" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="country" class="form-label">Country *</label>
+                                        <select id="country" name="country" class="form-control" required>
+                                            <option value="DE" selected>Germany</option>
+                                            <option value="FR">France</option>
+                                            <option value="IT">Italy</option>
+                                            <option value="ES">Spain</option>
+                                            <option value="NL">Netherlands</option>
+                                            <option value="BE">Belgium</option>
+                                            <option value="AT">Austria</option>
+                                            <option value="CH">Switzerland</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Save Company Details</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security & Privacy Section -->
+                <div id="security-section" class="settings-section" style="display: none;">
+                    <div class="card mb-6">
+                        <div class="card-header">
+                            <h3 class="mb-0">🔒 Password & Authentication</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="passwordForm">
+                                <div class="form-group">
+                                    <label for="currentPassword" class="form-label">Current Password *</label>
+                                    <input type="password" id="currentPassword" name="currentPassword" class="form-control" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="newPassword" class="form-label">New Password *</label>
+                                    <input type="password" id="newPassword" name="newPassword" class="form-control" required>
+                                    <div class="form-text">Password must be at least 8 characters with numbers and special characters</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="confirmPassword" class="form-label">Confirm New Password *</label>
+                                    <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" required>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Update Password</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="card mb-6">
+                        <div class="card-header">
+                            <h3 class="mb-0">🛡️ Two-Factor Authentication</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="flex justify-between items-center mb-4">
+                                <div>
+                                    <h4 class="mb-0">Two-Factor Authentication</h4>
+                                    <p class="text-muted">Add an extra layer of security to your account</p>
+                                </div>
+                                <div class="form-group mb-0">
+                                    <label class="flex items-center">
+                                        <input type="checkbox" id="enable2FA" style="margin-right: 8px;">
+                                        <span>Enable 2FA</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div id="twoFactorSetup" style="display: none;">
+                                <div class="alert alert-info">
+                                    <strong>Setup Instructions:</strong><br>
+                                    1. Install an authenticator app (Google Authenticator, Authy, etc.)<br>
+                                    2. Scan the QR code or enter the secret key<br>
+                                    3. Enter the verification code from your app
+                                </div>
+
+                                <div class="text-center mb-4">
+                                    <div style="width: 150px; height: 150px; background: var(--neutral-200); margin: 0 auto; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-md);">
+                                        QR Code
+                                    </div>
+                                    <p class="text-sm text-muted mt-2">Secret: ABCD-EFGH-IJKL-MNOP</p>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="verificationCode" class="form-label">Verification Code</label>
+                                    <input type="text" id="verificationCode" class="form-control" placeholder="123456" maxlength="6">
+                                </div>
+
+                                <button class="btn btn-primary">Verify & Enable 2FA</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="mb-0">🔐 Privacy Settings</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label class="flex items-center">
+                                    <input type="checkbox" id="profileVisibility" checked style="margin-right: 8px;">
+                                    <span>Make my profile visible to other users</span>
+                                </label>
+                                <div class="form-text">Other users can see your company name and contact information</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="flex items-center">
+                                    <input type="checkbox" id="dataProcessing" checked style="margin-right: 8px;">
+                                    <span>Allow data processing for service improvement</span>
+                                </label>
+                                <div class="form-text">Help us improve our services by analyzing usage patterns</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="flex items-center">
+                                    <input type="checkbox" id="marketingEmails" style="margin-right: 8px;">
+                                    <span>Receive marketing emails</span>
+                                </label>
+                                <div class="form-text">Stay updated with new features and industry insights</div>
+                            </div>
+
+                            <button class="btn btn-secondary">Save Privacy Settings</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notifications Section -->
+                <div id="notifications-section" class="settings-section" style="display: none;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="mb-0">🔔 Notification Preferences</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="notification-category">
+                                <h4>Order Notifications</h4>
+                                <div class="notification-options">
+                                    <div class="notification-item">
+                                        <label class="flex items-center">
+                                            <input type="checkbox" checked style="margin-right: 8px;">
+                                            <span>New order confirmations</span>
+                                        </label>
+                                    </div>
+                                    <div class="notification-item">
+                                        <label class="flex items-center">
+                                            <input type="checkbox" checked style="margin-right: 8px;">
+                                            <span>Pickup and delivery updates</span>
+                                        </label>
+                                    </div>
+                                    <div class="notification-item">
+                                        <label class="flex items-center">
+                                            <input type="checkbox" checked style="margin-right: 8px;">
+                                            <span>Order completion notifications</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="notification-category">
+                                <h4>Payment Notifications</h4>
+                                <div class="notification-options">
+                                    <div class="notification-item">
+                                        <label class="flex items-center">
+                                            <input type="checkbox" checked style="margin-right: 8px;">
+                                            <span>Payment confirmations</span>
+                                        </label>
+                                    </div>
+                                    <div class="notification-item">
+                                        <label class="flex items-center">
+                                            <input type="checkbox" checked style="margin-right: 8px;">
+                                            <span>Invoice notifications</span>
+                                        </label>
+                                    </div>
+                                    <div class="notification-item">
+                                        <label class="flex items-center">
+                                            <input type="checkbox" style="margin-right: 8px;">
+                                            <span>Payment reminders</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="notification-category">
+                                <h4>System Notifications</h4>
+                                <div class="notification-options">
+                                    <div class="notification-item">
+                                        <label class="flex items-center">
+                                            <input type="checkbox" checked style="margin-right: 8px;">
+                                            <span>Security alerts</span>
+                                        </label>
+                                    </div>
+                                    <div class="notification-item">
+                                        <label class="flex items-center">
+                                            <input type="checkbox" style="margin-right: 8px;">
+                                            <span>Feature announcements</span>
+                                        </label>
+                                    </div>
+                                    <div class="notification-item">
+                                        <label class="flex items-center">
+                                            <input type="checkbox" style="margin-right: 8px;">
+                                            <span>Maintenance notifications</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="notification-category">
+                                <h4>Delivery Methods</h4>
+                                <div class="notification-options">
+                                    <div class="notification-item">
+                                        <label class="flex items-center">
+                                            <input type="checkbox" checked style="margin-right: 8px;">
+                                            <span>Email notifications</span>
+                                        </label>
+                                    </div>
+                                    <div class="notification-item">
+                                        <label class="flex items-center">
+                                            <input type="checkbox" checked style="margin-right: 8px;">
+                                            <span>SMS notifications</span>
+                                        </label>
+                                    </div>
+                                    <div class="notification-item">
+                                        <label class="flex items-center">
+                                            <input type="checkbox" style="margin-right: 8px;">
+                                            <span>Push notifications</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-primary">Save Notification Settings</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preferences Section -->
+                <div id="preferences-section" class="settings-section" style="display: none;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="mb-0">⚙️ Application Preferences</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="dateFormat" class="form-label">Date Format</label>
+                                <select id="dateFormat" class="form-control">
+                                    <option value="dd/mm/yyyy" selected>DD/MM/YYYY</option>
+                                    <option value="mm/dd/yyyy">MM/DD/YYYY</option>
+                                    <option value="yyyy-mm-dd">YYYY-MM-DD</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="currency" class="form-label">Preferred Currency</label>
+                                <select id="currency" class="form-control">
+                                    <option value="EUR" selected>Euro (€)</option>
+                                    <option value="USD">US Dollar ($)</option>
+                                    <option value="GBP">British Pound (£)</option>
+                                    <option value="CHF">Swiss Franc (CHF)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="units" class="form-label">Unit System</label>
+                                <select id="units" class="form-control">
+                                    <option value="metric" selected>Metric (kg, km, °C)</option>
+                                    <option value="imperial">Imperial (lbs, miles, °F)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="dashboardLayout" class="form-label">Dashboard Layout</label>
+                                <select id="dashboardLayout" class="form-control">
+                                    <option value="default" selected>Default</option>
+                                    <option value="compact">Compact</option>
+                                    <option value="detailed">Detailed</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="flex items-center">
+                                    <input type="checkbox" id="darkMode" style="margin-right: 8px;">
+                                    <span>Enable dark mode</span>
+                                </label>
+                                <div class="form-text">Switch to a dark color scheme</div>
+                            </div>
+
+                            <button class="btn btn-primary">Save Preferences</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- API Access Section -->
+                <div id="api-section" class="settings-section" style="display: none;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="mb-0">🔌 API Access</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-info">
+                                <strong>API Integration Available</strong><br>
+                                Connect your systems directly with our API for automated order management and tracking.
+                                <a href="#" class="text-primary">View API Documentation →</a>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">API Key</label>
+                                <div class="flex" style="gap: 0.5rem;">
+                                    <input type="text" class="form-control" value="sk_live_abcd1234567890..." readonly>
+                                    <button class="btn btn-outline">Copy</button>
+                                    <button class="btn btn-secondary">Regenerate</button>
+                                </div>
+                                <div class="form-text">Keep your API key secure and don't share it publicly</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Webhook URL</label>
+                                <input type="url" class="form-control" placeholder="https://yourapp.com/webhook" value="https://acme-logistics.com/webhook">
+                                <div class="form-text">We'll send order updates to this URL</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">API Rate Limit</label>
+                                <div class="flex items-center" style="gap: 1rem;">
+                                    <span class="text-muted">Current limit:</span>
+                                    <span class="badge badge-success">1000 requests/hour</span>
+                                    <a href="#" class="text-primary">Upgrade for higher limits</a>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-primary">Save API Settings</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- JavaScript -->
+    <script src="../assets/js/app.js"></script>
+    <script>
+        // Ensure user is authenticated
+        if (!app.currentUser) {
+            window.location.href = '../auth/login.html';
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeForms();
+            populateUserData();
+        });
+
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.settings-section').forEach(section => {
+                section.style.display = 'none';
+            });
+
+            // Remove active class from all nav items
+            document.querySelectorAll('.settings-nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById(sectionName + '-section').style.display = 'block';
+
+            // Add active class to clicked nav item
+            event.target.classList.add('active');
+        }
+
+        function initializeForms() {
+            // General form
+            document.getElementById('generalForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                saveGeneralInfo();
+            });
+
+            // Company form
+            document.getElementById('companyForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                saveCompanyInfo();
+            });
+
+            // Password form
+            document.getElementById('passwordForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                updatePassword();
+            });
+
+            // 2FA toggle
+            document.getElementById('enable2FA').addEventListener('change', function() {
+                const setup = document.getElementById('twoFactorSetup');
+                setup.style.display = this.checked ? 'block' : 'none';
+            });
+        }
+
+        function populateUserData() {
+            if (app.currentUser) {
+                // Populate form fields with user data
+                document.getElementById('firstName').value = app.currentUser.name.split(' ')[0] || '';
+                document.getElementById('lastName').value = app.currentUser.name.split(' ')[1] || '';
+                document.getElementById('email').value = app.currentUser.email || '';
+                
+                // Update profile avatar
+                const avatar = document.querySelector('.profile-avatar div');
+                if (avatar) {
+                    avatar.textContent = app.currentUser.name.charAt(0).toUpperCase();
+                }
+            }
+        }
+
+        function saveGeneralInfo() {
+            const formData = new FormData(document.getElementById('generalForm'));
+            const userData = Object.fromEntries(formData.entries());
+            
+            // Update user data
+            app.currentUser = { ...app.currentUser, ...userData };
+            app.saveUserSession(app.currentUser);
+            
+            app.showNotification('General information updated successfully!', 'success');
+        }
+
+        function saveCompanyInfo() {
+            app.showNotification('Company information updated successfully!', 'success');
+        }
+
+        function updatePassword() {
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (newPassword !== confirmPassword) {
+                app.showNotification('New passwords do not match', 'error');
+                return;
+            }
+
+            if (newPassword.length < 8) {
+                app.showNotification('Password must be at least 8 characters long', 'error');
+                return;
+            }
+
+            // Simulate password update
+            app.showNotification('Password updated successfully!', 'success');
+            document.getElementById('passwordForm').reset();
+        }
+    </script>
+
+    <style>
+        .settings-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        
+        .settings-nav-item {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: var(--neutral-600);
+            text-decoration: none;
+            border-radius: var(--radius-md);
+            transition: all var(--transition-fast);
+        }
+        
+        .settings-nav-item:hover {
+            background-color: var(--neutral-100);
+            color: var(--neutral-800);
+        }
+        
+        .settings-nav-item.active {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+        
+        .notification-category {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--neutral-200);
+        }
+        
+        .notification-category:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        
+        .notification-category h4 {
+            margin-bottom: 1rem;
+            color: var(--neutral-800);
+        }
+        
+        .notification-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .notification-item {
+            padding: 0.5rem 0;
+        }
+        
+        @media (max-width: 768px) {
+            .grid-cols-3 {
+                grid-template-columns: 1fr;
+            }
+            
+            .settings-nav {
+                flex-direction: row;
+                overflow-x: auto;
+                padding: 0.5rem 0;
+            }
+            
+            .settings-nav-item {
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+        }
+    </style>
+</body>
+</html>
