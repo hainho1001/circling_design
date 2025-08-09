@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Đơn hàng - Circling Logistics</title>
+    <link rel="stylesheet" href="css/design-system-european.css">
+</head>
+<body>
+    <!-- Main Navigation -->
+    <nav class="main-nav">
+        <!-- Navigation will be dynamically created by navigation.js -->
+    </nav>
+
+    <!-- Breadcrumb Navigation -->
+    <!-- Breadcrumb will be dynamically created by navigation.js -->
+
+    <!-- Page Content -->
+    <main class="page-content">
+        <div class="container">
+            <header class="page-header">
+                <h1 class="page-title">Quản lý Đơn hàng</h1>
+                <p class="page-subtitle">Theo dõi và quản lý tất cả đơn hàng vận chuyển</p>
+            </header>
+
+            <!-- Order Filters and Actions -->
+            <div class="bg-white rounded shadow p-6 mb-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold">Bộ lọc và Tìm kiếm</h3>
+                    <a href="09-create-order-european.html" class="btn btn-primary">
+                        ➕ Tạo đơn hàng mới
+                    </a>
+                </div>
+                
+                <div class="flex gap-4 mb-4">
+                    <div class="flex-1">
+                        <input type="text" id="search-orders" placeholder="Tìm kiếm theo mã đơn hàng, địa chỉ..." 
+                               class="w-full p-2 border border-gray-300 rounded">
+                    </div>
+                    <div>
+                        <select id="status-filter" class="p-2 border border-gray-300 rounded">
+                            <option value="">Tất cả trạng thái</option>
+                            <option value="pending">Chờ xử lý</option>
+                            <option value="assigned">Đã phân công</option>
+                            <option value="in-transit">Đang vận chuyển</option>
+                            <option value="delivered">Đã giao hàng</option>
+                            <option value="cancelled">Đã hủy</option>
+                        </select>
+                    </div>
+                    <div>
+                        <select id="date-filter" class="p-2 border border-gray-300 rounded">
+                            <option value="">Tất cả thời gian</option>
+                            <option value="today">Hôm nay</option>
+                            <option value="week">Tuần này</option>
+                            <option value="month">Tháng này</option>
+                        </select>
+                    </div>
+                    <button onclick="filterOrders()" class="btn btn-secondary">
+                        🔍 Lọc
+                    </button>
+                </div>
+            </div>
+
+            <!-- Order Statistics -->
+            <div class="flex gap-4 mb-6">
+                <div class="bg-white rounded shadow p-4" style="flex: 1;">
+                    <h4 class="font-semibold text-gray-600">Tổng đơn hàng</h4>
+                    <div class="text-2xl font-bold text-blue-600">156</div>
+                </div>
+                <div class="bg-white rounded shadow p-4" style="flex: 1;">
+                    <h4 class="font-semibold text-gray-600">Chờ xử lý</h4>
+                    <div class="text-2xl font-bold text-yellow-600">12</div>
+                </div>
+                <div class="bg-white rounded shadow p-4" style="flex: 1;">
+                    <h4 class="font-semibold text-gray-600">Đang vận chuyển</h4>
+                    <div class="text-2xl font-bold text-orange-600">8</div>
+                </div>
+                <div class="bg-white rounded shadow p-4" style="flex: 1;">
+                    <h4 class="font-semibold text-gray-600">Hoàn thành</h4>
+                    <div class="text-2xl font-bold text-green-600">136</div>
+                </div>
+            </div>
+
+            <!-- Orders Table -->
+            <div class="bg-white rounded shadow overflow-hidden">
+                <div class="p-6 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold">Danh sách đơn hàng</h3>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Mã đơn hàng
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Khách hàng
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Tuyến đường
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Trạng thái
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Giá trị
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Ngày tạo
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Thao tác
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200" id="orders-table-body">
+                            <!-- Orders will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Pagination -->
+                <div class="px-6 py-3 bg-gray-50 border-t border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm text-gray-700">
+                            Hiển thị <span class="font-medium">1</span> đến <span class="font-medium">10</span> 
+                            của <span class="font-medium">156</span> kết quả
+                        </div>
+                        <div class="flex gap-2">
+                            <button class="btn btn-secondary btn-sm">‹ Trước</button>
+                            <button class="btn btn-primary btn-sm">1</button>
+                            <button class="btn btn-secondary btn-sm">2</button>
+                            <button class="btn btn-secondary btn-sm">3</button>
+                            <button class="btn btn-secondary btn-sm">Sau ›</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="js/navigation.js"></script>
+    <script>
+        // Sample order data
+        const ordersData = [
+            {
+                id: 'DH001',
+                customer: 'Công ty ABC',
+                route: 'TP.HCM → Hà Nội',
+                status: 'in-transit',
+                value: '8,500,000',
+                createdDate: '15/11/2024',
+                vehicle: '29A-12345'
+            },
+            {
+                id: 'DH002',
+                customer: 'Công ty XYZ',
+                route: 'Hà Nội → Đà Nẵng',
+                status: 'pending',
+                value: '5,200,000',
+                createdDate: '15/11/2024',
+                vehicle: null
+            },
+            {
+                id: 'DH003',
+                customer: 'Cửa hàng 123',
+                route: 'TP.HCM → Cần Thơ',
+                status: 'delivered',
+                value: '3,800,000',
+                createdDate: '14/11/2024',
+                vehicle: '30B-67890'
+            },
+            {
+                id: 'DH004',
+                customer: 'Nhà máy DEF',
+                route: 'Bình Dương → Hải Phòng',
+                status: 'assigned',
+                value: '12,000,000',
+                createdDate: '14/11/2024',
+                vehicle: '51C-11111'
+            },
+            {
+                id: 'DH005',
+                customer: 'Siêu thị GHI',
+                route: 'Hà Nội → TP.HCM',
+                status: 'in-transit',
+                value: '7,300,000',
+                createdDate: '13/11/2024',
+                vehicle: '52D-22222'
+            }
+        ];
+
+        function getStatusBadge(status) {
+            const statusConfig = {
+                'pending': { class: 'bg-yellow-100 text-yellow-800', text: 'Chờ xử lý' },
+                'assigned': { class: 'bg-blue-100 text-blue-800', text: 'Đã phân công' },
+                'in-transit': { class: 'bg-orange-100 text-orange-800', text: 'Đang vận chuyển' },
+                'delivered': { class: 'bg-green-100 text-green-800', text: 'Đã giao hàng' },
+                'cancelled': { class: 'bg-red-100 text-red-800', text: 'Đã hủy' }
+            };
+            
+            const config = statusConfig[status] || statusConfig['pending'];
+            return `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${config.class}">
+                ${config.text}
+            </span>`;
+        }
+
+        function renderOrders(orders = ordersData) {
+            const tbody = document.getElementById('orders-table-body');
+            
+            tbody.innerHTML = orders.map(order => `
+                <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900">${order.id}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${order.customer}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${order.route}</div>
+                        ${order.vehicle ? `<div class="text-xs text-gray-500">Xe: ${order.vehicle}</div>` : ''}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        ${getStatusBadge(order.status)}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900">₫${order.value}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${order.createdDate}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex gap-2">
+                            <a href="08-order-details-european.html?id=${order.id}" 
+                               class="text-blue-600 hover:text-blue-900">Xem</a>
+                            <button onclick="editOrder('${order.id}')" 
+                                    class="text-green-600 hover:text-green-900">Sửa</button>
+                            <button onclick="deleteOrder('${order.id}')" 
+                                    class="text-red-600 hover:text-red-900">Xóa</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function filterOrders() {
+            const searchTerm = document.getElementById('search-orders').value.toLowerCase();
+            const statusFilter = document.getElementById('status-filter').value;
+            const dateFilter = document.getElementById('date-filter').value;
+
+            let filteredOrders = ordersData;
+
+            // Apply search filter
+            if (searchTerm) {
+                filteredOrders = filteredOrders.filter(order =>
+                    order.id.toLowerCase().includes(searchTerm) ||
+                    order.customer.toLowerCase().includes(searchTerm) ||
+                    order.route.toLowerCase().includes(searchTerm)
+                );
+            }
+
+            // Apply status filter
+            if (statusFilter) {
+                filteredOrders = filteredOrders.filter(order => order.status === statusFilter);
+            }
+
+            // Apply date filter (simplified)
+            if (dateFilter) {
+                // In a real application, this would filter by actual dates
+                console.log('Filtering by date:', dateFilter);
+            }
+
+            renderOrders(filteredOrders);
+            
+            // Show filter applied notification
+            showNotification(`Đã áp dụng bộ lọc. Tìm thấy ${filteredOrders.length} đơn hàng.`);
+        }
+
+        function editOrder(orderId) {
+            showNotification(`Chỉnh sửa đơn hàng ${orderId}`);
+            // In a real app, this would redirect to edit page
+        }
+
+        function deleteOrder(orderId) {
+            if (confirm(`Bạn có chắc chắn muốn xóa đơn hàng ${orderId}?`)) {
+                showNotification(`Đã xóa đơn hàng ${orderId}`, 'success');
+                // Remove from data and re-render
+                const index = ordersData.findIndex(order => order.id === orderId);
+                if (index > -1) {
+                    ordersData.splice(index, 1);
+                    renderOrders();
+                }
+            }
+        }
+
+        function showNotification(message, type = 'info') {
+            const bgColor = type === 'success' ? 'bg-green-500' : 'bg-blue-500';
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 ${bgColor} text-white p-3 rounded shadow-lg z-50`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            renderOrders();
+            
+            // Setup search on Enter
+            document.getElementById('search-orders').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    filterOrders();
+                }
+            });
+        });
+
+        // Simulate real-time order updates
+        setInterval(() => {
+            // Randomly update order status
+            if (Math.random() > 0.8) {
+                const randomOrder = ordersData[Math.floor(Math.random() * ordersData.length)];
+                const statuses = ['pending', 'assigned', 'in-transit', 'delivered'];
+                const currentIndex = statuses.indexOf(randomOrder.status);
+                if (currentIndex < statuses.length - 1) {
+                    randomOrder.status = statuses[currentIndex + 1];
+                    renderOrders();
+                    showNotification(`Đơn hàng ${randomOrder.id} đã cập nhật trạng thái`);
+                }
+            }
+        }, 30000); // Check every 30 seconds
+    </script>
+
+    <style>
+        .w-full {
+            width: 100%;
+        }
+        
+        .btn-sm {
+            padding: var(--space-1) var(--space-2);
+            font-size: var(--font-size-xs);
+        }
+        
+        .z-50 {
+            z-index: 50;
+        }
+        
+        .whitespace-nowrap {
+            white-space: nowrap;
+        }
+        
+        .divide-y > :not([hidden]) ~ :not([hidden]) {
+            border-top-width: 1px;
+        }
+        
+        .divide-gray-200 > :not([hidden]) ~ :not([hidden]) {
+            border-color: #e5e7eb;
+        }
+        
+        input, select {
+            border: 1px solid var(--gray-300);
+            border-radius: var(--border-radius);
+            padding: var(--space-2);
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .flex {
+                flex-direction: column;
+            }
+            
+            .overflow-x-auto {
+                overflow-x: auto;
+            }
+            
+            table {
+                min-width: 800px;
+            }
+        }
+    </style>
+</body>
+</html>

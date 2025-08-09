@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bảng điều khiển - Circling Logistics</title>
+    <link rel="stylesheet" href="css/design-system-european.css">
+</head>
+<body>
+    <!-- Main Navigation -->
+    <nav class="main-nav">
+        <!-- Navigation will be dynamically created by navigation.js -->
+    </nav>
+
+    <!-- Breadcrumb Navigation -->
+    <!-- Breadcrumb will be dynamically created by navigation.js -->
+
+    <!-- Page Content -->
+    <main class="page-content">
+        <div class="container">
+            <header class="page-header">
+                <h1 class="page-title">Bảng điều khiển</h1>
+                <p class="page-subtitle">Tổng quan hoạt động và thống kê hệ thống</p>
+            </header>
+
+            <!-- Dashboard Stats -->
+            <div class="flex gap-4 mb-8">
+                <div class="bg-white rounded shadow p-6" style="flex: 1;">
+                    <h3 class="text-lg font-semibold mb-2">Đơn hàng hôm nay</h3>
+                    <div class="text-3xl font-bold text-blue-600">24</div>
+                    <p class="text-sm text-gray-600">+12% so với hôm qua</p>
+                </div>
+                <div class="bg-white rounded shadow p-6" style="flex: 1;">
+                    <h3 class="text-lg font-semibold mb-2">Doanh thu tháng</h3>
+                    <div class="text-3xl font-bold text-green-600">₫45.2M</div>
+                    <p class="text-sm text-gray-600">+8% so với tháng trước</p>
+                </div>
+                <div class="bg-white rounded shadow p-6" style="flex: 1;">
+                    <h3 class="text-lg font-semibold mb-2">Xe đang hoạt động</h3>
+                    <div class="text-3xl font-bold text-orange-600">18</div>
+                    <p class="text-sm text-gray-600">Trong tổng số 25 xe</p>
+                </div>
+                <div class="bg-white rounded shadow p-6" style="flex: 1;">
+                    <h3 class="text-lg font-semibold mb-2">Tỷ lệ hoàn thành</h3>
+                    <div class="text-3xl font-bold text-purple-600">94%</div>
+                    <p class="text-sm text-gray-600">Đúng hạn giao hàng</p>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <section class="mb-8">
+                <h2 class="text-2xl font-bold mb-4">Thao tác nhanh</h2>
+                <div class="flex gap-4">
+                    <a href="09-create-order-european.html" class="btn btn-primary">
+                        ➕ Tạo đơn hàng mới
+                    </a>
+                    <a href="07-orders-european.html" class="btn btn-secondary">
+                        📦 Xem tất cả đơn hàng
+                    </a>
+                    <a href="10-bidding-european.html" class="btn btn-secondary">
+                        🔨 Tham gia đấu giá
+                    </a>
+                    <a href="17-vehicle-management-european.html" class="btn btn-secondary">
+                        🚛 Quản lý xe
+                    </a>
+                </div>
+            </section>
+
+            <!-- Recent Activities -->
+            <div class="flex gap-4">
+                <div class="bg-white rounded shadow p-6" style="flex: 2;">
+                    <h3 class="text-xl font-semibold mb-4">Hoạt động gần đây</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3 p-3 bg-gray-50 rounded">
+                            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                                📦
+                            </div>
+                            <div>
+                                <p class="font-medium">Đơn hàng #DH001 đã được tạo</p>
+                                <p class="text-sm text-gray-600">5 phút trước</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 bg-gray-50 rounded">
+                            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                                ✅
+                            </div>
+                            <div>
+                                <p class="font-medium">Đơn hàng #DH095 đã hoàn thành</p>
+                                <p class="text-sm text-gray-600">15 phút trước</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 bg-gray-50 rounded">
+                            <div class="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
+                                🔨
+                            </div>
+                            <div>
+                                <p class="font-medium">Cuộc đấu giá #DG012 đã bắt đầu</p>
+                                <p class="text-sm text-gray-600">30 phút trước</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 bg-gray-50 rounded">
+                            <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                                🚛
+                            </div>
+                            <div>
+                                <p class="font-medium">Xe BKS: 29A-12345 đã cập nhật vị trí</p>
+                                <p class="text-sm text-gray-600">1 giờ trước</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <a href="#" class="text-blue-600 hover:text-blue-800">Xem tất cả hoạt động →</a>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded shadow p-6" style="flex: 1;">
+                    <h3 class="text-xl font-semibold mb-4">Thông tin hệ thống</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <p class="text-sm text-gray-600">Phiên bản</p>
+                            <p class="font-medium">v2.1.0</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">Vai trò hiện tại</p>
+                            <p class="font-medium role-display">Chủ hàng</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">Trạng thái kết nối</p>
+                            <p class="font-medium text-green-600">● Đang hoạt động</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">Cập nhật cuối</p>
+                            <p class="font-medium">Vừa xong</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <h4 class="font-semibold mb-2">Chuyển đổi vai trò</h4>
+                        <div class="space-y-2">
+                            <button class="btn btn-sm btn-secondary w-full" onclick="switchToRole('shipper')">
+                                Chủ hàng
+                            </button>
+                            <button class="btn btn-sm btn-secondary w-full" onclick="switchToRole('carrier')">
+                                Chủ xe
+                            </button>
+                            <button class="btn btn-sm btn-secondary w-full" onclick="switchToRole('admin')">
+                                Admin
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="js/navigation.js"></script>
+    <script>
+        function switchToRole(role) {
+            CirclingNavUtils.changeRole(role);
+            updateRoleDisplay(role);
+            
+            // Show notification
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-4 right-4 bg-blue-500 text-white p-3 rounded shadow-lg z-50';
+            notification.textContent = `Đã chuyển sang vai trò: ${getRoleDisplayName(role)}`;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        function getRoleDisplayName(role) {
+            const roleNames = {
+                'shipper': 'Chủ hàng',
+                'carrier': 'Chủ xe', 
+                'admin': 'Admin'
+            };
+            return roleNames[role] || role;
+        }
+
+        function updateRoleDisplay(role) {
+            const roleDisplay = document.querySelector('.role-display');
+            if (roleDisplay) {
+                roleDisplay.textContent = getRoleDisplayName(role);
+            }
+        }
+
+        // Update role display on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.circlingNav) {
+                updateRoleDisplay(window.circlingNav.currentRole);
+            }
+        });
+
+        // Simulate real-time updates
+        function simulateRealTimeUpdates() {
+            const activities = [
+                { icon: '📦', text: 'Đơn hàng mới đã được tạo', time: 'Vừa xong' },
+                { icon: '🚛', text: 'Xe đã cập nhật vị trí', time: 'Vừa xong' },
+                { icon: '✅', text: 'Đơn hàng đã hoàn thành', time: 'Vừa xong' },
+                { icon: '🔨', text: 'Có cuộc đấu giá mới', time: 'Vừa xong' }
+            ];
+
+            setInterval(() => {
+                const randomActivity = activities[Math.floor(Math.random() * activities.length)];
+                console.log(`Cập nhật mới: ${randomActivity.text}`);
+            }, 30000); // Update every 30 seconds
+        }
+
+        // Start real-time simulation
+        simulateRealTimeUpdates();
+    </script>
+
+    <style>
+        .btn-sm {
+            padding: var(--space-1) var(--space-2);
+            font-size: var(--font-size-xs);
+        }
+        
+        .w-full {
+            width: 100%;
+        }
+        
+        .z-50 {
+            z-index: 50;
+        }
+        
+        @media (max-width: 768px) {
+            .flex {
+                flex-direction: column;
+            }
+            
+            .flex.gap-4 > * {
+                flex: none;
+            }
+        }
+    </style>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang chủ - Circling Logistics</title>
+    <link rel="stylesheet" href="css/design-system-european.css">
+</head>
+<body>
+    <!-- Main Navigation -->
+    <nav class="main-nav">
+        <!-- Navigation will be dynamically created by navigation.js -->
+    </nav>
+
+    <!-- Breadcrumb Navigation -->
+    <!-- Breadcrumb will be dynamically created by navigation.js -->
+
+    <!-- Page Content -->
+    <main class="page-content">
+        <div class="container">
+            <header class="page-header">
+                <h1 class="page-title">Chào mừng đến với Circling Logistics</h1>
+                <p class="page-subtitle">Hệ thống vận tải thông minh, kết nối chủ hàng và chủ xe hiệu quả</p>
+            </header>
+
+            <div class="flex gap-4">
+                <!-- Role Selection Demo -->
+                <div class="bg-white rounded shadow p-4" style="flex: 1;">
+                    <h2 class="mb-4">Chọn vai trò</h2>
+                    <div class="flex gap-2">
+                        <button class="btn btn-primary" onclick="CirclingNavUtils.changeRole('shipper')">
+                            Chủ hàng
+                        </button>
+                        <button class="btn btn-secondary" onclick="CirclingNavUtils.changeRole('carrier')">
+                            Chủ xe
+                        </button>
+                        <button class="btn btn-secondary" onclick="CirclingNavUtils.changeRole('admin')">
+                            Admin
+                        </button>
+                    </div>
+                    <p class="mt-4 text-sm text-gray-600">
+                        Chọn vai trò để xem menu điều hướng phù hợp
+                    </p>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="bg-white rounded shadow p-4" style="flex: 1;">
+                    <h2 class="mb-4">Thao tác nhanh</h2>
+                    <div class="flex flex-col gap-2">
+                        <a href="02-dashboard-european.html" class="btn btn-primary">
+                            📊 Bảng điều khiển
+                        </a>
+                        <a href="07-orders-european.html" class="btn btn-secondary">
+                            📦 Quản lý đơn hàng
+                        </a>
+                        <a href="09-create-order-european.html" class="btn btn-secondary">
+                            ➕ Tạo đơn hàng mới
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features Section -->
+            <section class="mt-8">
+                <h2 class="text-2xl font-bold mb-6">Tính năng chính</h2>
+                <div class="flex gap-4">
+                    <div class="bg-white rounded shadow p-6" style="flex: 1;">
+                        <h3 class="text-xl font-semibold mb-3">🚚 Quản lý vận tải</h3>
+                        <p class="text-gray-600">
+                            Hệ thống quản lý toàn diện cho các đơn hàng vận tải, 
+                            từ tạo đơn đến theo dõi giao hàng.
+                        </p>
+                    </div>
+                    <div class="bg-white rounded shadow p-6" style="flex: 1;">
+                        <h3 class="text-xl font-semibold mb-3">🔨 Đấu giá thông minh</h3>
+                        <p class="text-gray-600">
+                            Hệ thống đấu giá tự động giúp chủ hàng tìm được 
+                            giá tốt nhất cho việc vận chuyển.
+                        </p>
+                    </div>
+                    <div class="bg-white rounded shadow p-6" style="flex: 1;">
+                        <h3 class="text-xl font-semibold mb-3">📱 Responsive Design</h3>
+                        <p class="text-gray-600">
+                            Giao diện tối ưu cho mọi thiết bị, từ máy tính 
+                            để bàn đến điện thoại di động.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Navigation Demo -->
+            <section class="mt-8">
+                <h2 class="text-2xl font-bold mb-6">Demo điều hướng</h2>
+                <div class="bg-white rounded shadow p-6">
+                    <h3 class="text-lg font-semibold mb-4">Các tính năng điều hướng:</h3>
+                    <ul class="space-y-2">
+                        <li>✅ <strong>Role-based Navigation:</strong> Menu thay đổi theo vai trò người dùng</li>
+                        <li>✅ <strong>Breadcrumb Navigation:</strong> Hiển thị vị trí hiện tại trong hệ thống</li>
+                        <li>✅ <strong>Active State:</strong> Tự động highlight menu item hiện tại</li>
+                        <li>✅ <strong>Responsive Design:</strong> Menu responsive cho mobile</li>
+                        <li>✅ <strong>Loading States:</strong> Hiệu ứng loading khi chuyển trang</li>
+                        <li>✅ <strong>Back Button:</strong> Chức năng quay lại trang trước</li>
+                    </ul>
+                    <div class="mt-4">
+                        <button class="btn btn-secondary" onclick="CirclingNavUtils.goBack()">
+                            ← Quay lại
+                        </button>
+                        <button class="btn btn-primary" onclick="testNavigation()">
+                            Test Navigation
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="js/navigation.js"></script>
+    <script>
+        function testNavigation() {
+            alert('Navigation system đang hoạt động!\n\n' +
+                  'Current Role: ' + window.circlingNav.currentRole + '\n' +
+                  'Current Page: ' + window.circlingNav.currentPage + '\n' +
+                  'Menu Items: ' + window.circlingNav.navigationConfig.length);
+        }
+
+        // Demo role switching with visual feedback
+        function switchRole(role) {
+            CirclingNavUtils.changeRole(role);
+            const message = document.createElement('div');
+            message.className = 'fixed top-4 right-4 bg-green-500 text-white p-3 rounded shadow-lg';
+            message.textContent = `Đã chuyển sang vai trò: ${role}`;
+            document.body.appendChild(message);
+            
+            setTimeout(() => {
+                message.remove();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
