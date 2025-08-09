@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bidding Marketplace - Circling Logistics</title>
+    <meta name="description" content="Real-time bidding marketplace for logistics jobs. Connect cargo owners with fleet operators across Europe.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Design System -->
+    <link rel="stylesheet" href="design-system-european.css">
+    
+    <style>
+        /* Bidding page specific styles */
+        .bidding-layout {
+            display: flex;
+            min-height: 100vh;
+            background-color: var(--color-background-light);
+        }
+        
+        .sidebar {
+            width: 280px;
+            background: var(--color-background);
+            border-right: 1px solid var(--color-border);
+            flex-shrink: 0;
+        }
+        
+        .sidebar-header {
+            padding: var(--space-6);
+            border-bottom: 1px solid var(--color-border);
+        }
+        
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-primary);
+            text-decoration: none;
+        }
+        
+        .sidebar-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: var(--font-weight-bold);
+        }
+        
+        .main-content {
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .top-nav {
+            background: var(--color-background);
+            border-bottom: 1px solid var(--color-border);
+            padding: var(--space-4) var(--space-6);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+        }
+        
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-full);
+            background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-light) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: var(--font-weight-semibold);
+            cursor: pointer;
+        }
+        
+        .bidding-content {
+            flex: 1;
+            padding: var(--space-6);
+            overflow-y: auto;
+        }
+        
+        .page-header {
+            margin-bottom: var(--space-8);
+        }
+        
+        .page-title {
+            font-size: var(--font-size-3xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-2);
+        }
+        
+        .page-subtitle {
+            color: var(--color-text-secondary);
+            font-size: var(--font-size-lg);
+        }
+        
+        .filters-bar {
+            background: var(--color-background);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            margin-bottom: var(--space-6);
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-4);
+            align-items: center;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-1);
+        }
+        
+        .filter-label {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            color: var(--color-text-secondary);
+        }
+        
+        .filter-select {
+            min-width: 150px;
+        }
+        
+        .stats-bar {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+            color: white;
+            padding: var(--space-4) var(--space-6);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--space-6);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--space-1);
+        }
+        
+        .stat-label {
+            font-size: var(--font-size-sm);
+            opacity: 0.9;
+        }
+        
+        .jobs-grid {
+            display: grid;
+            gap: var(--space-6);
+        }
+        
+        .job-card {
+            background: var(--color-background);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: all var(--transition-base);
+        }
+        
+        .job-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+        
+        .job-header {
+            padding: var(--space-6);
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        
+        .job-info {
+            flex: 1;
+        }
+        
+        .job-id {
+            font-family: var(--font-family-mono);
+            font-size: var(--font-size-sm);
+            color: var(--color-primary);
+            font-weight: var(--font-weight-medium);
+            margin-bottom: var(--space-2);
+        }
+        
+        .job-route {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-2);
+        }
+        
+        .job-details {
+            display: flex;
+            gap: var(--space-4);
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+        }
+        
+        .job-urgency {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: var(--space-2);
+        }
+        
+        .urgency-badge {
+            padding: var(--space-1) var(--space-3);
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-medium);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .urgency-high {
+            background: var(--color-secondary);
+            color: white;
+        }
+        
+        .urgency-medium {
+            background: var(--color-warning);
+            color: white;
+        }
+        
+        .urgency-low {
+            background: var(--color-accent);
+            color: white;
+        }
+        
+        .time-remaining {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            display: flex;
+            align-items: center;
+            gap: var(--space-1);
+        }
+        
+        .job-body {
+            padding: var(--space-6);
+        }
+        
+        .cargo-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: var(--space-4);
+            margin-bottom: var(--space-6);
+        }
+        
+        .cargo-detail {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-1);
+        }
+        
+        .cargo-label {
+            font-size: var(--font-size-xs);
+            color: var(--color-text-secondary);
+            text-transform: uppercase;
+            font-weight: var(--font-weight-medium);
+            letter-spacing: 0.05em;
+        }
+        
+        .cargo-value {
+            font-size: var(--font-size-base);
+            color: var(--color-text-primary);
+            font-weight: var(--font-weight-medium);
+        }
+        
+        .bidding-section {
+            border-top: 1px solid var(--color-border);
+            padding-top: var(--space-6);
+        }
+        
+        .current-bids {
+            margin-bottom: var(--space-6);
+        }
+        
+        .bids-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-4);
+        }
+        
+        .section-title {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+        }
+        
+        .leading-bid {
+            background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-light) 100%);
+            color: white;
+            padding: var(--space-1) var(--space-3);
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+        }
+        
+        .bids-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-3);
+            margin-bottom: var(--space-6);
+        }
+        
+        .bid-item {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            padding: var(--space-3) var(--space-4);
+            background: var(--color-background-light);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border-light);
+        }
+        
+        .bid-info {
+            flex: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .bidder-info {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+        }
+        
+        .bidder-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-full);
+            background: var(--color-primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-semibold);
+        }
+        
+        .bidder-details {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .bidder-name {
+            font-weight: var(--font-weight-medium);
+            color: var(--color-text-primary);
+            font-size: var(--font-size-sm);
+        }
+        
+        .bidder-rating {
+            font-size: var(--font-size-xs);
+            color: var(--color-text-secondary);
+        }
+        
+        .bid-amount {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-primary);
+        }
+        
+        .bid-form {
+            background: var(--color-background-light);
+            padding: var(--space-6);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-border-light);
+        }
+        
+        .bid-input-group {
+            display: flex;
+            gap: var(--space-3);
+            align-items: end;
+            margin-bottom: var(--space-4);
+        }
+        
+        .bid-input-wrapper {
+            flex: 1;
+        }
+        
+        .bid-input {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            text-align: center;
+        }
+        
+        .quick-bid-buttons {
+            display: flex;
+            gap: var(--space-2);
+            margin-bottom: var(--space-4);
+        }
+        
+        .quick-bid-btn {
+            flex: 1;
+            padding: var(--space-2);
+            border: 1px solid var(--color-border);
+            background: var(--color-background);
+            border-radius: var(--radius-base);
+            font-size: var(--font-size-sm);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+        
+        .quick-bid-btn:hover {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+        
+        .bid-actions {
+            display: flex;
+            gap: var(--space-3);
+        }
+        
+        /* Market insights sidebar */
+        .market-insights {
+            background: var(--color-background);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            margin-bottom: var(--space-6);
+        }
+        
+        .insight-item {
+            padding: var(--space-3) 0;
+            border-bottom: 1px solid var(--color-border-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .insight-item:last-child {
+            border-bottom: none;
+        }
+        
+        .insight-label {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+        }
+        
+        .insight-value {
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+        }
+        
+        /* Mobile responsiveness */
+        @media (max-width: 1024px) {
+            .bidding-layout {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+            }
+            
+            .sidebar-nav {
+                display: flex;
+                overflow-x: auto;
+                padding: var(--space-2) var(--space-4);
+            }
+            
+            .sidebar-nav-item {
+                margin-bottom: 0;
+                margin-right: var(--space-2);
+            }
+            
+            .filters-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .stats-bar {
+                flex-direction: column;
+                gap: var(--space-4);
+            }
+            
+            .cargo-info {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .bidding-content {
+                padding: var(--space-4);
+            }
+            
+            .filters-bar {
+                padding: var(--space-4);
+            }
+            
+            .job-header {
+                flex-direction: column;
+                gap: var(--space-4);
+            }
+            
+            .job-urgency {
+                align-items: flex-start;
+                flex-direction: row;
+            }
+            
+            .cargo-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .bid-input-group {
+                flex-direction: column;
+            }
+            
+            .quick-bid-buttons {
+                flex-direction: column;
+            }
+            
+            .bid-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Skip link for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <div class="bidding-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" role="navigation" aria-label="Main navigation">
+            <div class="sidebar-header">
+                <a href="06-home-page-european.html" class="sidebar-logo">
+                    <div class="sidebar-logo-icon">C</div>
+                    <span>Circling Logistics</span>
+                </a>
+            </div>
+            
+            <nav class="sidebar-nav" role="navigation">
+                <ul class="sidebar-nav">
+                    <li class="sidebar-nav-item">
+                        <a href="02-dashboard-european.html" class="sidebar-nav-link">
+                            <span>📊</span>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="#" class="sidebar-nav-link active">
+                            <span>🎯</span>
+                            <span>Bidding</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="07-orders-european.html" class="sidebar-nav-link">
+                            <span>📦</span>
+                            <span>Orders</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="#" class="sidebar-nav-link">
+                            <span>📊</span>
+                            <span>Analytics</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="#" class="sidebar-nav-link">
+                            <span>💬</span>
+                            <span>Messages</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="#" class="sidebar-nav-link">
+                            <span>⚙️</span>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Navigation -->
+            <header class="top-nav">
+                <nav class="breadcrumb" aria-label="Breadcrumb">
+                    <span>Marketplace</span>
+                    <span class="breadcrumb-separator">/</span>
+                    <span>Bidding</span>
+                </nav>
+                
+                <div class="user-menu">
+                    <div class="user-avatar" title="Current User">
+                        JD
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Bidding Content -->
+            <div class="bidding-content" id="main-content">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <h1 class="page-title">Live Bidding Marketplace 🎯</h1>
+                    <p class="page-subtitle">Discover and bid on logistics jobs across Europe</p>
+                </div>
+                
+                <!-- Filters -->
+                <div class="filters-bar">
+                    <div class="filter-group">
+                        <label class="filter-label" for="route-filter">Route</label>
+                        <select class="form-select filter-select" id="route-filter">
+                            <option value="">All Routes</option>
+                            <option value="germany">Germany</option>
+                            <option value="netherlands">Netherlands</option>
+                            <option value="france">France</option>
+                            <option value="italy">Italy</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label class="filter-label" for="cargo-type-filter">Cargo Type</label>
+                        <select class="form-select filter-select" id="cargo-type-filter">
+                            <option value="">All Types</option>
+                            <option value="electronics">Electronics</option>
+                            <option value="automotive">Automotive</option>
+                            <option value="food">Food & Beverage</option>
+                            <option value="textiles">Textiles</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label class="filter-label" for="urgency-filter">Urgency</label>
+                        <select class="form-select filter-select" id="urgency-filter">
+                            <option value="">All</option>
+                            <option value="high">High Priority</option>
+                            <option value="medium">Medium</option>
+                            <option value="low">Standard</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label class="filter-label" for="budget-filter">Budget Range</label>
+                        <select class="form-select filter-select" id="budget-filter">
+                            <option value="">Any Budget</option>
+                            <option value="1000-2000">€1,000 - €2,000</option>
+                            <option value="2000-5000">€2,000 - €5,000</option>
+                            <option value="5000+">€5,000+</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="applyFilters()">Apply Filters</button>
+                </div>
+                
+                <!-- Market Stats -->
+                <div class="stats-bar">
+                    <div class="stat-item">
+                        <div class="stat-value">127</div>
+                        <div class="stat-label">Active Jobs</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">€2,450</div>
+                        <div class="stat-label">Avg. Job Value</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">34</div>
+                        <div class="stat-label">Active Bidders</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">12min</div>
+                        <div class="stat-label">Avg. Response Time</div>
+                    </div>
+                </div>
+                
+                <!-- Market Insights -->
+                <div class="market-insights">
+                    <h3 class="section-title mb-4">Market Insights</h3>
+                    <div class="insight-item">
+                        <span class="insight-label">Most Popular Route</span>
+                        <span class="insight-value">Amsterdam → Berlin</span>
+                    </div>
+                    <div class="insight-item">
+                        <span class="insight-label">Peak Demand Time</span>
+                        <span class="insight-value">Monday 08:00 - 10:00</span>
+                    </div>
+                    <div class="insight-item">
+                        <span class="insight-label">Average Bid Competition</span>
+                        <span class="insight-value">4.2 bids per job</span>
+                    </div>
+                    <div class="insight-item">
+                        <span class="insight-label">Success Rate</span>
+                        <span class="insight-value">87% job completion</span>
+                    </div>
+                </div>
+                
+                <!-- Jobs Grid -->
+                <div class="jobs-grid">
+                    <!-- Job Card 1 -->
+                    <div class="job-card">
+                        <div class="job-header">
+                            <div class="job-info">
+                                <div class="job-id">#JOB-2024-089</div>
+                                <div class="job-route">Amsterdam → Munich</div>
+                                <div class="job-details">
+                                    <span>📅 Mar 15, 2024</span>
+                                    <span>📏 845 km</span>
+                                    <span>⏱️ 8-10 hours</span>
+                                </div>
+                            </div>
+                            <div class="job-urgency">
+                                <span class="urgency-badge urgency-high">High Priority</span>
+                                <div class="time-remaining">
+                                    <span>⏰</span>
+                                    <span>Expires in 2h 34m</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="job-body">
+                            <div class="cargo-info">
+                                <div class="cargo-detail">
+                                    <span class="cargo-label">Cargo Type</span>
+                                    <span class="cargo-value">Electronics</span>
+                                </div>
+                                <div class="cargo-detail">
+                                    <span class="cargo-label">Weight</span>
+                                    <span class="cargo-value">15.2 tons</span>
+                                </div>
+                                <div class="cargo-detail">
+                                    <span class="cargo-label">Vehicle Type</span>
+                                    <span class="cargo-value">Refrigerated</span>
+                                </div>
+                                <div class="cargo-detail">
+                                    <span class="cargo-label">Budget Range</span>
+                                    <span class="cargo-value">€2,800 - €3,200</span>
+                                </div>
+                            </div>
+                            
+                            <div class="bidding-section">
+                                <div class="current-bids">
+                                    <div class="bids-header">
+                                        <h4 class="section-title">Current Bids (7)</h4>
+                                        <span class="leading-bid">Leading: €2,650</span>
+                                    </div>
+                                    
+                                    <div class="bids-list">
+                                        <div class="bid-item">
+                                            <div class="bid-info">
+                                                <div class="bidder-info">
+                                                    <div class="bidder-avatar">MS</div>
+                                                    <div class="bidder-details">
+                                                        <div class="bidder-name">Mueller Spedition</div>
+                                                        <div class="bidder-rating">⭐ 4.8 (234 jobs)</div>
+                                                    </div>
+                                                </div>
+                                                <div class="bid-amount">€2,650</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="bid-item">
+                                            <div class="bid-info">
+                                                <div class="bidder-info">
+                                                    <div class="bidder-avatar">EL</div>
+                                                    <div class="bidder-details">
+                                                        <div class="bidder-name">EuroLogistics</div>
+                                                        <div class="bidder-rating">⭐ 4.6 (189 jobs)</div>
+                                                    </div>
+                                                </div>
+                                                <div class="bid-amount">€2,750</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="bid-item">
+                                            <div class="bid-info">
+                                                <div class="bidder-info">
+                                                    <div class="bidder-avatar">FL</div>
+                                                    <div class="bidder-details">
+                                                        <div class="bidder-name">FastLine Transport</div>
+                                                        <div class="bidder-rating">⭐ 4.4 (156 jobs)</div>
+                                                    </div>
+                                                </div>
+                                                <div class="bid-amount">€2,890</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="bid-form">
+                                    <h4 class="section-title mb-4">Place Your Bid</h4>
+                                    
+                                    <div class="bid-input-group">
+                                        <div class="bid-input-wrapper">
+                                            <label class="form-label" for="bid-amount-1">Your Bid (EUR)</label>
+                                            <input type="number" class="form-input bid-input" id="bid-amount-1" value="2600" min="1000" max="5000">
+                                        </div>
+                                        <button class="btn btn-primary" onclick="placeBid('JOB-2024-089', this)">Place Bid</button>
+                                    </div>
+                                    
+                                    <div class="quick-bid-buttons">
+                                        <button class="quick-bid-btn" onclick="quickBid(2550, 'bid-amount-1')">€2,550</button>
+                                        <button class="quick-bid-btn" onclick="quickBid(2600, 'bid-amount-1')">€2,600</button>
+                                        <button class="quick-bid-btn" onclick="quickBid(2640, 'bid-amount-1')">€2,640</button>
+                                    </div>
+                                    
+                                    <div class="bid-actions">
+                                        <button class="btn btn-secondary btn-full" onclick="saveForLater('JOB-2024-089')">Save for Later</button>
+                                        <button class="btn btn-ghost btn-full" onclick="viewJobDetails('JOB-2024-089')">View Full Details</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Job Card 2 -->
+                    <div class="job-card">
+                        <div class="job-header">
+                            <div class="job-info">
+                                <div class="job-id">#JOB-2024-090</div>
+                                <div class="job-route">Hamburg → Paris</div>
+                                <div class="job-details">
+                                    <span>📅 Mar 16, 2024</span>
+                                    <span>📏 920 km</span>
+                                    <span>⏱️ 9-11 hours</span>
+                                </div>
+                            </div>
+                            <div class="job-urgency">
+                                <span class="urgency-badge urgency-medium">Medium Priority</span>
+                                <div class="time-remaining">
+                                    <span>⏰</span>
+                                    <span>Expires in 5h 12m</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="job-body">
+                            <div class="cargo-info">
+                                <div class="cargo-detail">
+                                    <span class="cargo-label">Cargo Type</span>
+                                    <span class="cargo-value">Automotive Parts</span>
+                                </div>
+                                <div class="cargo-detail">
+                                    <span class="cargo-label">Weight</span>
+                                    <span class="cargo-value">22.8 tons</span>
+                                </div>
+                                <div class="cargo-detail">
+                                    <span class="cargo-label">Vehicle Type</span>
+                                    <span class="cargo-value">Standard Truck</span>
+                                </div>
+                                <div class="cargo-detail">
+                                    <span class="cargo-label">Budget Range</span>
+                                    <span class="cargo-value">€3,200 - €3,800</span>
+                                </div>
+                            </div>
+                            
+                            <div class="bidding-section">
+                                <div class="current-bids">
+                                    <div class="bids-header">
+                                        <h4 class="section-title">Current Bids (3)</h4>
+                                        <span class="leading-bid">Leading: €3,150</span>
+                                    </div>
+                                    
+                                    <div class="bids-list">
+                                        <div class="bid-item">
+                                            <div class="bid-info">
+                                                <div class="bidder-info">
+                                                    <div class="bidder-avatar">GT</div>
+                                                    <div class="bidder-details">
+                                                        <div class="bidder-name">German Transport Co.</div>
+                                                        <div class="bidder-rating">⭐ 4.9 (312 jobs)</div>
+                                                    </div>
+                                                </div>
+                                                <div class="bid-amount">€3,150</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="bid-item">
+                                            <div class="bid-info">
+                                                <div class="bidder-info">
+                                                    <div class="bidder-avatar">PR</div>
+                                                    <div class="bidder-details">
+                                                        <div class="bidder-name">Paris Routes</div>
+                                                        <div class="bidder-rating">⭐ 4.5 (198 jobs)</div>
+                                                    </div>
+                                                </div>
+                                                <div class="bid-amount">€3,280</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="bid-form">
+                                    <h4 class="section-title mb-4">Place Your Bid</h4>
+                                    
+                                    <div class="bid-input-group">
+                                        <div class="bid-input-wrapper">
+                                            <label class="form-label" for="bid-amount-2">Your Bid (EUR)</label>
+                                            <input type="number" class="form-input bid-input" id="bid-amount-2" value="3100" min="2000" max="5000">
+                                        </div>
+                                        <button class="btn btn-primary" onclick="placeBid('JOB-2024-090', this)">Place Bid</button>
+                                    </div>
+                                    
+                                    <div class="quick-bid-buttons">
+                                        <button class="quick-bid-btn" onclick="quickBid(3100, 'bid-amount-2')">€3,100</button>
+                                        <button class="quick-bid-btn" onclick="quickBid(3140, 'bid-amount-2')">€3,140</button>
+                                        <button class="quick-bid-btn" onclick="quickBid(3200, 'bid-amount-2')">€3,200</button>
+                                    </div>
+                                    
+                                    <div class="bid-actions">
+                                        <button class="btn btn-secondary btn-full" onclick="saveForLater('JOB-2024-090')">Save for Later</button>
+                                        <button class="btn btn-ghost btn-full" onclick="viewJobDetails('JOB-2024-090')">View Full Details</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Job Card 3 -->
+                    <div class="job-card">
+                        <div class="job-header">
+                            <div class="job-info">
+                                <div class="job-id">#JOB-2024-091</div>
+                                <div class="job-route">Rotterdam → Milan</div>
+                                <div class="job-details">
+                                    <span>📅 Mar 17, 2024</span>
+                                    <span>📏 1,240 km</span>
+                                    <span>⏱️ 12-14 hours</span>
+                                </div>
+                            </div>
+                            <div class="job-urgency">
+                                <span class="urgency-badge urgency-low">Standard</span>
+                                <div class="time-remaining">
+                                    <span>⏰</span>
+                                    <span>Expires in 1d 3h</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="job-body">
+                            <div class="cargo-info">
+                                <div class="cargo-detail">
+                                    <span class="cargo-label">Cargo Type</span>
+                                    <span class="cargo-value">Textiles</span>
+                                </div>
+                                <div class="cargo-detail">
+                                    <span class="cargo-label">Weight</span>
+                                    <span class="cargo-value">18.5 tons</span>
+                                </div>
+                                <div class="cargo-detail">
+                                    <span class="cargo-label">Vehicle Type</span>
+                                    <span class="cargo-value">Standard Truck</span>
+                                </div>
+                                <div class="cargo-detail">
+                                    <span class="cargo-label">Budget Range</span>
+                                    <span class="cargo-value">€4,200 - €4,800</span>
+                                </div>
+                            </div>
+                            
+                            <div class="bidding-section">
+                                <div class="current-bids">
+                                    <div class="bids-header">
+                                        <h4 class="section-title">Current Bids (2)</h4>
+                                        <span class="leading-bid">Leading: €4,100</span>
+                                    </div>
+                                    
+                                    <div class="bids-list">
+                                        <div class="bid-item">
+                                            <div class="bid-info">
+                                                <div class="bidder-info">
+                                                    <div class="bidder-avatar">IL</div>
+                                                    <div class="bidder-details">
+                                                        <div class="bidder-name">Italia Logistics</div>
+                                                        <div class="bidder-rating">⭐ 4.7 (267 jobs)</div>
+                                                    </div>
+                                                </div>
+                                                <div class="bid-amount">€4,100</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="bid-item">
+                                            <div class="bid-info">
+                                                <div class="bidder-info">
+                                                    <div class="bidder-avatar">ND</div>
+                                                    <div class="bidder-details">
+                                                        <div class="bidder-name">Netherlands Direct</div>
+                                                        <div class="bidder-rating">⭐ 4.3 (145 jobs)</div>
+                                                    </div>
+                                                </div>
+                                                <div class="bid-amount">€4,350</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="bid-form">
+                                    <h4 class="section-title mb-4">Place Your Bid</h4>
+                                    
+                                    <div class="bid-input-group">
+                                        <div class="bid-input-wrapper">
+                                            <label class="form-label" for="bid-amount-3">Your Bid (EUR)</label>
+                                            <input type="number" class="form-input bid-input" id="bid-amount-3" value="4050" min="3000" max="6000">
+                                        </div>
+                                        <button class="btn btn-primary" onclick="placeBid('JOB-2024-091', this)">Place Bid</button>
+                                    </div>
+                                    
+                                    <div class="quick-bid-buttons">
+                                        <button class="quick-bid-btn" onclick="quickBid(4000, 'bid-amount-3')">€4,000</button>
+                                        <button class="quick-bid-btn" onclick="quickBid(4050, 'bid-amount-3')">€4,050</button>
+                                        <button class="quick-bid-btn" onclick="quickBid(4090, 'bid-amount-3')">€4,090</button>
+                                    </div>
+                                    
+                                    <div class="bid-actions">
+                                        <button class="btn btn-secondary btn-full" onclick="saveForLater('JOB-2024-091')">Save for Later</button>
+                                        <button class="btn btn-ghost btn-full" onclick="viewJobDetails('JOB-2024-091')">View Full Details</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        // Bidding marketplace functionality
+        class BiddingMarketplace {
+            constructor() {
+                this.activeBids = new Map();
+                this.savedJobs = new Set();
+                this.init();
+            }
+            
+            init() {
+                // Initialize real-time updates
+                this.initRealtimeUpdates();
+                
+                // Initialize filters
+                this.initFilters();
+                
+                // Check authentication and set user context
+                this.checkAuth();
+                
+                // Initialize countdown timers
+                this.initCountdowns();
+            }
+            
+            checkAuth() {
+                const isAuthenticated = sessionStorage.getItem('isAuthenticated');
+                const userRole = sessionStorage.getItem('userRole');
+                
+                if (!isAuthenticated) {
+                    window.location.href = '01-login-european.html';
+                    return;
+                }
+                
+                // Update UI based on user role
+                this.updateUserContext(userRole);
+            }
+            
+            updateUserContext(role) {
+                const userAvatar = document.querySelector('.user-avatar');
+                if (userAvatar) {
+                    if (role === 'cargo-owner') {
+                        userAvatar.textContent = 'JD';
+                        userAvatar.title = 'John Doe - Cargo Owner';
+                        userAvatar.style.background = 'linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-light) 100%)';
+                    } else if (role === 'fleet-owner') {
+                        userAvatar.textContent = 'MS';
+                        userAvatar.title = 'Maria Schmidt - Fleet Owner';
+                        userAvatar.style.background = 'linear-gradient(135deg, var(--color-warning) 0%, var(--color-warning-light) 100%)';
+                    }
+                }
+                
+                // Update navigation based on role
+                this.updateNavigation(role);
+            }
+            
+            updateNavigation(role) {
+                const dashboardLink = document.querySelector('.sidebar-nav-link[href*="dashboard"]');
+                if (dashboardLink && role === 'fleet-owner') {
+                    dashboardLink.href = '03-dashboard-fleet-european.html';
+                } else if (dashboardLink) {
+                    dashboardLink.href = '02-dashboard-european.html';
+                }
+            }
+            
+            initRealtimeUpdates() {
+                // Simulate real-time bid updates
+                setInterval(() => {
+                    this.updateBidCounters();
+                    this.simulateNewBids();
+                }, 15000); // Update every 15 seconds
+                
+                // Update countdown timers every minute
+                setInterval(() => {
+                    this.updateCountdowns();
+                }, 60000);
+            }
+            
+            initCountdowns() {
+                const timeElements = document.querySelectorAll('.time-remaining span:last-child');
+                timeElements.forEach(element => {
+                    // Store initial countdown values
+                    element.dataset.originalText = element.textContent;
+                });
+            }
+            
+            updateCountdowns() {
+                const timeElements = document.querySelectorAll('.time-remaining span:last-child');
+                timeElements.forEach(element => {
+                    const text = element.textContent;
+                    if (text.includes('h') && text.includes('m')) {
+                        // Simulate countdown
+                        const match = text.match(/(\d+)h (\d+)m/);
+                        if (match) {
+                            let hours = parseInt(match[1]);
+                            let minutes = parseInt(match[2]) - 1;
+                            
+                            if (minutes < 0) {
+                                hours -= 1;
+                                minutes = 59;
+                            }
+                            
+                            if (hours >= 0) {
+                                element.textContent = `Expires in ${hours}h ${minutes}m`;
+                            } else {
+                                element.textContent = 'Expired';
+                                element.style.color = 'var(--color-secondary)';
+                            }
+                        }
+                    }
+                });
+            }
+            
+            updateBidCounters() {
+                // Simulate occasional new bids
+                const bidHeaders = document.querySelectorAll('.bids-header h4');
+                bidHeaders.forEach(header => {
+                    if (Math.random() > 0.8) {
+                        const match = header.textContent.match(/\((\d+)\)/);
+                        if (match) {
+                            const currentCount = parseInt(match[1]);
+                            const newCount = currentCount + 1;
+                            header.textContent = header.textContent.replace(/\(\d+\)/, `(${newCount})`);
+                        }
+                    }
+                });
+            }
+            
+            simulateNewBids() {
+                // Simulate new leading bids occasionally
+                if (Math.random() > 0.9) {
+                    const leadingBids = document.querySelectorAll('.leading-bid');
+                    leadingBids.forEach(badge => {
+                        const match = badge.textContent.match(/€([\d,]+)/);
+                        if (match) {
+                            const currentAmount = parseInt(match[1].replace(',', ''));
+                            const reduction = Math.floor(Math.random() * 100) + 50;
+                            const newAmount = currentAmount - reduction;
+                            badge.textContent = `Leading: €${newAmount.toLocaleString()}`;
+                        }
+                    });
+                }
+            }
+            
+            initFilters() {
+                const filterElements = document.querySelectorAll('.filter-select');
+                filterElements.forEach(filter => {
+                    filter.addEventListener('change', this.handleFilterChange.bind(this));
+                });
+            }
+            
+            handleFilterChange() {
+                // In a real app, this would filter the jobs
+                console.log('Filters changed - would update job listings');
+            }
+        }
+        
+        // Global functions for bidding actions
+        function quickBid(amount, inputId) {
+            const input = document.getElementById(inputId);
+            if (input) {
+                input.value = amount;
+                input.focus();
+            }
+        }
+        
+        function placeBid(jobId, button) {
+            const card = button.closest('.job-card');
+            const bidInput = card.querySelector('.bid-input');
+            const amount = parseInt(bidInput.value);
+            
+            if (!amount || amount < 1000) {
+                alert('Please enter a valid bid amount (minimum €1,000)');
+                return;
+            }
+            
+            // Simulate bid placement
+            button.textContent = 'Placing Bid...';
+            button.disabled = true;
+            
+            setTimeout(() => {
+                // Success feedback
+                button.textContent = '✓ Bid Placed!';
+                button.className = 'btn btn-success';
+                
+                // Add new bid to the list
+                addBidToList(card, amount);
+                
+                // Reset button after delay
+                setTimeout(() => {
+                    button.textContent = 'Place Bid';
+                    button.className = 'btn btn-primary';
+                    button.disabled = false;
+                }, 3000);
+                
+                // Show success notification
+                showNotification(`Your bid of €${amount.toLocaleString()} has been placed for ${jobId}`, 'success');
+            }, 1500);
+        }
+        
+        function addBidToList(card, amount) {
+            const bidsList = card.querySelector('.bids-list');
+            const userRole = sessionStorage.getItem('userRole');
+            const userName = userRole === 'fleet-owner' ? 'Your Fleet' : 'Your Company';
+            const userInitials = userRole === 'fleet-owner' ? 'MS' : 'JD';
+            
+            // Create new bid item
+            const newBid = document.createElement('div');
+            newBid.className = 'bid-item';
+            newBid.style.border = '2px solid var(--color-primary)';
+            newBid.innerHTML = `
+                <div class="bid-info">
+                    <div class="bidder-info">
+                        <div class="bidder-avatar" style="background: var(--color-primary);">${userInitials}</div>
+                        <div class="bidder-details">
+                            <div class="bidder-name">${userName}</div>
+                            <div class="bidder-rating">⭐ New Bid</div>
+                        </div>
+                    </div>
+                    <div class="bid-amount">€${amount.toLocaleString()}</div>
+                </div>
+            `;
+            
+            // Insert at the top of the bids list
+            bidsList.insertBefore(newBid, bidsList.firstChild);
+            
+            // Update leading bid if this is the lowest
+            const leadingBadge = card.querySelector('.leading-bid');
+            const currentLeading = parseInt(leadingBadge.textContent.match(/€([\d,]+)/)[1].replace(',', ''));
+            if (amount < currentLeading) {
+                leadingBadge.textContent = `Leading: €${amount.toLocaleString()}`;
+            }
+        }
+        
+        function saveForLater(jobId) {
+            const marketplace = window.marketplace;
+            if (marketplace) {
+                marketplace.savedJobs.add(jobId);
+                showNotification(`Job ${jobId} saved to your watchlist`, 'info');
+            }
+        }
+        
+        function viewJobDetails(jobId) {
+            // In a real app, this would navigate to a detailed job view
+            showNotification(`Opening detailed view for ${jobId}...`, 'info');
+            setTimeout(() => {
+                window.location.href = '08-order-details-european.html';
+            }, 1000);
+        }
+        
+        function applyFilters() {
+            const filters = {
+                route: document.getElementById('route-filter').value,
+                cargoType: document.getElementById('cargo-type-filter').value,
+                urgency: document.getElementById('urgency-filter').value,
+                budget: document.getElementById('budget-filter').value
+            };
+            
+            console.log('Applying filters:', filters);
+            showNotification('Filters applied - refreshing job listings...', 'info');
+            
+            // In a real app, this would filter and reload the jobs
+            setTimeout(() => {
+                showNotification('Job listings updated based on your filters', 'success');
+            }, 1500);
+        }
+        
+        function showNotification(message, type = 'info') {
+            // Simple notification system
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--color-${type === 'success' ? 'accent' : type === 'error' ? 'secondary' : 'primary'});
+                color: white;
+                padding: 16px 24px;
+                border-radius: 8px;
+                box-shadow: var(--shadow-lg);
+                z-index: 1000;
+                max-width: 400px;
+                font-size: 14px;
+                font-weight: 500;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Auto remove after 4 seconds
+            setTimeout(() => {
+                notification.remove();
+            }, 4000);
+        }
+        
+        // Initialize marketplace when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            window.marketplace = new BiddingMarketplace();
+        });
+        
+        // Accessibility enhancements
+        document.addEventListener('keydown', (e) => {
+            // Quick bid shortcuts
+            if (e.altKey) {
+                switch (e.key) {
+                    case '1':
+                        e.preventDefault();
+                        const firstQuickBid = document.querySelector('.quick-bid-btn');
+                        if (firstQuickBid) firstQuickBid.click();
+                        break;
+                    case 'b':
+                        e.preventDefault();
+                        const firstBidBtn = document.querySelector('.btn[onclick*="placeBid"]');
+                        if (firstBidBtn) firstBidBtn.click();
+                        break;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

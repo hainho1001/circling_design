@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Circling Logistics</title>
+    <meta name="description" content="Login to your Circling Logistics account. Choose between cargo owner and fleet owner access.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.js">
+    
+    <!-- Design System -->
+    <link rel="stylesheet" href="design-system-european.css">
+    
+    <style>
+        /* Page-specific styles */
+        .login-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-4);
+        }
+        
+        .login-card {
+            background: var(--color-background);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
+            width: 100%;
+            max-width: 480px;
+            overflow: hidden;
+        }
+        
+        .login-header {
+            background: linear-gradient(135deg, var(--color-neutral-50) 0%, var(--color-background) 100%);
+            padding: var(--space-8);
+            text-align: center;
+            border-bottom: 1px solid var(--color-border-light);
+        }
+        
+        .login-logo {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto var(--space-4);
+            color: white;
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-bold);
+        }
+        
+        .role-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-3);
+            margin-bottom: var(--space-6);
+        }
+        
+        .role-option {
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .role-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .role-card {
+            background: var(--color-background);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-4);
+            text-align: center;
+            transition: all var(--transition-base);
+            cursor: pointer;
+        }
+        
+        .role-card:hover {
+            border-color: var(--color-primary-light);
+            background: var(--color-neutral-50);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .role-option input[type="radio"]:checked + .role-card {
+            border-color: var(--color-primary);
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+            color: white;
+        }
+        
+        .role-option input[type="radio"]:checked + .role-card .role-icon {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .role-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--color-neutral-100);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto var(--space-3);
+            font-size: var(--font-size-xl);
+            transition: background-color var(--transition-base);
+        }
+        
+        .role-title {
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-semibold);
+            margin-bottom: var(--space-1);
+        }
+        
+        .role-description {
+            font-size: var(--font-size-xs);
+            opacity: 0.8;
+        }
+        
+        .login-form {
+            padding: var(--space-8);
+        }
+        
+        .form-floating {
+            position: relative;
+        }
+        
+        .form-floating input {
+            padding-top: var(--space-6);
+            padding-bottom: var(--space-2);
+        }
+        
+        .form-floating label {
+            position: absolute;
+            top: 0;
+            left: var(--space-3);
+            font-size: var(--font-size-xs);
+            color: var(--color-text-secondary);
+            transition: all var(--transition-fast);
+            pointer-events: none;
+            transform: translateY(var(--space-4));
+        }
+        
+        .form-floating input:focus + label,
+        .form-floating input:not(:placeholder-shown) + label {
+            transform: translateY(var(--space-2));
+            font-size: var(--font-size-xs);
+            color: var(--color-primary);
+        }
+        
+        .forgot-password {
+            text-align: right;
+            margin-top: var(--space-2);
+        }
+        
+        .forgot-password a {
+            font-size: var(--font-size-sm);
+            color: var(--color-primary);
+            text-decoration: none;
+        }
+        
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+        
+        .login-footer {
+            background: var(--color-background-light);
+            padding: var(--space-6);
+            text-align: center;
+            border-top: 1px solid var(--color-border-light);
+        }
+        
+        .signup-link {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+        }
+        
+        .signup-link a {
+            color: var(--color-primary);
+            font-weight: var(--font-weight-medium);
+            text-decoration: none;
+        }
+        
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .features-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-4);
+            margin-top: var(--space-6);
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            font-size: var(--font-size-sm);
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .feature-icon {
+            width: 16px;
+            height: 16px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-base);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-xs);
+        }
+        
+        /* Loading state */
+        .btn.loading {
+            position: relative;
+            color: transparent;
+        }
+        
+        .btn.loading::after {
+            content: "";
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            top: 50%;
+            left: 50%;
+            margin-left: -8px;
+            margin-top: -8px;
+            border: 2px solid transparent;
+            border-top-color: currentColor;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        /* Error states */
+        .error-message {
+            background: rgba(220, 38, 38, 0.1);
+            border: 1px solid var(--color-error);
+            color: var(--color-error);
+            padding: var(--space-3);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-sm);
+            margin-bottom: var(--space-4);
+            display: none;
+        }
+        
+        .error-message.show {
+            display: block;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 640px) {
+            .login-container {
+                padding: var(--space-2);
+            }
+            
+            .login-header,
+            .login-form {
+                padding: var(--space-6);
+            }
+            
+            .role-selector {
+                grid-template-columns: 1fr;
+            }
+            
+            .features-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Skip link for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <div class="login-container">
+        <div class="login-card">
+            <!-- Header -->
+            <div class="login-header">
+                <div class="login-logo" aria-label="Circling Logistics Logo">
+                    C
+                </div>
+                <h1 class="text-2xl font-bold text-primary mb-2">Welcome Back</h1>
+                <p class="text-secondary mb-0">Sign in to your Circling Logistics account</p>
+            </div>
+            
+            <!-- Login Form -->
+            <form class="login-form" id="loginForm" novalidate>
+                <main id="main-content">
+                    <!-- Error Message -->
+                    <div class="error-message" id="errorMessage" role="alert" aria-live="polite">
+                        <strong>Login Failed:</strong> <span id="errorText"></span>
+                    </div>
+                    
+                    <!-- Role Selection -->
+                    <fieldset class="form-group">
+                        <legend class="form-label">Select your role</legend>
+                        <div class="role-selector">
+                            <div class="role-option">
+                                <input type="radio" name="role" value="cargo-owner" id="cargo-owner" required>
+                                <label for="cargo-owner" class="role-card">
+                                    <div class="role-icon">📦</div>
+                                    <div class="role-title">Cargo Owner</div>
+                                    <div class="role-description">Ship your goods efficiently</div>
+                                </label>
+                            </div>
+                            <div class="role-option">
+                                <input type="radio" name="role" value="fleet-owner" id="fleet-owner" required>
+                                <label for="fleet-owner" class="role-card">
+                                    <div class="role-icon">🚛</div>
+                                    <div class="role-title">Fleet Owner</div>
+                                    <div class="role-description">Manage your transportation</div>
+                                </label>
+                            </div>
+                        </div>
+                    </fieldset>
+                    
+                    <!-- Email Input -->
+                    <div class="form-group">
+                        <div class="form-floating">
+                            <input 
+                                type="email" 
+                                class="form-input" 
+                                id="email" 
+                                name="email" 
+                                placeholder="Enter your email"
+                                required
+                                autocomplete="email"
+                                aria-describedby="email-error"
+                            >
+                            <label for="email">Email Address</label>
+                        </div>
+                        <div class="form-error" id="email-error"></div>
+                    </div>
+                    
+                    <!-- Password Input -->
+                    <div class="form-group">
+                        <div class="form-floating">
+                            <input 
+                                type="password" 
+                                class="form-input" 
+                                id="password" 
+                                name="password" 
+                                placeholder="Enter your password"
+                                required
+                                autocomplete="current-password"
+                                aria-describedby="password-error"
+                            >
+                            <label for="password">Password</label>
+                        </div>
+                        <div class="form-error" id="password-error"></div>
+                        <div class="forgot-password">
+                            <a href="#" id="forgotPasswordLink">Forgot your password?</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Remember Me -->
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input 
+                                type="checkbox" 
+                                class="form-check-input" 
+                                id="remember" 
+                                name="remember"
+                            >
+                            <label class="form-check-label" for="remember">
+                                Keep me signed in for 30 days
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-primary btn-full btn-lg" id="submitBtn">
+                        Sign In Securely
+                    </button>
+                </main>
+            </form>
+            
+            <!-- Footer -->
+            <div class="login-footer">
+                <div class="signup-link">
+                    Don't have an account? <a href="04-register-european.html">Create one now</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Features showcase -->
+        <div style="position: absolute; bottom: var(--space-8); left: var(--space-8); right: var(--space-8); max-width: 600px; margin: 0 auto;" class="hidden-mobile">
+            <div class="features-list">
+                <div class="feature-item">
+                    <div class="feature-icon">✓</div>
+                    <span>Secure European Data Centers</span>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">✓</div>
+                    <span>GDPR Compliant Platform</span>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">✓</div>
+                    <span>Real-time Cargo Tracking</span>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">✓</div>
+                    <span>24/7 European Support</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Login form handling
+        class LoginForm {
+            constructor() {
+                this.form = document.getElementById('loginForm');
+                this.submitBtn = document.getElementById('submitBtn');
+                this.errorMessage = document.getElementById('errorMessage');
+                this.errorText = document.getElementById('errorText');
+                
+                this.init();
+            }
+            
+            init() {
+                // Form submission
+                this.form.addEventListener('submit', this.handleSubmit.bind(this));
+                
+                // Real-time validation
+                this.form.addEventListener('input', this.handleInput.bind(this));
+                this.form.addEventListener('change', this.handleChange.bind(this));
+                
+                // Forgot password link
+                document.getElementById('forgotPasswordLink').addEventListener('click', this.handleForgotPassword.bind(this));
+            }
+            
+            handleSubmit(e) {
+                e.preventDefault();
+                
+                if (!this.validateForm()) {
+                    return;
+                }
+                
+                this.setLoading(true);
+                this.hideError();
+                
+                // Simulate API call
+                setTimeout(() => {
+                    const formData = new FormData(this.form);
+                    const role = formData.get('role');
+                    const email = formData.get('email');
+                    
+                    // Simulate authentication
+                    if (this.authenticateUser(email, formData.get('password'))) {
+                        this.handleSuccessfulLogin(role);
+                    } else {
+                        this.showError('Invalid email or password. Please try again.');
+                        this.setLoading(false);
+                    }
+                }, 1500);
+            }
+            
+            authenticateUser(email, password) {
+                // Demo authentication - in real app, this would be an API call
+                const validUsers = {
+                    'cargo@demo.com': 'password123',
+                    'fleet@demo.com': 'password123',
+                    'admin@demo.com': 'password123'
+                };
+                
+                return validUsers[email] === password;
+            }
+            
+            handleSuccessfulLogin(role) {
+                // Redirect based on role
+                const redirectUrls = {
+                    'cargo-owner': '02-dashboard-european.html',
+                    'fleet-owner': '03-dashboard-fleet-european.html'
+                };
+                
+                // Save user session (in real app, use secure tokens)
+                sessionStorage.setItem('userRole', role);
+                sessionStorage.setItem('isAuthenticated', 'true');
+                
+                // Smooth transition
+                this.form.style.opacity = '0.5';
+                setTimeout(() => {
+                    window.location.href = redirectUrls[role] || '02-dashboard-european.html';
+                }, 500);
+            }
+            
+            validateForm() {
+                let isValid = true;
+                
+                // Validate role selection
+                const role = this.form.querySelector('input[name="role"]:checked');
+                if (!role) {
+                    this.showError('Please select your role (Cargo Owner or Fleet Owner).');
+                    return false;
+                }
+                
+                // Validate email
+                const email = this.form.querySelector('#email');
+                if (!this.validateEmail(email.value)) {
+                    this.showFieldError('email', 'Please enter a valid email address.');
+                    isValid = false;
+                }
+                
+                // Validate password
+                const password = this.form.querySelector('#password');
+                if (password.value.length < 6) {
+                    this.showFieldError('password', 'Password must be at least 6 characters long.');
+                    isValid = false;
+                }
+                
+                return isValid;
+            }
+            
+            validateEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+            
+            showFieldError(fieldId, message) {
+                const field = document.getElementById(fieldId);
+                const errorDiv = document.getElementById(fieldId + '-error');
+                
+                field.classList.add('error');
+                errorDiv.textContent = message;
+                
+                // Clear error on input
+                field.addEventListener('input', () => {
+                    field.classList.remove('error');
+                    errorDiv.textContent = '';
+                }, { once: true });
+            }
+            
+            handleInput(e) {
+                // Clear field errors on input
+                if (e.target.classList.contains('error')) {
+                    e.target.classList.remove('error');
+                    const errorDiv = document.getElementById(e.target.id + '-error');
+                    if (errorDiv) {
+                        errorDiv.textContent = '';
+                    }
+                }
+            }
+            
+            handleChange(e) {
+                // Hide general error when user makes changes
+                if (e.target.name === 'role') {
+                    this.hideError();
+                }
+            }
+            
+            setLoading(loading) {
+                if (loading) {
+                    this.submitBtn.classList.add('loading');
+                    this.submitBtn.disabled = true;
+                } else {
+                    this.submitBtn.classList.remove('loading');
+                    this.submitBtn.disabled = false;
+                }
+            }
+            
+            showError(message) {
+                this.errorText.textContent = message;
+                this.errorMessage.classList.add('show');
+                this.errorMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+            
+            hideError() {
+                this.errorMessage.classList.remove('show');
+            }
+            
+            handleForgotPassword(e) {
+                e.preventDefault();
+                
+                // Simple forgot password flow
+                const email = prompt('Enter your email address to reset your password:');
+                if (email && this.validateEmail(email)) {
+                    alert('Password reset instructions have been sent to ' + email);
+                } else if (email) {
+                    alert('Please enter a valid email address.');
+                }
+            }
+        }
+        
+        // Initialize login form when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new LoginForm();
+            
+            // Demo credentials helper
+            console.log('Demo credentials:');
+            console.log('Cargo Owner: cargo@demo.com / password123');
+            console.log('Fleet Owner: fleet@demo.com / password123');
+            console.log('Admin: admin@demo.com / password123');
+        });
+        
+        // Accessibility enhancements
+        document.addEventListener('keydown', (e) => {
+            // ESC key to clear errors
+            if (e.key === 'Escape') {
+                const errorMessage = document.getElementById('errorMessage');
+                if (errorMessage.classList.contains('show')) {
+                    errorMessage.classList.remove('show');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
