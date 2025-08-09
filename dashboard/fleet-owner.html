@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fleet Owner Dashboard - Circling Logistics</title>
+    <meta name="description" content="Manage your fleet, find cargo opportunities, and optimize your transportation operations.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="../assets/css/design-system-european.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="../" class="navbar-brand">🚛 Circling Logistics</a>
+                
+                <!-- Desktop Navigation -->
+                <ul class="navbar-nav" id="navbarNav">
+                    <li><a href="/dashboard/fleet-owner.html" class="nav-link active">Dashboard</a></li>
+                    <li><a href="../fleet/vehicles.html" class="nav-link">Vehicles</a></li>
+                    <li><a href="../fleet/drivers.html" class="nav-link">Drivers</a></li>
+                    <li><a href="../fleet/bidding.html" class="nav-link">Find Cargo</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="userDropdown">
+                            <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--secondary-green); color: white; display: inline-flex; align-items: center; justify-content: center; margin-right: 8px; font-weight: 600;">
+                                H
+                            </div>
+                            Hans Mueller
+                        </a>
+                        <ul class="dropdown-menu" style="display: none;">
+                            <li><a href="../profile/settings.html" class="dropdown-item">Profile Settings</a></li>
+                            <li><a href="../profile/notifications.html" class="dropdown-item">Notifications</a></li>
+                            <li><a href="../profile/support.html" class="dropdown-item">Help & Support</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a href="#" class="dropdown-item" onclick="app.logout()">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <!-- Mobile Menu Toggle -->
+                <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle navigation">
+                    ☰
+                </button>
+                
+                <!-- Mobile Navigation -->
+                <div class="mobile-nav" id="mobileNav">
+                    <ul class="navbar-nav">
+                        <li><a href="/dashboard/fleet-owner.html" class="nav-link active">Dashboard</a></li>
+                        <li><a href="../fleet/vehicles.html" class="nav-link">Vehicles</a></li>
+                        <li><a href="../fleet/drivers.html" class="nav-link">Drivers</a></li>
+                        <li><a href="../fleet/bidding.html" class="nav-link">Find Cargo</a></li>
+                        <li><a href="../profile/settings.html" class="nav-link">Profile Settings</a></li>
+                        <li><a href="#" class="nav-link" onclick="app.logout()">Logout</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container" style="margin-top: 2rem; margin-bottom: 2rem;">
+        <!-- Welcome Section -->
+        <div class="mb-8">
+            <h1>Good morning, Hans! 🚛</h1>
+            <p class="text-muted">Your fleet is performing well today. Here's your operations overview.</p>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="card mb-8">
+            <div class="card-body">
+                <h3 class="mb-4">Quick Actions</h3>
+                <div class="grid grid-cols-4" style="gap: 1rem;">
+                    <a href="../fleet/bidding.html" class="btn btn-primary">
+                        🎯 Find New Cargo
+                    </a>
+                    <a href="../fleet/vehicles.html" class="btn btn-secondary">
+                        🚚 Manage Vehicles
+                    </a>
+                    <a href="../fleet/drivers.html" class="btn btn-secondary">
+                        👨‍💼 Manage Drivers
+                    </a>
+                    <a href="../orders/list.html" class="btn btn-secondary">
+                        📋 Active Deliveries
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fleet Stats Overview -->
+        <div class="dashboard-stats mb-8">
+            <div class="stat-card">
+                <div class="stat-value">12/15</div>
+                <div class="stat-label">Vehicles Active</div>
+                <div class="mt-2">
+                    <span class="badge badge-success">80% utilization</span>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-value">€18,750</div>
+                <div class="stat-label">This Month Revenue</div>
+                <div class="mt-2">
+                    <span class="badge badge-success">+15% vs last month</span>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-value">8</div>
+                <div class="stat-label">Active Drivers</div>
+                <div class="mt-2">
+                    <span class="badge badge-info">All available</span>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-value">4.9/5</div>
+                <div class="stat-label">Customer Rating</div>
+                <div class="mt-2">
+                    <span class="badge badge-success">⭐⭐⭐⭐⭐</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fleet Status & Cargo Opportunities -->
+        <div class="grid grid-cols-2" style="gap: 2rem; margin-bottom: 2rem;">
+            <!-- Active Vehicles -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="flex justify-between items-center">
+                        <h3 class="mb-0">Active Vehicles</h3>
+                        <a href="../fleet/vehicles.html" class="btn btn-sm btn-outline">Manage Fleet</a>
+                    </div>
+                </div>
+                <div class="card-body" style="padding: 0;">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Vehicle</th>
+                                    <th>Driver</th>
+                                    <th>Status</th>
+                                    <th>Location</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>HH-TR-2024</strong></td>
+                                    <td>Klaus Weber</td>
+                                    <td><span class="badge badge-info">En Route</span></td>
+                                    <td>Frankfurt</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>HH-TR-2025</strong></td>
+                                    <td>Stefan Koch</td>
+                                    <td><span class="badge badge-success">Available</span></td>
+                                    <td>Hamburg</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>HH-TR-2026</strong></td>
+                                    <td>Michael Bauer</td>
+                                    <td><span class="badge badge-info">Loading</span></td>
+                                    <td>Berlin</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>HH-TR-2027</strong></td>
+                                    <td>Thomas Klein</td>
+                                    <td><span class="badge badge-warning">Maintenance</span></td>
+                                    <td>Hamburg Depot</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Available Cargo Opportunities -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="flex justify-between items-center">
+                        <h3 class="mb-0">New Cargo Opportunities</h3>
+                        <a href="../fleet/bidding.html" class="btn btn-sm btn-primary">Browse All</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div style="space-y: 1rem;">
+                        <div style="border: 1px solid var(--neutral-200); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1rem;">
+                            <div class="flex justify-between items-start mb-2">
+                                <strong>Munich → Barcelona</strong>
+                                <span class="badge badge-success">€2,800</span>
+                            </div>
+                            <p class="text-muted text-sm">15 pallets, General cargo</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm">Pickup: Tomorrow</span>
+                                <a href="../fleet/bidding.html?cargo=001" class="btn btn-sm btn-primary">Place Bid</a>
+                            </div>
+                        </div>
+                        
+                        <div style="border: 1px solid var(--neutral-200); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1rem;">
+                            <div class="flex justify-between items-start mb-2">
+                                <strong>Hamburg → Milan</strong>
+                                <span class="badge badge-success">€3,200</span>
+                            </div>
+                            <p class="text-muted text-sm">20 pallets, Electronics</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm">Pickup: Dec 15</span>
+                                <a href="../fleet/bidding.html?cargo=002" class="btn btn-sm btn-primary">Place Bid</a>
+                            </div>
+                        </div>
+                        
+                        <div style="border: 1px solid var(--neutral-200); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1rem;">
+                            <div class="flex justify-between items-start mb-2">
+                                <strong>Frankfurt → Amsterdam</strong>
+                                <span class="badge badge-success">€1,950</span>
+                            </div>
+                            <p class="text-muted text-sm">12 pallets, Automotive parts</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm">Pickup: Dec 16</span>
+                                <a href="../fleet/bidding.html?cargo=003" class="btn btn-sm btn-primary">Place Bid</a>
+                            </div>
+                        </div>
+
+                        <div style="text-align: center; margin-top: 1rem;">
+                            <a href="../fleet/bidding.html" class="text-primary">View all opportunities →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Analytics -->
+        <div class="card mb-8">
+            <div class="card-header">
+                <h3 class="mb-0">Fleet Performance</h3>
+            </div>
+            <div class="card-body">
+                <div class="grid grid-cols-3" style="gap: 2rem;">
+                    <div>
+                        <h4>Revenue Trend</h4>
+                        <div style="margin-bottom: 1rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span>This Month</span>
+                                <span class="font-semibold">€18,750</span>
+                            </div>
+                            <div style="width: 100%; height: 8px; background: var(--neutral-200); border-radius: 4px;">
+                                <div style="width: 85%; height: 100%; background: var(--secondary-green); border-radius: 4px;"></div>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span>Last Month</span>
+                                <span class="font-semibold">€16,300</span>
+                            </div>
+                            <div style="width: 100%; height: 8px; background: var(--neutral-200); border-radius: 4px;">
+                                <div style="width: 73%; height: 100%; background: var(--neutral-400); border-radius: 4px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4>Fleet Utilization</h4>
+                        <div style="text-align: center;">
+                            <div style="font-size: 3rem; font-weight: 700; color: var(--secondary-green); margin-bottom: 0.5rem;">
+                                80%
+                            </div>
+                            <p class="text-muted">Average utilization rate</p>
+                            <span class="badge badge-success">+5% from last month</span>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4>Top Routes</h4>
+                        <div style="space-y: 0.5rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span>Hamburg → Berlin</span>
+                                <span class="badge badge-info">12 trips</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span>Frankfurt → Munich</span>
+                                <span class="badge badge-info">9 trips</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span>Berlin → Amsterdam</span>
+                                <span class="badge badge-info">7 trips</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pending Bids & Maintenance -->
+        <div class="grid grid-cols-2" style="gap: 2rem;">
+            <!-- Pending Bids -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="mb-0">Pending Bids</h3>
+                </div>
+                <div class="card-body">
+                    <div style="space-y: 1rem;">
+                        <div class="alert alert-info" style="margin-bottom: 1rem;">
+                            <strong>Berlin → Paris</strong><br>
+                            Your bid of €2,450 is under review.
+                            <div style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--neutral-500);">
+                                Submitted 4 hours ago
+                            </div>
+                        </div>
+                        
+                        <div class="alert alert-warning" style="margin-bottom: 1rem;">
+                            <strong>Munich → Vienna</strong><br>
+                            Counter-offer received: €1,850 (Your bid: €2,100)
+                            <div style="margin-top: 0.5rem;">
+                                <a href="../fleet/bidding.html?bid=002" class="btn btn-sm btn-primary">Respond</a>
+                            </div>
+                        </div>
+                        
+                        <div class="alert alert-success" style="margin-bottom: 1rem;">
+                            <strong>Hamburg → Copenhagen</strong><br>
+                            Your bid of €1,750 has been accepted!
+                            <div style="margin-top: 0.5rem;">
+                                <a href="../orders/details.html?id=HH-001" class="btn btn-sm btn-success">View Order</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Maintenance & Alerts -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="mb-0">Maintenance & Alerts</h3>
+                </div>
+                <div class="card-body">
+                    <div style="space-y: 1rem;">
+                        <div class="alert alert-warning" style="margin-bottom: 1rem;">
+                            <strong>HH-TR-2027</strong><br>
+                            Vehicle scheduled for maintenance tomorrow.
+                            <div style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--neutral-500);">
+                                Service appointment: 09:00 AM
+                            </div>
+                        </div>
+                        
+                        <div class="alert alert-info" style="margin-bottom: 1rem;">
+                            <strong>Insurance Renewal</strong><br>
+                            Fleet insurance expires in 30 days.
+                            <div style="margin-top: 0.5rem;">
+                                <a href="../profile/settings.html" class="btn btn-sm btn-outline">Review Policy</a>
+                            </div>
+                        </div>
+                        
+                        <div class="alert alert-success" style="margin-bottom: 1rem;">
+                            <strong>Driver Certification</strong><br>
+                            All drivers have valid certifications.
+                            <div style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--neutral-500);">
+                                Next renewal: March 2025
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- JavaScript -->
+    <script src="../assets/js/app.js"></script>
+    <script>
+        // Ensure user is authenticated as fleet owner
+        if (!app.currentUser || app.currentRole !== 'fleet') {
+            // If not authenticated, redirect to login
+            if (!app.currentUser) {
+                window.location.href = '../auth/login.html';
+            } else {
+                // If wrong role, redirect to appropriate dashboard
+                app.redirectToDashboard(app.currentRole);
+            }
+        }
+
+        // Initialize dashboard-specific features
+        document.addEventListener('DOMContentLoaded', function() {
+            // Simulate loading user name
+            const userName = app.currentUser?.name || 'Hans Mueller';
+            document.querySelector('h1').textContent = `Good morning, ${userName}! 🚛`;
+            
+            // Update dropdown with user info
+            const userDropdown = document.getElementById('userDropdown');
+            if (userDropdown && app.currentUser) {
+                const avatar = userDropdown.querySelector('div');
+                if (avatar) {
+                    avatar.textContent = app.currentUser.name.charAt(0).toUpperCase();
+                }
+                userDropdown.childNodes[2].textContent = app.currentUser.name;
+            }
+
+            // Initialize dropdown functionality
+            initDropdown();
+            
+            // Initialize fleet-specific features
+            initFleetTracking();
+        });
+
+        function initDropdown() {
+            const dropdown = document.querySelector('.dropdown');
+            const dropdownMenu = dropdown?.querySelector('.dropdown-menu');
+            
+            if (dropdown && dropdownMenu) {
+                dropdown.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+                });
+                
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!dropdown.contains(e.target)) {
+                        dropdownMenu.style.display = 'none';
+                    }
+                });
+            }
+        }
+
+        function initFleetTracking() {
+            // Simulate real-time vehicle tracking updates
+            setInterval(() => {
+                // In a real app, this would fetch live vehicle locations
+                console.log('Updating vehicle positions...');
+            }, 60000); // Update every minute
+        }
+
+        // Auto-refresh cargo opportunities every 5 minutes
+        setInterval(() => {
+            // In a real app, this would fetch new cargo opportunities
+            console.log('Refreshing cargo opportunities...');
+        }, 300000);
+    </script>
+
+    <style>
+        .dropdown {
+            position: relative;
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border: 1px solid var(--neutral-200);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            min-width: 200px;
+            z-index: var(--z-dropdown);
+            padding: 0.5rem 0;
+        }
+        
+        .dropdown-item {
+            display: block;
+            padding: 0.5rem 1rem;
+            color: var(--neutral-700);
+            text-decoration: none;
+            transition: background-color var(--transition-fast);
+        }
+        
+        .dropdown-item:hover {
+            background-color: var(--neutral-100);
+            color: var(--neutral-800);
+        }
+        
+        .dropdown-divider {
+            margin: 0.5rem 0;
+            border: none;
+            border-top: 1px solid var(--neutral-200);
+        }
+        
+        @media (max-width: 768px) {
+            .dropdown-menu {
+                display: none !important;
+            }
+        }
+    </style>
+</body>
+</html>

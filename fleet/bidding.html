@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Cargo & Bidding - Circling Logistics</title>
+    <meta name="description" content="Browse available cargo opportunities and place competitive bids.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="../assets/css/design-system-european.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="../" class="navbar-brand">🚛 Circling Logistics</a>
+                
+                <!-- Desktop Navigation -->
+                <ul class="navbar-nav" id="navbarNav">
+                    <!-- Will be populated by JavaScript based on user role -->
+                </ul>
+                
+                <!-- Mobile Menu Toggle -->
+                <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle navigation">
+                    ☰
+                </button>
+                
+                <!-- Mobile Navigation -->
+                <div class="mobile-nav" id="mobileNav">
+                    <ul class="navbar-nav">
+                        <!-- Will be populated by JavaScript based on user role -->
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container" style="margin-top: 2rem; margin-bottom: 2rem;">
+        <!-- Page Header -->
+        <div class="mb-8">
+            <h1>Find Cargo Opportunities</h1>
+            <p class="text-muted">Browse and bid on available cargo shipments that match your fleet capabilities</p>
+        </div>
+
+        <!-- Filters and Search -->
+        <div class="card mb-8">
+            <div class="card-body">
+                <div class="grid grid-cols-4" style="gap: 1rem; align-items: end;">
+                    <div class="form-group mb-0">
+                        <label for="searchCargo" class="form-label">Search Routes</label>
+                        <input type="text" id="searchCargo" class="form-control" placeholder="Search by route, cargo type...">
+                    </div>
+                    
+                    <div class="form-group mb-0">
+                        <label for="cargoTypeFilter" class="form-label">Cargo Type</label>
+                        <select id="cargoTypeFilter" class="form-control">
+                            <option value="">All Types</option>
+                            <option value="general">General Cargo</option>
+                            <option value="electronics">Electronics</option>
+                            <option value="automotive">Automotive</option>
+                            <option value="food">Food Products</option>
+                            <option value="machinery">Machinery</option>
+                            <option value="textiles">Textiles</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group mb-0">
+                        <label for="weightFilter" class="form-label">Max Weight (kg)</label>
+                        <select id="weightFilter" class="form-control">
+                            <option value="">Any Weight</option>
+                            <option value="1000">Up to 1,000 kg</option>
+                            <option value="5000">Up to 5,000 kg</option>
+                            <option value="10000">Up to 10,000 kg</option>
+                            <option value="20000">Up to 20,000 kg</option>
+                        </select>
+                    </div>
+                    
+                    <div class="flex" style="gap: 0.5rem;">
+                        <button type="button" class="btn btn-outline" onclick="clearFilters()">Clear</button>
+                        <button type="button" class="btn btn-secondary" onclick="saveSearch()">Save Search</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="dashboard-stats mb-8">
+            <div class="stat-card">
+                <div class="stat-value">47</div>
+                <div class="stat-label">Available Loads</div>
+                <div class="mt-2">
+                    <span class="badge badge-info">Updated hourly</span>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-value">12</div>
+                <div class="stat-label">Pending Bids</div>
+                <div class="mt-2">
+                    <span class="badge badge-warning">Awaiting response</span>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-value">€2,850</div>
+                <div class="stat-label">Avg. Bid Value</div>
+                <div class="mt-2">
+                    <span class="badge badge-success">This week</span>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-value">85%</div>
+                <div class="stat-label">Win Rate</div>
+                <div class="mt-2">
+                    <span class="badge badge-success">Last 30 days</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cargo Opportunities List -->
+        <div class="grid grid-cols-1" style="gap: 1.5rem;">
+            <!-- Cargo Opportunity 1 -->
+            <div class="card cargo-opportunity" data-priority="high">
+                <div class="card-body">
+                    <div class="grid grid-cols-3" style="gap: 2rem; align-items: center;">
+                        <div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="mb-0">Munich → Barcelona</h3>
+                                <span class="badge badge-error">High Priority</span>
+                            </div>
+                            <p class="text-muted mb-2">Electronics • 15 pallets • 3,200 kg</p>
+                            <div class="flex items-center" style="gap: 1rem;">
+                                <span class="text-sm">📅 Pickup: Tomorrow</span>
+                                <span class="text-sm">🎯 Delivery: Dec 17</span>
+                            </div>
+                            <div class="mt-2">
+                                <span class="badge badge-info">Refrigerated Required</span>
+                                <span class="badge badge-warning">Insurance Required</span>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center">
+                            <div class="stat-value" style="color: var(--secondary-green); margin-bottom: 0.5rem;">€3,200</div>
+                            <div class="stat-label">Suggested Bid</div>
+                            <div class="text-sm text-muted mt-1">Distance: 1,024 km</div>
+                            <div class="text-sm text-success">3 bids received</div>
+                        </div>
+                        
+                        <div class="text-right">
+                            <button class="btn btn-primary mb-2" onclick="openBidModal('cargo-001')">
+                                🎯 Place Bid
+                            </button>
+                            <br>
+                            <button class="btn btn-sm btn-outline" onclick="viewCargoDetails('cargo-001')">
+                                View Details
+                            </button>
+                            <div class="text-sm text-muted mt-2">
+                                ⏰ 4 hours left to bid
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cargo Opportunity 2 -->
+            <div class="card cargo-opportunity" data-priority="medium">
+                <div class="card-body">
+                    <div class="grid grid-cols-3" style="gap: 2rem; align-items: center;">
+                        <div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="mb-0">Hamburg → Milan</h3>
+                                <span class="badge badge-warning">Medium Priority</span>
+                            </div>
+                            <p class="text-muted mb-2">Automotive Parts • 20 pallets • 4,500 kg</p>
+                            <div class="flex items-center" style="gap: 1rem;">
+                                <span class="text-sm">📅 Pickup: Dec 15</span>
+                                <span class="text-sm">🎯 Delivery: Dec 18</span>
+                            </div>
+                            <div class="mt-2">
+                                <span class="badge badge-info">Standard Transport</span>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center">
+                            <div class="stat-value" style="color: var(--secondary-green); margin-bottom: 0.5rem;">€3,800</div>
+                            <div class="stat-label">Suggested Bid</div>
+                            <div class="text-sm text-muted mt-1">Distance: 1,156 km</div>
+                            <div class="text-sm text-success">1 bid received</div>
+                        </div>
+                        
+                        <div class="text-right">
+                            <button class="btn btn-primary mb-2" onclick="openBidModal('cargo-002')">
+                                🎯 Place Bid
+                            </button>
+                            <br>
+                            <button class="btn btn-sm btn-outline" onclick="viewCargoDetails('cargo-002')">
+                                View Details
+                            </button>
+                            <div class="text-sm text-muted mt-2">
+                                ⏰ 2 days left to bid
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cargo Opportunity 3 -->
+            <div class="card cargo-opportunity" data-priority="low">
+                <div class="card-body">
+                    <div class="grid grid-cols-3" style="gap: 2rem; align-items: center;">
+                        <div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="mb-0">Frankfurt → Amsterdam</h3>
+                                <span class="badge badge-success">Standard</span>
+                            </div>
+                            <p class="text-muted mb-2">General Cargo • 12 pallets • 2,100 kg</p>
+                            <div class="flex items-center" style="gap: 1rem;">
+                                <span class="text-sm">📅 Pickup: Dec 16</span>
+                                <span class="text-sm">🎯 Delivery: Dec 19</span>
+                            </div>
+                            <div class="mt-2">
+                                <span class="badge badge-info">Standard Transport</span>
+                                <span class="badge badge-success">Preferred Carrier</span>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center">
+                            <div class="stat-value" style="color: var(--secondary-green); margin-bottom: 0.5rem;">€1,950</div>
+                            <div class="stat-label">Suggested Bid</div>
+                            <div class="text-sm text-muted mt-1">Distance: 465 km</div>
+                            <div class="text-sm text-success">0 bids received</div>
+                        </div>
+                        
+                        <div class="text-right">
+                            <button class="btn btn-primary mb-2" onclick="openBidModal('cargo-003')">
+                                🎯 Place Bid
+                            </button>
+                            <br>
+                            <button class="btn btn-sm btn-outline" onclick="viewCargoDetails('cargo-003')">
+                                View Details
+                            </button>
+                            <div class="text-sm text-muted mt-2">
+                                ⏰ 5 days left to bid
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Load More Button -->
+            <div class="text-center mt-6">
+                <button class="btn btn-outline" onclick="loadMoreCargo()">
+                    Load More Opportunities
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bid Modal -->
+    <div id="bidModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Place Your Bid</h3>
+                <button class="btn btn-sm btn-outline" onclick="closeBidModal()">✕</button>
+            </div>
+            <form id="bidForm">
+                <div class="modal-body">
+                    <div id="bidCargoDetails" class="card mb-4">
+                        <!-- Cargo details will be populated here -->
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="bidAmount" class="form-label">Your Bid Amount (€) *</label>
+                        <input type="number" id="bidAmount" name="bidAmount" class="form-control" placeholder="3200" min="100" step="10" required>
+                        <div class="form-text">Suggested: €<span id="suggestedBid">-</span></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="assignedVehicle" class="form-label">Assigned Vehicle *</label>
+                        <select id="assignedVehicle" name="assignedVehicle" class="form-control" required>
+                            <option value="">Select vehicle</option>
+                            <option value="HH-TR-2025">HH-TR-2025 (Stefan Koch) - Available</option>
+                            <option value="HH-TR-2026">HH-TR-2026 (Michael Bauer) - Available</option>
+                            <option value="HH-TR-2028">HH-TR-2028 (Klaus Weber) - Available Dec 15</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="estimatedPickupTime" class="form-label">Estimated Pickup Time</label>
+                        <select id="estimatedPickupTime" name="estimatedPickupTime" class="form-control">
+                            <option value="morning">Morning (8:00-12:00)</option>
+                            <option value="afternoon">Afternoon (12:00-17:00)</option>
+                            <option value="evening">Evening (17:00-20:00)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="estimatedDeliveryTime" class="form-label">Estimated Delivery Time</label>
+                        <input type="datetime-local" id="estimatedDeliveryTime" name="estimatedDeliveryTime" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="bidNotes" class="form-label">Additional Notes</label>
+                        <textarea id="bidNotes" name="bidNotes" class="form-control" rows="3" placeholder="Any additional information about your bid..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="flex items-center">
+                            <input type="checkbox" id="acceptTerms" name="acceptTerms" required style="margin-right: 8px;">
+                            <span class="text-sm">
+                                I confirm that my vehicle meets all requirements and I accept the 
+                                <a href="#" class="text-primary">bidding terms</a> *
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeBidModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Submit Bid</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="../assets/js/app.js"></script>
+    <script>
+        // Ensure user is authenticated as fleet owner
+        if (!app.currentUser || app.currentRole !== 'fleet') {
+            if (!app.currentUser) {
+                window.location.href = '../auth/login.html';
+            } else {
+                app.redirectToDashboard(app.currentRole);
+            }
+        }
+
+        // Sample cargo data
+        const cargoOpportunities = {
+            'cargo-001': {
+                route: 'Munich → Barcelona',
+                cargoType: 'Electronics',
+                weight: '3,200 kg',
+                packages: '15 pallets',
+                pickupDate: 'Tomorrow',
+                deliveryDate: 'Dec 17',
+                suggestedBid: 3200,
+                requirements: ['Refrigerated Required', 'Insurance Required'],
+                distance: '1,024 km',
+                bidCount: 3,
+                timeLeft: '4 hours'
+            },
+            'cargo-002': {
+                route: 'Hamburg → Milan',
+                cargoType: 'Automotive Parts',
+                weight: '4,500 kg',
+                packages: '20 pallets',
+                pickupDate: 'Dec 15',
+                deliveryDate: 'Dec 18',
+                suggestedBid: 3800,
+                requirements: ['Standard Transport'],
+                distance: '1,156 km',
+                bidCount: 1,
+                timeLeft: '2 days'
+            },
+            'cargo-003': {
+                route: 'Frankfurt → Amsterdam',
+                cargoType: 'General Cargo',
+                weight: '2,100 kg',
+                packages: '12 pallets',
+                pickupDate: 'Dec 16',
+                deliveryDate: 'Dec 19',
+                suggestedBid: 1950,
+                requirements: ['Standard Transport', 'Preferred Carrier'],
+                distance: '465 km',
+                bidCount: 0,
+                timeLeft: '5 days'
+            }
+        };
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeFilters();
+            initializeBidModal();
+        });
+
+        function initializeFilters() {
+            document.getElementById('searchCargo').addEventListener('input', filterCargo);
+            document.getElementById('cargoTypeFilter').addEventListener('change', filterCargo);
+            document.getElementById('weightFilter').addEventListener('change', filterCargo);
+        }
+
+        function filterCargo() {
+            // Filter functionality would be implemented here
+            console.log('Filtering cargo opportunities...');
+        }
+
+        function clearFilters() {
+            document.getElementById('searchCargo').value = '';
+            document.getElementById('cargoTypeFilter').value = '';
+            document.getElementById('weightFilter').value = '';
+            filterCargo();
+        }
+
+        function saveSearch() {
+            app.showNotification('Search saved successfully!', 'success');
+        }
+
+        function loadMoreCargo() {
+            app.showNotification('Loading more opportunities...', 'info');
+            // In a real app, this would load more cargo from the server
+        }
+
+        function openBidModal(cargoId) {
+            const cargo = cargoOpportunities[cargoId];
+            if (!cargo) return;
+
+            // Populate modal with cargo details
+            const cargoDetails = document.getElementById('bidCargoDetails');
+            cargoDetails.innerHTML = `
+                <div class="card-body">
+                    <h4>${cargo.route}</h4>
+                    <p><strong>Cargo:</strong> ${cargo.cargoType} • ${cargo.packages} • ${cargo.weight}</p>
+                    <p><strong>Pickup:</strong> ${cargo.pickupDate} | <strong>Delivery:</strong> ${cargo.deliveryDate}</p>
+                    <p><strong>Distance:</strong> ${cargo.distance}</p>
+                    <div class="flex" style="gap: 0.5rem; flex-wrap: wrap;">
+                        ${cargo.requirements.map(req => `<span class="badge badge-info">${req}</span>`).join('')}
+                    </div>
+                </div>
+            `;
+
+            // Set suggested bid
+            document.getElementById('suggestedBid').textContent = cargo.suggestedBid.toLocaleString();
+            document.getElementById('bidAmount').placeholder = cargo.suggestedBid;
+
+            // Store cargo ID for form submission
+            document.getElementById('bidForm').dataset.cargoId = cargoId;
+
+            // Show modal
+            document.getElementById('bidModal').style.display = 'flex';
+        }
+
+        function closeBidModal() {
+            document.getElementById('bidModal').style.display = 'none';
+            document.getElementById('bidForm').reset();
+        }
+
+        function initializeBidModal() {
+            const bidForm = document.getElementById('bidForm');
+            bidForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                submitBid();
+            });
+
+            // Close modal when clicking outside
+            document.getElementById('bidModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeBidModal();
+                }
+            });
+        }
+
+        function submitBid() {
+            const formData = new FormData(document.getElementById('bidForm'));
+            const cargoId = document.getElementById('bidForm').dataset.cargoId;
+            const bidData = Object.fromEntries(formData.entries());
+
+            // Simulate bid submission
+            app.showNotification('Bid submitted successfully!', 'success');
+            
+            // Update UI to show bid submitted
+            setTimeout(() => {
+                const cargoCard = document.querySelector(`[onclick="openBidModal('${cargoId}')"]`).closest('.cargo-opportunity');
+                const bidButton = cargoCard.querySelector('.btn-primary');
+                bidButton.textContent = '✅ Bid Submitted';
+                bidButton.disabled = true;
+                bidButton.className = 'btn btn-success';
+                
+                closeBidModal();
+            }, 1000);
+        }
+
+        function viewCargoDetails(cargoId) {
+            // In a real app, this would open a detailed view
+            app.showNotification(`Viewing details for ${cargoId}`, 'info');
+        }
+
+        // Auto-refresh cargo opportunities every 5 minutes
+        setInterval(() => {
+            console.log('Refreshing cargo opportunities...');
+            // In a real app, this would fetch new opportunities from the server
+        }, 300000);
+    </script>
+
+    <style>
+        .cargo-opportunity {
+            transition: all var(--transition-fast);
+        }
+        
+        .cargo-opportunity:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+        
+        .cargo-opportunity[data-priority="high"] {
+            border-left: 4px solid var(--error);
+        }
+        
+        .cargo-opportunity[data-priority="medium"] {
+            border-left: 4px solid var(--warning);
+        }
+        
+        .cargo-opportunity[data-priority="low"] {
+            border-left: 4px solid var(--success);
+        }
+        
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: var(--z-modal);
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: var(--radius-lg);
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--neutral-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+        }
+        
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--neutral-200);
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .grid-cols-3 {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 1rem;
+            }
+            
+            .cargo-opportunity .text-right {
+                text-align: left;
+            }
+        }
+    </style>
+</body>
+</html>

@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Circling Logistics</title>
+    <meta name="description" content="Administrative dashboard for managing users, orders, and system operations.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="../assets/css/design-system-european.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="../" class="navbar-brand">🚛 Circling Logistics</a>
+                
+                <!-- Desktop Navigation -->
+                <ul class="navbar-nav" id="navbarNav">
+                    <li><a href="/admin/dashboard.html" class="nav-link active">Admin Dashboard</a></li>
+                    <li><a href="../admin/users.html" class="nav-link">Users</a></li>
+                    <li><a href="../admin/orders.html" class="nav-link">Orders</a></li>
+                    <li><a href="../admin/reports.html" class="nav-link">Reports</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="userDropdown">
+                            <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--secondary-orange); color: white; display: inline-flex; align-items: center; justify-content: center; margin-right: 8px; font-weight: 600;">
+                                A
+                            </div>
+                            Admin User
+                        </a>
+                        <ul class="dropdown-menu" style="display: none;">
+                            <li><a href="../profile/settings.html" class="dropdown-item">Profile Settings</a></li>
+                            <li><a href="../profile/notifications.html" class="dropdown-item">Notifications</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a href="#" class="dropdown-item" onclick="app.logout()">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <!-- Mobile Menu Toggle -->
+                <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle navigation">
+                    ☰
+                </button>
+                
+                <!-- Mobile Navigation -->
+                <div class="mobile-nav" id="mobileNav">
+                    <ul class="navbar-nav">
+                        <li><a href="/admin/dashboard.html" class="nav-link active">Admin Dashboard</a></li>
+                        <li><a href="../admin/users.html" class="nav-link">Users</a></li>
+                        <li><a href="../admin/orders.html" class="nav-link">Orders</a></li>
+                        <li><a href="../admin/reports.html" class="nav-link">Reports</a></li>
+                        <li><a href="../profile/settings.html" class="nav-link">Profile Settings</a></li>
+                        <li><a href="#" class="nav-link" onclick="app.logout()">Logout</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container" style="margin-top: 2rem; margin-bottom: 2rem;">
+        <!-- Welcome Section -->
+        <div class="mb-8">
+            <h1>System Overview 🔧</h1>
+            <p class="text-muted">Platform administration and monitoring dashboard</p>
+        </div>
+
+        <!-- System Alerts -->
+        <div class="card mb-8" style="border-left: 4px solid var(--warning);">
+            <div class="card-body">
+                <h3 class="mb-4">🚨 System Alerts</h3>
+                <div class="grid grid-cols-2" style="gap: 1rem;">
+                    <div class="alert alert-warning">
+                        <strong>High Server Load</strong><br>
+                        Database queries are running slower than usual.
+                        <div style="margin-top: 0.5rem;">
+                            <a href="#" class="btn btn-sm btn-warning">Investigate</a>
+                        </div>
+                    </div>
+                    <div class="alert alert-info">
+                        <strong>Scheduled Maintenance</strong><br>
+                        System update planned for Sunday 3:00 AM.
+                        <div style="margin-top: 0.5rem;">
+                            <a href="#" class="btn btn-sm btn-outline">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Platform Statistics -->
+        <div class="dashboard-stats mb-8">
+            <div class="stat-card">
+                <div class="stat-value">2,847</div>
+                <div class="stat-label">Total Users</div>
+                <div class="mt-2">
+                    <span class="badge badge-success">+127 this month</span>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-value">1,234</div>
+                <div class="stat-label">Active Orders</div>
+                <div class="mt-2">
+                    <span class="badge badge-info">+45 today</span>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-value">€245K</div>
+                <div class="stat-label">Monthly Volume</div>
+                <div class="mt-2">
+                    <span class="badge badge-success">+18% vs last month</span>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-value">99.8%</div>
+                <div class="stat-label">System Uptime</div>
+                <div class="mt-2">
+                    <span class="badge badge-success">Excellent</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Management Overview Grid -->
+        <div class="grid grid-cols-2" style="gap: 2rem; margin-bottom: 2rem;">
+            <!-- Recent User Activity -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="flex justify-between items-center">
+                        <h3 class="mb-0">Recent User Activity</h3>
+                        <a href="../admin/users.html" class="btn btn-sm btn-outline">Manage Users</a>
+                    </div>
+                </div>
+                <div class="card-body" style="padding: 0;">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Action</th>
+                                    <th>Time</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>john.doe@company.com</strong></td>
+                                    <td>New Order Created</td>
+                                    <td>2 min ago</td>
+                                    <td><span class="badge badge-success">Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>hans.mueller@fleet.com</strong></td>
+                                    <td>Bid Submitted</td>
+                                    <td>15 min ago</td>
+                                    <td><span class="badge badge-info">Pending</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>maria.schmidt@logistics.de</strong></td>
+                                    <td>Payment Completed</td>
+                                    <td>1 hour ago</td>
+                                    <td><span class="badge badge-success">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>new.user@company.fr</strong></td>
+                                    <td>Account Registered</td>
+                                    <td>3 hours ago</td>
+                                    <td><span class="badge badge-warning">Pending Verification</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Health -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="mb-0">System Health</h3>
+                </div>
+                <div class="card-body">
+                    <div style="space-y: 1.5rem;">
+                        <!-- Server Performance -->
+                        <div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span>Server CPU Usage</span>
+                                <span class="font-semibold">67%</span>
+                            </div>
+                            <div style="width: 100%; height: 8px; background: var(--neutral-200); border-radius: 4px; margin-bottom: 1rem;">
+                                <div style="width: 67%; height: 100%; background: var(--warning); border-radius: 4px;"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span>Database Performance</span>
+                                <span class="font-semibold">85%</span>
+                            </div>
+                            <div style="width: 100%; height: 8px; background: var(--neutral-200); border-radius: 4px; margin-bottom: 1rem;">
+                                <div style="width: 85%; height: 100%; background: var(--success); border-radius: 4px;"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span>API Response Time</span>
+                                <span class="font-semibold">245ms</span>
+                            </div>
+                            <div style="width: 100%; height: 8px; background: var(--neutral-200); border-radius: 4px; margin-bottom: 1rem;">
+                                <div style="width: 75%; height: 100%; background: var(--success); border-radius: 4px;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Service Status -->
+                        <div style="border-top: 1px solid var(--neutral-200); padding-top: 1rem;">
+                            <h4 style="margin-bottom: 1rem;">Service Status</h4>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                <span>Payment Gateway</span>
+                                <span class="badge badge-success">Online</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                <span>Email Service</span>
+                                <span class="badge badge-success">Online</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                <span>SMS Notifications</span>
+                                <span class="badge badge-warning">Degraded</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order Management Overview -->
+        <div class="card mb-8">
+            <div class="card-header">
+                <div class="flex justify-between items-center">
+                    <h3 class="mb-0">Order Management Overview</h3>
+                    <a href="../admin/orders.html" class="btn btn-sm btn-outline">View All Orders</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="grid grid-cols-4" style="gap: 2rem;">
+                    <div class="text-center">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📋</div>
+                        <div class="stat-value" style="font-size: 1.5rem;">156</div>
+                        <div class="stat-label">Pending Orders</div>
+                    </div>
+                    <div class="text-center">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🚛</div>
+                        <div class="stat-value" style="font-size: 1.5rem;">89</div>
+                        <div class="stat-label">In Transit</div>
+                    </div>
+                    <div class="text-center">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">✅</div>
+                        <div class="stat-value" style="font-size: 1.5rem;">342</div>
+                        <div class="stat-label">Completed Today</div>
+                    </div>
+                    <div class="text-center">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">⚠️</div>
+                        <div class="stat-value" style="font-size: 1.5rem;">7</div>
+                        <div class="stat-label">Requires Attention</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Financial Overview & User Management -->
+        <div class="grid grid-cols-2" style="gap: 2rem;">
+            <!-- Financial Overview -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="mb-0">Financial Overview</h3>
+                </div>
+                <div class="card-body">
+                    <div style="space-y: 1.5rem;">
+                        <div>
+                            <h4>Monthly Revenue Trend</h4>
+                            <div style="margin-bottom: 1rem;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                    <span>December 2024</span>
+                                    <span class="font-semibold">€245,000</span>
+                                </div>
+                                <div style="width: 100%; height: 8px; background: var(--neutral-200); border-radius: 4px;">
+                                    <div style="width: 92%; height: 100%; background: var(--success); border-radius: 4px;"></div>
+                                </div>
+                            </div>
+                            <div style="margin-bottom: 1rem;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                    <span>November 2024</span>
+                                    <span class="font-semibold">€208,000</span>
+                                </div>
+                                <div style="width: 100%; height: 8px; background: var(--neutral-200); border-radius: 4px;">
+                                    <div style="width: 78%; height: 100%; background: var(--neutral-400); border-radius: 4px;"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="border-top: 1px solid var(--neutral-200); padding-top: 1rem;">
+                            <h4 style="margin-bottom: 1rem;">Platform Metrics</h4>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span>Avg. Order Value</span>
+                                <span class="font-semibold">€1,850</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span>Commission Revenue</span>
+                                <span class="font-semibold">€24,500</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span>Pending Payments</span>
+                                <span class="font-semibold">€12,300</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Management Stats -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="mb-0">User Management</h3>
+                </div>
+                <div class="card-body">
+                    <div style="space-y: 1rem;">
+                        <!-- User Type Distribution -->
+                        <div>
+                            <h4>User Distribution</h4>
+                            <div style="margin-bottom: 1rem;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                    <span>Cargo Owners</span>
+                                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                        <span class="font-semibold">1,642</span>
+                                        <span class="badge badge-info">58%</span>
+                                    </div>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                    <span>Fleet Owners</span>
+                                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                        <span class="font-semibold">1,147</span>
+                                        <span class="badge badge-success">40%</span>
+                                    </div>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                    <span>Administrators</span>
+                                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                        <span class="font-semibold">58</span>
+                                        <span class="badge badge-warning">2%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Actions -->
+                        <div style="border-top: 1px solid var(--neutral-200); padding-top: 1rem;">
+                            <h4 style="margin-bottom: 1rem;">Recent Admin Actions</h4>
+                            <div class="alert alert-info" style="margin-bottom: 1rem; padding: 0.75rem;">
+                                <strong>User Verification:</strong> 12 new accounts verified today
+                            </div>
+                            <div class="alert alert-warning" style="margin-bottom: 1rem; padding: 0.75rem;">
+                                <strong>Support Tickets:</strong> 8 pending tickets require attention
+                            </div>
+                            <div class="alert alert-success" style="margin-bottom: 0; padding: 0.75rem;">
+                                <strong>System Update:</strong> Payment gateway upgrade completed
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- JavaScript -->
+    <script src="../assets/js/app.js"></script>
+    <script>
+        // Ensure user is authenticated as admin
+        if (!app.currentUser || app.currentRole !== 'admin') {
+            // If not authenticated, redirect to login
+            if (!app.currentUser) {
+                window.location.href = '../auth/login.html';
+            } else {
+                // If wrong role, redirect to appropriate dashboard
+                app.redirectToDashboard(app.currentRole);
+            }
+        }
+
+        // Initialize dashboard-specific features
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update dropdown with user info
+            const userDropdown = document.getElementById('userDropdown');
+            if (userDropdown && app.currentUser) {
+                const avatar = userDropdown.querySelector('div');
+                if (avatar) {
+                    avatar.textContent = app.currentUser.name.charAt(0).toUpperCase();
+                }
+                userDropdown.childNodes[2].textContent = app.currentUser.name;
+            }
+
+            // Initialize dropdown functionality
+            initDropdown();
+            
+            // Initialize admin-specific features
+            initSystemMonitoring();
+            initRealTimeUpdates();
+        });
+
+        function initDropdown() {
+            const dropdown = document.querySelector('.dropdown');
+            const dropdownMenu = dropdown?.querySelector('.dropdown-menu');
+            
+            if (dropdown && dropdownMenu) {
+                dropdown.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+                });
+                
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!dropdown.contains(e.target)) {
+                        dropdownMenu.style.display = 'none';
+                    }
+                });
+            }
+        }
+
+        function initSystemMonitoring() {
+            // Simulate system health monitoring
+            setInterval(() => {
+                // In a real app, this would fetch actual system metrics
+                updateSystemMetrics();
+            }, 30000); // Update every 30 seconds
+        }
+
+        function updateSystemMetrics() {
+            // Simulate updating system health metrics
+            console.log('Updating system metrics...');
+            
+            // Example: Update CPU usage with some variation
+            const cpuUsage = Math.floor(Math.random() * 20) + 60; // 60-80%
+            // In a real app, you would update the actual UI elements here
+        }
+
+        function initRealTimeUpdates() {
+            // Simulate real-time updates for admin dashboard
+            setInterval(() => {
+                // In a real app, this would fetch real-time data
+                console.log('Fetching real-time updates...');
+            }, 10000); // Update every 10 seconds
+        }
+
+        // Add admin-specific keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Ctrl+Shift+U for User Management
+            if (e.ctrlKey && e.shiftKey && e.key === 'U') {
+                window.location.href = '../admin/users.html';
+            }
+            
+            // Ctrl+Shift+O for Order Management
+            if (e.ctrlKey && e.shiftKey && e.key === 'O') {
+                window.location.href = '../admin/orders.html';
+            }
+            
+            // Ctrl+Shift+R for Reports
+            if (e.ctrlKey && e.shiftKey && e.key === 'R') {
+                window.location.href = '../admin/reports.html';
+            }
+        });
+    </script>
+
+    <style>
+        .dropdown {
+            position: relative;
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border: 1px solid var(--neutral-200);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            min-width: 200px;
+            z-index: var(--z-dropdown);
+            padding: 0.5rem 0;
+        }
+        
+        .dropdown-item {
+            display: block;
+            padding: 0.5rem 1rem;
+            color: var(--neutral-700);
+            text-decoration: none;
+            transition: background-color var(--transition-fast);
+        }
+        
+        .dropdown-item:hover {
+            background-color: var(--neutral-100);
+            color: var(--neutral-800);
+        }
+        
+        .dropdown-divider {
+            margin: 0.5rem 0;
+            border: none;
+            border-top: 1px solid var(--neutral-200);
+        }
+        
+        @media (max-width: 768px) {
+            .dropdown-menu {
+                display: none !important;
+            }
+        }
+    </style>
+</body>
+</html>

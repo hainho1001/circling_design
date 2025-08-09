@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Circling Logistics</title>
+    <meta name="description" content="Login to your Circling Logistics account to access your dashboard and manage your shipments.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="../assets/css/design-system-european.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="../" class="navbar-brand">🚛 Circling Logistics</a>
+                
+                <!-- Desktop Navigation -->
+                <ul class="navbar-nav" id="navbarNav">
+                    <li><a href="../#services" class="nav-link">Services</a></li>
+                    <li><a href="../#about" class="nav-link">About</a></li>
+                    <li><a href="../#contact" class="nav-link">Contact</a></li>
+                    <li><a href="register.html" class="btn btn-primary">Get Started</a></li>
+                </ul>
+                
+                <!-- Mobile Menu Toggle -->
+                <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle navigation">
+                    ☰
+                </button>
+                
+                <!-- Mobile Navigation -->
+                <div class="mobile-nav" id="mobileNav">
+                    <ul class="navbar-nav">
+                        <li><a href="../#services" class="nav-link">Services</a></li>
+                        <li><a href="../#about" class="nav-link">About</a></li>
+                        <li><a href="../#contact" class="nav-link">Contact</a></li>
+                        <li><a href="register.html" class="btn btn-primary">Get Started</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container" style="max-width: 500px; margin-top: 3rem; margin-bottom: 3rem;">
+        <div class="card">
+            <div class="card-body">
+                <div class="text-center mb-6">
+                    <h1>Welcome Back</h1>
+                    <p class="text-muted">Sign in to your Circling Logistics account</p>
+                </div>
+
+                <form id="loginForm" novalidate>
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address *</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            class="form-control" 
+                            placeholder="your@email.com"
+                            required
+                            autocomplete="email"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password" class="form-label">Password *</label>
+                        <div style="position: relative;">
+                            <input 
+                                type="password" 
+                                id="password" 
+                                name="password" 
+                                class="form-control" 
+                                placeholder="Enter your password"
+                                required
+                                autocomplete="current-password"
+                            >
+                            <button 
+                                type="button" 
+                                id="togglePassword" 
+                                style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--neutral-500); cursor: pointer;"
+                                aria-label="Toggle password visibility"
+                            >
+                                👁️
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center mb-6">
+                        <label class="flex items-center">
+                            <input type="checkbox" id="rememberMe" name="rememberMe" style="margin-right: 8px;">
+                            <span class="text-sm">Remember me</span>
+                        </label>
+                        <a href="#" class="text-sm text-primary">Forgot password?</a>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-lg" id="loginBtn">
+                        <span class="btn-text">Sign In</span>
+                        <span class="spinner" style="display: none;"></span>
+                    </button>
+
+                    <div class="text-center mt-6">
+                        <p class="text-muted">
+                            Don't have an account? 
+                            <a href="register.html" class="text-primary font-semibold">Create one now</a>
+                        </p>
+                    </div>
+                </form>
+
+                <!-- Demo Accounts -->
+                <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--neutral-200);">
+                    <h4 class="text-center mb-4">Demo Accounts</h4>
+                    <div class="grid grid-cols-1" style="gap: 1rem;">
+                        <button type="button" class="btn btn-secondary" onclick="fillDemoAccount('cargo')">
+                            📦 Demo Cargo Owner
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="fillDemoAccount('fleet')">
+                            🚛 Demo Fleet Owner
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="fillDemoAccount('admin')">
+                            👤 Demo Admin
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional Info -->
+        <div class="text-center mt-6">
+            <p class="text-muted text-sm">
+                By signing in, you agree to our 
+                <a href="#" class="text-primary">Terms of Service</a> and 
+                <a href="#" class="text-primary">Privacy Policy</a>
+            </p>
+        </div>
+    </main>
+
+    <!-- JavaScript -->
+    <script src="../assets/js/app.js"></script>
+    <script>
+        // Demo account functionality
+        function fillDemoAccount(role) {
+            const emailField = document.getElementById('email');
+            const passwordField = document.getElementById('password');
+            
+            const demoAccounts = {
+                cargo: {
+                    email: 'demo.cargo@circling.com',
+                    password: 'demo123'
+                },
+                fleet: {
+                    email: 'demo.fleet@circling.com',
+                    password: 'demo123'
+                },
+                admin: {
+                    email: 'demo.admin@circling.com',
+                    password: 'demo123'
+                }
+            };
+            
+            const account = demoAccounts[role];
+            emailField.value = account.email;
+            passwordField.value = account.password;
+            
+            // Update URL to include role for registration redirect
+            const url = new URL(window.location);
+            url.searchParams.set('role', role);
+            window.history.replaceState({}, '', url);
+        }
+
+        // Password toggle functionality
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const passwordField = document.getElementById('password');
+            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordField.setAttribute('type', type);
+            this.textContent = type === 'password' ? '👁️' : '🙈';
+        });
+
+        // Form submission with loading state
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            const loginBtn = document.getElementById('loginBtn');
+            const btnText = loginBtn.querySelector('.btn-text');
+            const spinner = loginBtn.querySelector('.spinner');
+            
+            // Show loading state
+            loginBtn.disabled = true;
+            btnText.style.display = 'none';
+            spinner.style.display = 'inline-block';
+            
+            // Reset after form processing (app.js will handle the actual submission)
+            setTimeout(() => {
+                loginBtn.disabled = false;
+                btnText.style.display = 'inline-block';
+                spinner.style.display = 'none';
+            }, 2000);
+        });
+
+        // Auto-focus email field
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('email').focus();
+        });
+
+        // Check if user is already logged in
+        if (app.currentUser) {
+            app.redirectToDashboard(app.currentRole);
+        }
+    </script>
+</body>
+</html>

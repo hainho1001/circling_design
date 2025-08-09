@@ -1,0 +1,6 @@
+127.0.0.1 - - [09/Aug/2025 06:09:35] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [09/Aug/2025 06:09:35] "GET /assets/css/design-system-european.css HTTP/1.1" 200 -
+127.0.0.1 - - [09/Aug/2025 06:09:35] "GET /assets/js/app.js HTTP/1.1" 200 -
+127.0.0.1 - - [09/Aug/2025 06:09:54] "GET /auth/register.html HTTP/1.1" 200 -
+127.0.0.1 - - [09/Aug/2025 06:09:54] "GET /assets/css/design-system-european.css HTTP/1.1" 200 -
+127.0.0.1 - - [09/Aug/2025 06:09:54] "GET /assets/js/app.js HTTP/1.1" 200 -
