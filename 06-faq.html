@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frequently Asked Questions - Circling Logistics</title>
+    <meta name="description" content="Find answers to common questions about Circling Logistics services, pricing, and platform features.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Design System -->
+    <link rel="stylesheet" href="design-system-european.css">
+    
+    <!-- FAQ Styles -->
+    <link rel="stylesheet" href="06-faq.css">
+</head>
+<body>
+    <!-- Skip link for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <div class="page-layout">
+        <!-- Header -->
+        <header class="main-header">
+            <div class="header-container">
+                <div class="header-content">
+                    <a href="06-home-page-european.html" class="header-logo">
+                        <div class="logo-icon">C</div>
+                        <span class="logo-text">Circling Logistics</span>
+                    </a>
+                    
+                    <nav class="main-nav" aria-label="Main navigation">
+                        <ul class="nav-list">
+                            <li><a href="02-dashboard-european.html" class="nav-link">Dashboard</a></li>
+                            <li><a href="04-vehicle-tracking.html" class="nav-link">Vehicle Tracking</a></li>
+                            <li><a href="05-testimonials.html" class="nav-link">Testimonials</a></li>
+                            <li><a href="06-faq.html" class="nav-link active">FAQ</a></li>
+                        </ul>
+                    </nav>
+                    
+                    <div class="header-actions">
+                        <a href="01-login-european.html" class="btn btn-primary">Get Started</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <main class="main-content" id="main-content">
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <div class="hero-container">
+                    <div class="hero-content">
+                        <h1 class="hero-title">Frequently Asked Questions ❓</h1>
+                        <p class="hero-subtitle">
+                            Find answers to common questions about our logistics platform, services, and how to get started.
+                        </p>
+                        
+                        <!-- Search Box -->
+                        <div class="search-container">
+                            <div class="search-box">
+                                <input type="text" id="faq-search" placeholder="Search for answers..." class="search-input">
+                                <button class="search-btn" aria-label="Search">
+                                    <span class="search-icon">🔍</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- FAQ Categories -->
+            <section class="categories-section">
+                <div class="categories-container">
+                    <h2 class="categories-title">Browse by Category</h2>
+                    <div class="categories-grid">
+                        <div class="category-card" data-category="getting-started">
+                            <div class="category-icon">🚀</div>
+                            <h3 class="category-title">Getting Started</h3>
+                            <p class="category-description">Account setup, onboarding, and first steps</p>
+                            <div class="category-count">8 articles</div>
+                        </div>
+                        
+                        <div class="category-card" data-category="pricing">
+                            <div class="category-icon">💰</div>
+                            <h3 class="category-title">Pricing & Billing</h3>
+                            <p class="category-description">Cost structure, payment methods, and billing</p>
+                            <div class="category-count">6 articles</div>
+                        </div>
+                        
+                        <div class="category-card" data-category="platform">
+                            <div class="category-icon">⚙️</div>
+                            <h3 class="category-title">Platform Features</h3>
+                            <p class="category-description">How to use dashboard, tracking, and tools</p>
+                            <div class="category-count">12 articles</div>
+                        </div>
+                        
+                        <div class="category-card" data-category="support">
+                            <div class="category-icon">🆘</div>
+                            <h3 class="category-title">Support & Troubleshooting</h3>
+                            <p class="category-description">Technical issues and customer support</p>
+                            <div class="category-count">5 articles</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- FAQ Content -->
+            <section class="faq-section">
+                <div class="faq-container">
+                    <div class="faq-layout">
+                        <!-- Sidebar Filter -->
+                        <aside class="faq-sidebar">
+                            <h3 class="sidebar-title">Filter by Category</h3>
+                            <ul class="filter-list">
+                                <li>
+                                    <button class="filter-btn active" data-filter="all">
+                                        <span class="filter-icon">📋</span>
+                                        All Questions
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="filter-btn" data-filter="getting-started">
+                                        <span class="filter-icon">🚀</span>
+                                        Getting Started
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="filter-btn" data-filter="pricing">
+                                        <span class="filter-icon">💰</span>
+                                        Pricing & Billing
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="filter-btn" data-filter="platform">
+                                        <span class="filter-icon">⚙️</span>
+                                        Platform Features
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="filter-btn" data-filter="support">
+                                        <span class="filter-icon">🆘</span>
+                                        Support
+                                    </button>
+                                </li>
+                            </ul>
+                        </aside>
+                        
+                        <!-- FAQ List -->
+                        <div class="faq-content">
+                            <h2 class="faq-title">All Questions</h2>
+                            
+                            <div class="faq-list">
+                                <!-- Getting Started Questions -->
+                                <div class="faq-item getting-started" data-category="getting-started">
+                                    <button class="faq-question" aria-expanded="false">
+                                        <span class="question-text">How do I create an account on Circling Logistics?</span>
+                                        <span class="question-icon">+</span>
+                                    </button>
+                                    <div class="faq-answer">
+                                        <p>Creating an account is simple and takes just a few minutes:</p>
+                                        <ol>
+                                            <li>Click "Get Started" on our homepage</li>
+                                            <li>Choose your role: Cargo Owner or Fleet Operator</li>
+                                            <li>Fill in your business details and contact information</li>
+                                            <li>Verify your email address</li>
+                                            <li>Complete your profile setup</li>
+                                        </ol>
+                                        <p>Once verified, you'll have immediate access to our platform and can start shipping or bidding on jobs right away.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="faq-item getting-started" data-category="getting-started">
+                                    <button class="faq-question" aria-expanded="false">
+                                        <span class="question-text">What documents do I need to register as a fleet operator?</span>
+                                        <span class="question-icon">+</span>
+                                    </button>
+                                    <div class="faq-answer">
+                                        <p>To register as a fleet operator, you'll need:</p>
+                                        <ul>
+                                            <li>Valid commercial vehicle registration documents</li>
+                                            <li>Insurance certificates (minimum coverage requirements apply)</li>
+                                            <li>Driver licenses and qualifications</li>
+                                            <li>Business registration or operating license</li>
+                                            <li>Tax identification numbers</li>
+                                        </ul>
+                                        <p>Our verification team reviews all documents within 24-48 hours to ensure compliance with European transport regulations.</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Pricing Questions -->
+                                <div class="faq-item pricing" data-category="pricing">
+                                    <button class="faq-question" aria-expanded="false">
+                                        <span class="question-text">How does Circling Logistics pricing work?</span>
+                                        <span class="question-icon">+</span>
+                                    </button>
+                                    <div class="faq-answer">
+                                        <p>Our pricing is transparent and competitive:</p>
+                                        <ul>
+                                            <li><strong>For Cargo Owners:</strong> Pay a small commission (3-5%) only on successful shipments</li>
+                                            <li><strong>For Fleet Operators:</strong> No monthly fees - we deduct a service fee (2-3%) from completed jobs</li>
+                                            <li><strong>Platform Access:</strong> Free to join and browse opportunities</li>
+                                            <li><strong>Premium Features:</strong> Advanced analytics and priority support available</li>
+                                        </ul>
+                                        <p>No hidden fees, no setup costs, and no minimum commitments.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="faq-item pricing" data-category="pricing">
+                                    <button class="faq-question" aria-expanded="false">
+                                        <span class="question-text">When and how do I get paid?</span>
+                                        <span class="question-icon">+</span>
+                                    </button>
+                                    <div class="faq-answer">
+                                        <p>Payment processing is fast and secure:</p>
+                                        <ul>
+                                            <li><strong>Fleet Operators:</strong> Payments are released within 24 hours of delivery confirmation</li>
+                                            <li><strong>Payment Methods:</strong> Bank transfer, PayPal, or digital wallets</li>
+                                            <li><strong>Currency:</strong> Payments in EUR, GBP, or local currencies</li>
+                                            <li><strong>Invoicing:</strong> Automatic invoice generation and tax compliance</li>
+                                        </ul>
+                                        <p>All transactions are protected by our secure payment system with fraud protection.</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Platform Features Questions -->
+                                <div class="faq-item platform" data-category="platform">
+                                    <button class="faq-question" aria-expanded="false">
+                                        <span class="question-text">How does real-time vehicle tracking work?</span>
+                                        <span class="question-icon">+</span>
+                                    </button>
+                                    <div class="faq-answer">
+                                        <p>Our advanced tracking system provides complete visibility:</p>
+                                        <ul>
+                                            <li><strong>GPS Integration:</strong> Real-time location updates every 30 seconds</li>
+                                            <li><strong>Route Monitoring:</strong> Planned vs. actual route comparison</li>
+                                            <li><strong>ETA Updates:</strong> Dynamic delivery time estimates</li>
+                                            <li><strong>Alerts:</strong> Automatic notifications for delays or route deviations</li>
+                                            <li><strong>Mobile App:</strong> Track shipments on iOS and Android devices</li>
+                                        </ul>
+                                        <p>Both cargo owners and fleet operators have access to the same tracking information for complete transparency.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="faq-item platform" data-category="platform">
+                                    <button class="faq-question" aria-expanded="false">
+                                        <span class="question-text">How does the bidding system work?</span>
+                                        <span class="question-icon">+</span>
+                                    </button>
+                                    <div class="faq-answer">
+                                        <p>Our intelligent bidding system ensures fair pricing:</p>
+                                        <ol>
+                                            <li><strong>Job Posting:</strong> Cargo owners post shipment details and requirements</li>
+                                            <li><strong>Smart Matching:</strong> AI suggests relevant jobs to qualified fleet operators</li>
+                                            <li><strong>Competitive Bidding:</strong> Fleet operators submit competitive bids</li>
+                                            <li><strong>Selection Process:</strong> Cargo owners review bids, ratings, and fleet credentials</li>
+                                            <li><strong>Award & Execute:</strong> Job awarded to best bid, contract automatically created</li>
+                                        </ol>
+                                        <p>The system promotes fair competition while ensuring quality service delivery.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="faq-item platform" data-category="platform">
+                                    <button class="faq-question" aria-expanded="false">
+                                        <span class="question-text">Can I integrate Circling Logistics with my existing systems?</span>
+                                        <span class="question-icon">+</span>
+                                    </button>
+                                    <div class="faq-answer">
+                                        <p>Yes! We offer comprehensive integration options:</p>
+                                        <ul>
+                                            <li><strong>REST API:</strong> Full-featured API for custom integrations</li>
+                                            <li><strong>Webhooks:</strong> Real-time notifications for status updates</li>
+                                            <li><strong>ERP Integration:</strong> Connect with SAP, Oracle, and other enterprise systems</li>
+                                            <li><strong>TMS Integration:</strong> Work with existing Transportation Management Systems</li>
+                                            <li><strong>Bulk Operations:</strong> CSV import/export for large-scale operations</li>
+                                        </ul>
+                                        <p>Our technical team provides integration support and documentation to ensure smooth connectivity.</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Support Questions -->
+                                <div class="faq-item support" data-category="support">
+                                    <button class="faq-question" aria-expanded="false">
+                                        <span class="question-text">What support options are available?</span>
+                                        <span class="question-icon">+</span>
+                                    </button>
+                                    <div class="faq-answer">
+                                        <p>We provide comprehensive support to ensure your success:</p>
+                                        <ul>
+                                            <li><strong>24/7 Chat Support:</strong> Instant help through our platform chat</li>
+                                            <li><strong>Phone Support:</strong> Direct phone line for urgent issues</li>
+                                            <li><strong>Email Support:</strong> Detailed assistance for complex questions</li>
+                                            <li><strong>Knowledge Base:</strong> Extensive documentation and tutorials</li>
+                                            <li><strong>Account Manager:</strong> Dedicated support for enterprise customers</li>
+                                            <li><strong>Training:</strong> Platform training sessions and webinars</li>
+                                        </ul>
+                                        <p>Our average response time is under 5 minutes for chat and 2 hours for email.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="faq-item support" data-category="support">
+                                    <button class="faq-question" aria-expanded="false">
+                                        <span class="question-text">What should I do if there's an issue with my shipment?</span>
+                                        <span class="question-icon">+</span>
+                                    </button>
+                                    <div class="faq-answer">
+                                        <p>If you encounter any issues, follow these steps:</p>
+                                        <ol>
+                                            <li><strong>Immediate Reporting:</strong> Report issues through the platform or call our emergency line</li>
+                                            <li><strong>Documentation:</strong> Take photos and gather relevant information</li>
+                                            <li><strong>Mediation:</strong> Our team mediates between parties to resolve disputes</li>
+                                            <li><strong>Insurance Claims:</strong> Assist with insurance claims if needed</li>
+                                            <li><strong>Resolution:</strong> Work toward fair resolution for all parties</li>
+                                        </ol>
+                                        <p>All shipments are covered by our protection guarantee, and we're committed to resolving issues quickly and fairly.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Contact CTA -->
+            <section class="contact-section">
+                <div class="contact-container">
+                    <div class="contact-content">
+                        <h2 class="contact-title">Still have questions?</h2>
+                        <p class="contact-subtitle">
+                            Can't find what you're looking for? Our support team is here to help.
+                        </p>
+                        <div class="contact-actions">
+                            <a href="#chat" class="btn btn-primary btn-lg">💬 Start Live Chat</a>
+                            <a href="#email" class="btn btn-outline btn-lg">📧 Send Email</a>
+                            <a href="#phone" class="btn btn-outline btn-lg">📞 Call Support</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <!-- Footer -->
+        <footer class="main-footer">
+            <div class="footer-container">
+                <div class="footer-content">
+                    <div class="footer-section">
+                        <div class="footer-logo">
+                            <div class="logo-icon">C</div>
+                            <span class="logo-text">Circling Logistics</span>
+                        </div>
+                        <p class="footer-description">
+                            Connecting businesses across Europe with reliable, efficient logistics solutions.
+                        </p>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h4 class="footer-title">Platform</h4>
+                        <ul class="footer-links">
+                            <li><a href="02-dashboard-european.html">Dashboard</a></li>
+                            <li><a href="04-vehicle-tracking.html">Vehicle Tracking</a></li>
+                            <li><a href="03-dashboard-fleet-european.html">Fleet Management</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h4 class="footer-title">Support</h4>
+                        <ul class="footer-links">
+                            <li><a href="06-faq.html">FAQ</a></li>
+                            <li><a href="#contact">Contact Us</a></li>
+                            <li><a href="#support">24/7 Support</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+    <script>
+        // FAQ functionality
+        class FAQManager {
+            constructor() {
+                this.init();
+            }
+            
+            init() {
+                this.bindEvents();
+                this.setupSearch();
+            }
+            
+            bindEvents() {
+                // FAQ question toggles
+                document.querySelectorAll('.faq-question').forEach(question => {
+                    question.addEventListener('click', (e) => this.toggleFAQ(e.target.closest('.faq-item')));
+                });
+                
+                // Filter buttons
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => this.filterFAQs(e.target.dataset.filter));
+                });
+                
+                // Category cards
+                document.querySelectorAll('.category-card').forEach(card => {
+                    card.addEventListener('click', (e) => this.filterFAQs(e.target.closest('.category-card').dataset.category));
+                });
+            }
+            
+            toggleFAQ(faqItem) {
+                const question = faqItem.querySelector('.faq-question');
+                const answer = faqItem.querySelector('.faq-answer');
+                const icon = question.querySelector('.question-icon');
+                const isExpanded = question.getAttribute('aria-expanded') === 'true';
+                
+                // Close all other FAQs
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    if (item !== faqItem) {
+                        const otherQuestion = item.querySelector('.faq-question');
+                        const otherAnswer = item.querySelector('.faq-answer');
+                        const otherIcon = otherQuestion.querySelector('.question-icon');
+                        
+                        otherQuestion.setAttribute('aria-expanded', 'false');
+                        otherAnswer.style.maxHeight = '0';
+                        otherIcon.textContent = '+';
+                        item.classList.remove('expanded');
+                    }
+                });
+                
+                // Toggle current FAQ
+                if (!isExpanded) {
+                    question.setAttribute('aria-expanded', 'true');
+                    answer.style.maxHeight = answer.scrollHeight + 'px';
+                    icon.textContent = '−';
+                    faqItem.classList.add('expanded');
+                } else {
+                    question.setAttribute('aria-expanded', 'false');
+                    answer.style.maxHeight = '0';
+                    icon.textContent = '+';
+                    faqItem.classList.remove('expanded');
+                }
+            }
+            
+            filterFAQs(filter) {
+                // Update active filter button
+                document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+                document.querySelector(`[data-filter="${filter}"]`).classList.add('active');
+                
+                // Update title
+                const titleMap = {
+                    'all': 'All Questions',
+                    'getting-started': 'Getting Started',
+                    'pricing': 'Pricing & Billing',
+                    'platform': 'Platform Features',
+                    'support': 'Support & Troubleshooting'
+                };
+                document.querySelector('.faq-title').textContent = titleMap[filter] || 'All Questions';
+                
+                // Filter FAQ items
+                const faqItems = document.querySelectorAll('.faq-item');
+                faqItems.forEach(item => {
+                    const isVisible = filter === 'all' || item.classList.contains(filter);
+                    item.style.display = isVisible ? 'block' : 'none';
+                    
+                    // Close expanded items when filtering
+                    if (!isVisible) {
+                        const question = item.querySelector('.faq-question');
+                        const answer = item.querySelector('.faq-answer');
+                        const icon = question.querySelector('.question-icon');
+                        
+                        question.setAttribute('aria-expanded', 'false');
+                        answer.style.maxHeight = '0';
+                        icon.textContent = '+';
+                        item.classList.remove('expanded');
+                    }
+                });
+                
+                // Scroll to FAQ section if filtering from category cards
+                if (filter !== 'all') {
+                    document.querySelector('.faq-section').scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+            
+            setupSearch() {
+                const searchInput = document.getElementById('faq-search');
+                let searchTimeout;
+                
+                searchInput.addEventListener('input', (e) => {
+                    clearTimeout(searchTimeout);
+                    searchTimeout = setTimeout(() => {
+                        this.searchFAQs(e.target.value);
+                    }, 300);
+                });
+            }
+            
+            searchFAQs(query) {
+                const faqItems = document.querySelectorAll('.faq-item');
+                const normalizedQuery = query.toLowerCase().trim();
+                
+                if (!normalizedQuery) {
+                    // Show all items if search is empty
+                    faqItems.forEach(item => item.style.display = 'block');
+                    return;
+                }
+                
+                faqItems.forEach(item => {
+                    const questionText = item.querySelector('.question-text').textContent.toLowerCase();
+                    const answerText = item.querySelector('.faq-answer').textContent.toLowerCase();
+                    const isMatch = questionText.includes(normalizedQuery) || answerText.includes(normalizedQuery);
+                    
+                    item.style.display = isMatch ? 'block' : 'none';
+                });
+            }
+        }
+        
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new FAQManager();
+        });
+    </script>
+</body>
+</html>

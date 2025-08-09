@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Tracking Dashboard - Circling Logistics</title>
+    <meta name="description" content="Real-time vehicle tracking and fleet monitoring for logistics operations.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Design System -->
+    <link rel="stylesheet" href="design-system-european.css">
+    
+    <!-- Vehicle Tracking Styles -->
+    <link rel="stylesheet" href="04-vehicle-tracking.css">
+</head>
+<body>
+    <!-- Skip link for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="06-home-page-european.html" class="sidebar-logo">
+                    <div class="sidebar-logo-icon">C</div>
+                    <span>Circling Logistics</span>
+                </a>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul class="nav-list">
+                    <li class="sidebar-nav-item">
+                        <a href="02-dashboard-european.html" class="sidebar-nav-link">
+                            <span class="nav-icon">📊</span>
+                            <span class="nav-text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="04-vehicle-tracking.html" class="sidebar-nav-link active">
+                            <span class="nav-icon">🗺️</span>
+                            <span class="nav-text">Vehicle Tracking</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="03-dashboard-fleet-european.html" class="sidebar-nav-link">
+                            <span class="nav-icon">🚛</span>
+                            <span class="nav-text">Fleet Management</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="05-testimonials.html" class="sidebar-nav-link">
+                            <span class="nav-icon">⭐</span>
+                            <span class="nav-text">Testimonials</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="06-faq.html" class="sidebar-nav-link">
+                            <span class="nav-icon">❓</span>
+                            <span class="nav-text">FAQ</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="#" class="sidebar-nav-link">
+                            <span class="nav-icon">⚙️</span>
+                            <span class="nav-text">Settings</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Navigation -->
+            <div class="top-nav">
+                <nav class="breadcrumb" aria-label="Breadcrumb">
+                    <span>Dashboard</span>
+                    <span class="breadcrumb-separator">/</span>
+                    <span>Vehicle Tracking</span>
+                </nav>
+                
+                <div class="user-menu">
+                    <button class="notifications-btn" aria-label="Notifications">
+                        <span class="notification-icon">🔔</span>
+                        <span class="notification-badge">4</span>
+                    </button>
+                    <div class="user-avatar" aria-label="User menu" title="Fleet Manager">FM</div>
+                </div>
+            </div>
+            
+            <!-- Dashboard Content -->
+            <div class="dashboard-content" id="main-content">
+                <div class="dashboard-header">
+                    <h1 class="dashboard-title">Vehicle Tracking Dashboard 🗺️</h1>
+                    <p class="dashboard-subtitle">Real-time monitoring and location tracking for your entire fleet</p>
+                </div>
+                
+                <!-- Fleet Status Summary -->
+                <div class="status-grid">
+                    <div class="status-card">
+                        <div class="status-header">
+                            <span class="status-title">Vehicles Online</span>
+                            <div class="status-icon success">🚛</div>
+                        </div>
+                        <div class="status-value">48</div>
+                        <div class="status-subtitle">of 52 total vehicles</div>
+                    </div>
+                    
+                    <div class="status-card">
+                        <div class="status-header">
+                            <span class="status-title">On Route</span>
+                            <div class="status-icon primary">🗺️</div>
+                        </div>
+                        <div class="status-value">36</div>
+                        <div class="status-subtitle">actively delivering</div>
+                    </div>
+                    
+                    <div class="status-card">
+                        <div class="status-header">
+                            <span class="status-title">At Depot</span>
+                            <div class="status-icon warning">🏢</div>
+                        </div>
+                        <div class="status-value">8</div>
+                        <div class="status-subtitle">available for dispatch</div>
+                    </div>
+                    
+                    <div class="status-card">
+                        <div class="status-header">
+                            <span class="status-title">Maintenance</span>
+                            <div class="status-icon danger">🔧</div>
+                        </div>
+                        <div class="status-value">4</div>
+                        <div class="status-subtitle">offline for service</div>
+                    </div>
+                </div>
+                
+                <!-- Main Tracking Interface -->
+                <div class="tracking-layout">
+                    <!-- Map Container -->
+                    <div class="map-container">
+                        <div class="map-header">
+                            <h2 class="section-title">Live Fleet Map</h2>
+                            <div class="map-controls">
+                                <button class="control-btn active" data-filter="all">All Vehicles</button>
+                                <button class="control-btn" data-filter="active">Active Only</button>
+                                <button class="control-btn" data-filter="delayed">Delayed</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Simulated Map Area -->
+                        <div class="map-display">
+                            <div class="map-placeholder">
+                                <div class="map-legend">
+                                    <div class="legend-item">
+                                        <span class="legend-dot active"></span>
+                                        <span>On Route</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="legend-dot idle"></span>
+                                        <span>At Location</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="legend-dot delayed"></span>
+                                        <span>Delayed</span>
+                                    </div>
+                                </div>
+                                
+                                <!-- Simulated Vehicle Markers -->
+                                <div class="vehicle-marker active" style="top: 20%; left: 15%;" data-vehicle="EU-001">
+                                    <span class="marker-label">EU-001</span>
+                                </div>
+                                <div class="vehicle-marker active" style="top: 35%; left: 45%;" data-vehicle="EU-002">
+                                    <span class="marker-label">EU-002</span>
+                                </div>
+                                <div class="vehicle-marker idle" style="top: 60%; left: 25%;" data-vehicle="EU-003">
+                                    <span class="marker-label">EU-003</span>
+                                </div>
+                                <div class="vehicle-marker delayed" style="top: 45%; left: 70%;" data-vehicle="EU-004">
+                                    <span class="marker-label">EU-004</span>
+                                </div>
+                                <div class="vehicle-marker active" style="top: 75%; left: 55%;" data-vehicle="EU-005">
+                                    <span class="marker-label">EU-005</span>
+                                </div>
+                                
+                                <div class="map-background-text">🗺️ Interactive Fleet Map</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Vehicle List Panel -->
+                    <div class="vehicle-panel">
+                        <div class="panel-header">
+                            <h3 class="panel-title">Vehicle Status</h3>
+                            <button class="refresh-btn" aria-label="Refresh data">🔄</button>
+                        </div>
+                        
+                        <div class="vehicle-list">
+                            <div class="vehicle-item active">
+                                <div class="vehicle-info">
+                                    <div class="vehicle-id">EU-TRK-001</div>
+                                    <div class="vehicle-driver">Hans Mueller</div>
+                                    <div class="vehicle-route">Hamburg → Munich</div>
+                                </div>
+                                <div class="vehicle-status">
+                                    <div class="status-badge on-route">On Route</div>
+                                    <div class="eta">ETA: 2h 30m</div>
+                                </div>
+                            </div>
+                            
+                            <div class="vehicle-item active">
+                                <div class="vehicle-info">
+                                    <div class="vehicle-id">EU-TRK-002</div>
+                                    <div class="vehicle-driver">Klaus Weber</div>
+                                    <div class="vehicle-route">Amsterdam → Berlin</div>
+                                </div>
+                                <div class="vehicle-status">
+                                    <div class="status-badge on-route">On Route</div>
+                                    <div class="eta">ETA: 4h 15m</div>
+                                </div>
+                            </div>
+                            
+                            <div class="vehicle-item idle">
+                                <div class="vehicle-info">
+                                    <div class="vehicle-id">EU-TRK-003</div>
+                                    <div class="vehicle-driver">Erik Larsen</div>
+                                    <div class="vehicle-route">Prague Depot</div>
+                                </div>
+                                <div class="vehicle-status">
+                                    <div class="status-badge loading">Loading</div>
+                                    <div class="eta">Departure: 1h</div>
+                                </div>
+                            </div>
+                            
+                            <div class="vehicle-item delayed">
+                                <div class="vehicle-info">
+                                    <div class="vehicle-id">EU-TRK-004</div>
+                                    <div class="vehicle-driver">Pierre Dubois</div>
+                                    <div class="vehicle-route">Paris → Lyon</div>
+                                </div>
+                                <div class="vehicle-status">
+                                    <div class="status-badge delayed">Delayed</div>
+                                    <div class="eta">Delay: +45m</div>
+                                </div>
+                            </div>
+                            
+                            <div class="vehicle-item active">
+                                <div class="vehicle-info">
+                                    <div class="vehicle-id">EU-TRK-005</div>
+                                    <div class="vehicle-driver">Giovanni Rossi</div>
+                                    <div class="vehicle-route">Milan → Rome</div>
+                                </div>
+                                <div class="vehicle-status">
+                                    <div class="status-badge on-route">On Route</div>
+                                    <div class="eta">ETA: 6h 20m</div>
+                                </div>
+                            </div>
+                            
+                            <div class="vehicle-item maintenance">
+                                <div class="vehicle-info">
+                                    <div class="vehicle-id">EU-TRK-006</div>
+                                    <div class="vehicle-driver">—</div>
+                                    <div class="vehicle-route">Vienna Service Center</div>
+                                </div>
+                                <div class="vehicle-status">
+                                    <div class="status-badge maintenance">Maintenance</div>
+                                    <div class="eta">Available: Tomorrow</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Alerts and Notifications -->
+                <div class="alerts-section">
+                    <h3 class="section-title">Recent Alerts</h3>
+                    <div class="alerts-grid">
+                        <div class="alert-card warning">
+                            <div class="alert-icon">⚠️</div>
+                            <div class="alert-content">
+                                <div class="alert-title">Traffic Delay</div>
+                                <div class="alert-message">EU-TRK-004 experiencing traffic delays on A6 near Lyon</div>
+                                <div class="alert-time">15 minutes ago</div>
+                            </div>
+                        </div>
+                        
+                        <div class="alert-card info">
+                            <div class="alert-icon">ℹ️</div>
+                            <div class="alert-content">
+                                <div class="alert-title">Route Update</div>
+                                <div class="alert-message">EU-TRK-002 has been rerouted due to road construction</div>
+                                <div class="alert-time">32 minutes ago</div>
+                            </div>
+                        </div>
+                        
+                        <div class="alert-card success">
+                            <div class="alert-icon">✅</div>
+                            <div class="alert-content">
+                                <div class="alert-title">Delivery Complete</div>
+                                <div class="alert-message">EU-TRK-007 successfully delivered to Munich distribution center</div>
+                                <div class="alert-time">1 hour ago</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        // Vehicle tracking functionality
+        class VehicleTracker {
+            constructor() {
+                this.init();
+            }
+            
+            init() {
+                this.bindEvents();
+                this.startAutoRefresh();
+            }
+            
+            bindEvents() {
+                // Filter buttons
+                document.querySelectorAll('.control-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => this.filterVehicles(e.target.dataset.filter));
+                });
+                
+                // Vehicle markers
+                document.querySelectorAll('.vehicle-marker').forEach(marker => {
+                    marker.addEventListener('click', (e) => this.selectVehicle(e.target.dataset.vehicle));
+                });
+                
+                // Refresh button
+                document.querySelector('.refresh-btn')?.addEventListener('click', () => this.refreshData());
+            }
+            
+            filterVehicles(filter) {
+                // Update active filter button
+                document.querySelectorAll('.control-btn').forEach(btn => btn.classList.remove('active'));
+                event.target.classList.add('active');
+                
+                // Filter vehicles based on selection
+                const vehicles = document.querySelectorAll('.vehicle-item');
+                vehicles.forEach(vehicle => {
+                    const isVisible = filter === 'all' || vehicle.classList.contains(filter);
+                    vehicle.style.display = isVisible ? 'flex' : 'none';
+                });
+                
+                // Filter map markers
+                const markers = document.querySelectorAll('.vehicle-marker');
+                markers.forEach(marker => {
+                    const isVisible = filter === 'all' || marker.classList.contains(filter);
+                    marker.style.display = isVisible ? 'block' : 'none';
+                });
+            }
+            
+            selectVehicle(vehicleId) {
+                // Highlight selected vehicle in list
+                document.querySelectorAll('.vehicle-item').forEach(item => {
+                    item.classList.remove('selected');
+                });
+                
+                const vehicleItem = document.querySelector(`[data-vehicle="${vehicleId}"]`);
+                if (vehicleItem) {
+                    vehicleItem.classList.add('selected');
+                }
+                
+                console.log(`Selected vehicle: ${vehicleId}`);
+            }
+            
+            refreshData() {
+                console.log('Refreshing vehicle tracking data...');
+                // Simulate data refresh
+                const refreshBtn = document.querySelector('.refresh-btn');
+                refreshBtn.style.transform = 'rotate(360deg)';
+                setTimeout(() => {
+                    refreshBtn.style.transform = 'rotate(0deg)';
+                }, 500);
+            }
+            
+            startAutoRefresh() {
+                // Auto-refresh every 30 seconds
+                setInterval(() => {
+                    this.updateVehiclePositions();
+                }, 30000);
+            }
+            
+            updateVehiclePositions() {
+                // Simulate position updates
+                console.log('Updating vehicle positions...');
+            }
+        }
+        
+        // Initialize tracker when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new VehicleTracker();
+        });
+    </script>
+</body>
+</html>
