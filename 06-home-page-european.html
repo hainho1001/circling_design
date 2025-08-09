@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circling Logistics - European Freight & Logistics Platform</title>
+    <link rel="stylesheet" href="css/design-system-european.css">
+    <link rel="stylesheet" href="css/navigation.css">
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            color: var(--white);
+            padding: var(--space-16) 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 var(--space-4);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero-title {
+            font-size: var(--font-size-4xl);
+            font-weight: 700;
+            margin-bottom: var(--space-6);
+            line-height: 1.2;
+        }
+        
+        .hero-subtitle {
+            font-size: var(--font-size-xl);
+            margin-bottom: var(--space-8);
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        .hero-cta {
+            display: flex;
+            gap: var(--space-4);
+            justify-content: center;
+            margin-bottom: var(--space-8);
+        }
+        
+        .cta-primary {
+            background: var(--white);
+            color: var(--primary-blue);
+            padding: var(--space-4) var(--space-8);
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            text-decoration: none;
+            transition: all var(--transition-fast);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .cta-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl);
+            text-decoration: none;
+        }
+        
+        .cta-secondary {
+            background: transparent;
+            color: var(--white);
+            padding: var(--space-4) var(--space-8);
+            border: 2px solid var(--white);
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            text-decoration: none;
+            transition: all var(--transition-fast);
+        }
+        
+        .cta-secondary:hover {
+            background: var(--white);
+            color: var(--primary-blue);
+            text-decoration: none;
+        }
+        
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-8);
+            margin-top: var(--space-8);
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: var(--font-size-3xl);
+            font-weight: 700;
+            margin-bottom: var(--space-1);
+        }
+        
+        .stat-label {
+            font-size: var(--font-size-sm);
+            opacity: 0.8;
+        }
+        
+        .features-section {
+            padding: var(--space-16) 0;
+            background: var(--white);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-8);
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-4);
+        }
+        
+        .feature-card {
+            text-align: center;
+            padding: var(--space-6);
+        }
+        
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: var(--radius-2xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-3xl);
+            margin: 0 auto var(--space-4);
+        }
+        
+        .icon-shipper {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--secondary-blue);
+        }
+        
+        .icon-fleet {
+            background: rgba(5, 150, 105, 0.1);
+            color: var(--success-green);
+        }
+        
+        .icon-tracking {
+            background: rgba(217, 119, 6, 0.1);
+            color: var(--warning-amber);
+        }
+        
+        .feature-title {
+            font-size: var(--font-size-xl);
+            font-weight: 600;
+            margin-bottom: var(--space-3);
+            color: var(--neutral-dark);
+        }
+        
+        .feature-description {
+            color: var(--neutral-medium);
+            line-height: 1.6;
+        }
+        
+        .how-it-works {
+            padding: var(--space-16) 0;
+            background: var(--neutral-light);
+        }
+        
+        .section-header {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto var(--space-12);
+            padding: 0 var(--space-4);
+        }
+        
+        .section-title {
+            font-size: var(--font-size-3xl);
+            font-weight: 700;
+            margin-bottom: var(--space-4);
+            color: var(--neutral-dark);
+        }
+        
+        .section-subtitle {
+            color: var(--neutral-medium);
+            font-size: var(--font-size-lg);
+            line-height: 1.6;
+        }
+        
+        .steps-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 var(--space-4);
+        }
+        
+        .step {
+            display: flex;
+            align-items: center;
+            gap: var(--space-6);
+            margin-bottom: var(--space-8);
+        }
+        
+        .step:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+        
+        .step-number {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--primary-blue);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-2xl);
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        
+        .step-content {
+            flex: 1;
+        }
+        
+        .step-title {
+            font-size: var(--font-size-xl);
+            font-weight: 600;
+            margin-bottom: var(--space-2);
+            color: var(--neutral-dark);
+        }
+        
+        .step-description {
+            color: var(--neutral-medium);
+            line-height: 1.6;
+        }
+        
+        .cta-section {
+            padding: var(--space-16) 0;
+            background: var(--primary-blue);
+            color: var(--white);
+            text-align: center;
+        }
+        
+        .cta-content {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 var(--space-4);
+        }
+        
+        .cta-title {
+            font-size: var(--font-size-3xl);
+            font-weight: 700;
+            margin-bottom: var(--space-4);
+        }
+        
+        .cta-description {
+            font-size: var(--font-size-lg);
+            margin-bottom: var(--space-8);
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        .footer {
+            background: var(--neutral-dark);
+            color: var(--white);
+            padding: var(--space-8) 0;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-4);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-6);
+        }
+        
+        .footer-section h3 {
+            margin-bottom: var(--space-4);
+            font-size: var(--font-size-lg);
+        }
+        
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-section li {
+            margin-bottom: var(--space-2);
+        }
+        
+        .footer-section a {
+            color: var(--white);
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity var(--transition-fast);
+        }
+        
+        .footer-section a:hover {
+            opacity: 1;
+            text-decoration: none;
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid #374151;
+            margin-top: var(--space-6);
+            padding-top: var(--space-6);
+            text-align: center;
+            opacity: 0.6;
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: var(--font-size-3xl);
+            }
+            
+            .hero-subtitle {
+                font-size: var(--font-size-lg);
+            }
+            
+            .hero-cta {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .hero-stats {
+                flex-direction: column;
+                gap: var(--space-4);
+            }
+            
+            .step {
+                flex-direction: column !important;
+                text-align: center;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .cta-primary,
+            .cta-secondary {
+                width: 100%;
+                max-width: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <div class="navigation-wrapper">
+        <nav class="navbar">
+            <a href="06-home-page-european.html" class="navbar-brand">
+                <div class="navbar-logo">CL</div>
+                Circling Logistics
+            </a>
+            
+            <div class="navbar-search">
+                <input type="text" class="search-input" placeholder="Search...">
+                <span class="search-icon">🔍</span>
+            </div>
+            
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a href="#features" class="nav-link">Features</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#how-it-works" class="nav-link">How It Works</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#contact" class="nav-link">Contact</a>
+                </li>
+            </ul>
+            
+            <div class="navbar-user">
+                <a href="01-login-european.html" class="btn btn-primary">Sign In</a>
+                <a href="04-register-european.html" class="btn btn-secondary">Get Started</a>
+            </div>
+            
+            <button class="mobile-menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">
+                Europe's Leading Freight & Logistics Platform
+            </h1>
+            <p class="hero-subtitle">
+                Connect shippers with trusted carriers across Europe. 
+                Streamline your logistics, reduce costs, and deliver efficiently.
+            </p>
+            
+            <div class="hero-cta">
+                <a href="04-register-european.html" class="cta-primary">Start Shipping Today</a>
+                <a href="01-login-european.html" class="cta-secondary">Sign In</a>
+            </div>
+            
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-number">10K+</div>
+                    <div class="stat-label">Active Users</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">50K+</div>
+                    <div class="stat-label">Shipments</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">27</div>
+                    <div class="stat-label">Countries</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Success Rate</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section" id="features">
+        <div class="section-header">
+            <h2 class="section-title">Why Choose Circling Logistics?</h2>
+            <p class="section-subtitle">
+                Our platform provides everything you need for efficient freight management across Europe
+            </p>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon icon-shipper">📦</div>
+                <h3 class="feature-title">For Shippers</h3>
+                <p class="feature-description">
+                    Post your shipping needs and receive competitive bids from verified carriers. 
+                    Track your shipments in real-time and manage all logistics from one platform.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon icon-fleet">🚛</div>
+                <h3 class="feature-title">For Fleet Owners</h3>
+                <p class="feature-description">
+                    Find profitable loads, optimize your routes, and grow your business. 
+                    Access a network of trusted shippers across Europe.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon icon-tracking">📍</div>
+                <h3 class="feature-title">Real-Time Tracking</h3>
+                <p class="feature-description">
+                    Monitor your shipments every step of the way with GPS tracking, 
+                    automated notifications, and detailed delivery confirmations.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="section-header">
+            <h2 class="section-title">How It Works</h2>
+            <p class="section-subtitle">
+                Get started in minutes with our simple and efficient process
+            </p>
+        </div>
+        
+        <div class="steps-container">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3 class="step-title">Create Your Account</h3>
+                    <p class="step-description">
+                        Sign up as a shipper or fleet owner. Complete your profile and 
+                        get verified to start using the platform immediately.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3 class="step-title">Post or Find Loads</h3>
+                    <p class="step-description">
+                        Shippers post their freight needs, while carriers browse 
+                        available loads and submit competitive bids.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3 class="step-title">Match & Book</h3>
+                    <p class="step-description">
+                        Review bids, select the best carrier, and confirm the booking. 
+                        All contracts and payments are handled securely through our platform.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h3 class="step-title">Track & Deliver</h3>
+                    <p class="step-description">
+                        Monitor your shipment in real-time, receive updates, and 
+                        confirm delivery. Get paid automatically upon successful completion.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-content">
+            <h2 class="cta-title">Ready to Transform Your Logistics?</h2>
+            <p class="cta-description">
+                Join thousands of businesses already using Circling Logistics 
+                to streamline their freight operations across Europe.
+            </p>
+            <div class="hero-cta">
+                <a href="04-register-european.html" class="cta-primary">Get Started Free</a>
+                <a href="16-help-support-european.html" class="cta-secondary">Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Circling Logistics</h3>
+                <p>Europe's leading freight and logistics platform connecting shippers with trusted carriers.</p>
+                <p style="margin-top: 16px;">
+                    📍 Berlin, Germany<br>
+                    📧 info@circlinglogistics.eu<br>
+                    📞 +49 30 1234 5678
+                </p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>For Shippers</h3>
+                <ul>
+                    <li><a href="04-register-european.html">Get Started</a></li>
+                    <li><a href="09-create-order-european.html">Post a Load</a></li>
+                    <li><a href="20-order-tracking-european.html">Track Shipments</a></li>
+                    <li><a href="11-payment-methods-european.html">Payment Options</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>For Carriers</h3>
+                <ul>
+                    <li><a href="04-register-european.html">Join Our Network</a></li>
+                    <li><a href="07-orders-european.html">Find Loads</a></li>
+                    <li><a href="17-vehicle-management-european.html">Manage Fleet</a></li>
+                    <li><a href="18-driver-management-european.html">Driver Tools</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Support</h3>
+                <ul>
+                    <li><a href="16-help-support-european.html">Help Center</a></li>
+                    <li><a href="#" onclick="alert('Contact form would open here')">Contact Us</a></li>
+                    <li><a href="#" onclick="alert('API documentation would open here')">API Documentation</a></li>
+                    <li><a href="#" onclick="alert('System status page would open here')">System Status</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 Circling Logistics. All rights reserved. | Privacy Policy | Terms of Service</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/user-session.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+            
+            // Check if user is already logged in
+            const currentUser = window.userSessionController?.getCurrentUser();
+            if (currentUser) {
+                // Update navigation for logged-in users
+                const userActions = document.querySelector('.navbar-user');
+                if (userActions) {
+                    let dashboardUrl;
+                    switch (currentUser.role) {
+                        case 'fleet':
+                            dashboardUrl = '03-dashboard-fleet-european.html';
+                            break;
+                        case 'admin':
+                            dashboardUrl = '05-admin-european.html';
+                            break;
+                        default:
+                            dashboardUrl = '02-dashboard-european.html';
+                    }
+                    
+                    userActions.innerHTML = `
+                        <a href="${dashboardUrl}" class="btn btn-primary">Go to Dashboard</a>
+                        <a href="14-profile-settings-european.html" class="btn btn-secondary">Profile</a>
+                    `;
+                }
+            }
+            
+            // Add animation on scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe feature cards and steps
+            document.querySelectorAll('.feature-card, .step').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>

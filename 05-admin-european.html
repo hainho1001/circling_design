@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Circling Logistics</title>
+    <link rel="stylesheet" href="css/design-system-european.css">
+    <link rel="stylesheet" href="css/navigation.css">
+    <style>
+        .admin-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .main-content {
+            flex: 1;
+            background: var(--neutral-light);
+        }
+        
+        .admin-header {
+            background: var(--white);
+            padding: var(--space-6);
+            border-bottom: 1px solid #e5e7eb;
+            border-left: 4px solid var(--error-red);
+        }
+        
+        .admin-title {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            margin-bottom: var(--space-2);
+        }
+        
+        .admin-badge {
+            background: var(--error-red);
+            color: var(--white);
+            padding: var(--space-1) var(--space-3);
+            border-radius: var(--radius-xl);
+            font-size: var(--font-size-xs);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .system-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-6);
+            margin-bottom: var(--space-8);
+        }
+        
+        .overview-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            border-left: 4px solid var(--primary-blue);
+        }
+        
+        .overview-header {
+            padding: var(--space-4) var(--space-6);
+            background: var(--neutral-light);
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .overview-title {
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+        
+        .overview-status {
+            font-size: var(--font-size-xs);
+            padding: var(--space-1) var(--space-2);
+            border-radius: var(--radius-sm);
+            background: var(--success-green);
+            color: var(--white);
+        }
+        
+        .overview-content {
+            padding: var(--space-6);
+        }
+        
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-3);
+            padding-bottom: var(--space-3);
+            border-bottom: 1px solid #f3f4f6;
+        }
+        
+        .metric-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        
+        .metric-label {
+            color: var(--neutral-medium);
+            font-size: var(--font-size-sm);
+        }
+        
+        .metric-value {
+            font-weight: 600;
+            color: var(--neutral-dark);
+        }
+        
+        .admin-sections {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-6);
+        }
+        
+        .admin-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-4);
+            margin-bottom: var(--space-6);
+        }
+        
+        .action-card {
+            background: var(--white);
+            padding: var(--space-6);
+            border-radius: var(--radius-lg);
+            border: 1px solid #e5e7eb;
+            text-decoration: none;
+            color: inherit;
+            transition: all var(--transition-fast);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: var(--space-3);
+        }
+        
+        .action-card:hover {
+            border-color: var(--secondary-blue);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            text-decoration: none;
+        }
+        
+        .action-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-2xl);
+            margin-bottom: var(--space-2);
+        }
+        
+        .icon-users {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--secondary-blue);
+        }
+        
+        .icon-settings {
+            background: rgba(5, 150, 105, 0.1);
+            color: var(--success-green);
+        }
+        
+        .icon-reports {
+            background: rgba(217, 119, 6, 0.1);
+            color: var(--warning-amber);
+        }
+        
+        .icon-security {
+            background: rgba(220, 38, 38, 0.1);
+            color: var(--error-red);
+        }
+        
+        .user-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: var(--font-size-sm);
+        }
+        
+        .user-table th,
+        .user-table td {
+            padding: var(--space-3) var(--space-4);
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .user-table th {
+            background: var(--neutral-light);
+            font-weight: 600;
+            color: var(--neutral-dark);
+        }
+        
+        .user-table tr:hover {
+            background: var(--neutral-light);
+        }
+        
+        .user-avatar-small {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 600;
+            font-size: var(--font-size-xs);
+        }
+        
+        .activity-feed {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .activity-item {
+            display: flex;
+            gap: var(--space-3);
+            padding: var(--space-3);
+            border-bottom: 1px solid #f3f4f6;
+        }
+        
+        .activity-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-sm);
+            flex-shrink: 0;
+        }
+        
+        .activity-content {
+            flex: 1;
+        }
+        
+        .activity-text {
+            margin-bottom: var(--space-1);
+            color: var(--neutral-dark);
+        }
+        
+        .activity-meta {
+            font-size: var(--font-size-xs);
+            color: var(--neutral-medium);
+        }
+        
+        .alert-box {
+            background: rgba(220, 38, 38, 0.1);
+            border: 1px solid rgba(220, 38, 38, 0.2);
+            border-radius: var(--radius-md);
+            padding: var(--space-4);
+            margin-bottom: var(--space-6);
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+        }
+        
+        .alert-icon {
+            color: var(--error-red);
+            font-size: var(--font-size-lg);
+        }
+        
+        .alert-content {
+            flex: 1;
+        }
+        
+        .alert-title {
+            font-weight: 600;
+            color: var(--error-red);
+            margin-bottom: var(--space-1);
+        }
+        
+        .alert-text {
+            color: var(--neutral-dark);
+            font-size: var(--font-size-sm);
+        }
+
+        @media (max-width: 1024px) {
+            .admin-sections {
+                grid-template-columns: 1fr;
+            }
+            
+            .system-overview {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .admin-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <div class="navigation-wrapper">
+        <nav class="navbar">
+            <a href="06-home-page-european.html" class="navbar-brand">
+                <div class="navbar-logo">CL</div>
+                Circling Logistics
+            </a>
+            
+            <div class="navbar-search">
+                <input type="text" class="search-input" placeholder="Search users, settings...">
+                <span class="search-icon">🔍</span>
+            </div>
+            
+            <ul class="navbar-nav">
+                <!-- Navigation items will be populated by JavaScript -->
+            </ul>
+            
+            <div class="navbar-user">
+                <div class="user-profile">
+                    <!-- User profile will be populated by JavaScript -->
+                </div>
+                <div class="dropdown-menu">
+                    <a href="14-profile-settings-european.html" class="dropdown-item">Profile Settings</a>
+                    <a href="15-notifications-european.html" class="dropdown-item">Notifications</a>
+                    <div class="dropdown-divider"></div>
+                    <button class="dropdown-item" onclick="logout()">Sign Out</button>
+                </div>
+            </div>
+            
+            <button class="mobile-menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb-container">
+        <nav class="container">
+            <ol class="breadcrumb">
+                <!-- Breadcrumb items will be populated by JavaScript -->
+            </ol>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="admin-layout">
+        <main class="main-content page-transition">
+            <div class="admin-header">
+                <div class="admin-title">
+                    <h1>Administrative Dashboard</h1>
+                    <span class="admin-badge">Admin Access</span>
+                </div>
+                <p class="dashboard-subtitle">Manage users, system settings, and monitor platform health</p>
+            </div>
+            
+            <div class="dashboard-content">
+                <!-- Security Alert -->
+                <div class="alert-box">
+                    <div class="alert-icon">⚠️</div>
+                    <div class="alert-content">
+                        <div class="alert-title">Security Notice</div>
+                        <div class="alert-text">
+                            You are accessing administrative functions. All actions are logged and monitored.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Admin Actions -->
+                <div class="admin-actions">
+                    <a href="#" class="action-card">
+                        <div class="action-icon icon-users">👥</div>
+                        <div>
+                            <div class="action-title">User Management</div>
+                            <div class="action-subtitle">Manage user accounts and permissions</div>
+                        </div>
+                    </a>
+                    
+                    <a href="#" class="action-card">
+                        <div class="action-icon icon-settings">⚙️</div>
+                        <div>
+                            <div class="action-title">System Settings</div>
+                            <div class="action-subtitle">Configure platform settings</div>
+                        </div>
+                    </a>
+                    
+                    <a href="22-analytics-reports-european.html" class="action-card">
+                        <div class="action-icon icon-reports">📊</div>
+                        <div>
+                            <div class="action-title">Analytics & Reports</div>
+                            <div class="action-subtitle">View system analytics</div>
+                        </div>
+                    </a>
+                    
+                    <a href="#" class="action-card">
+                        <div class="action-icon icon-security">🔒</div>
+                        <div>
+                            <div class="action-title">Security Audit</div>
+                            <div class="action-subtitle">Review security logs</div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- System Overview -->
+                <div class="system-overview">
+                    <div class="overview-card">
+                        <div class="overview-header">
+                            <div class="overview-title">
+                                <span>👥</span> User Statistics
+                            </div>
+                            <span class="overview-status">Active</span>
+                        </div>
+                        <div class="overview-content">
+                            <div class="metric-row">
+                                <span class="metric-label">Total Users</span>
+                                <span class="metric-value">1,247</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-label">Active Shippers</span>
+                                <span class="metric-value">856</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-label">Fleet Owners</span>
+                                <span class="metric-value">391</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-label">New This Month</span>
+                                <span class="metric-value">+127</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="overview-card">
+                        <div class="overview-header">
+                            <div class="overview-title">
+                                <span>📦</span> Platform Activity
+                            </div>
+                            <span class="overview-status">Healthy</span>
+                        </div>
+                        <div class="overview-content">
+                            <div class="metric-row">
+                                <span class="metric-label">Total Orders</span>
+                                <span class="metric-value">45,689</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-label">Today's Orders</span>
+                                <span class="metric-value">324</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-label">Active Bids</span>
+                                <span class="metric-value">1,256</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-label">Success Rate</span>
+                                <span class="metric-value">94.7%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="overview-card">
+                        <div class="overview-header">
+                            <div class="overview-title">
+                                <span>💰</span> Financial Overview
+                            </div>
+                            <span class="overview-status">Growing</span>
+                        </div>
+                        <div class="overview-content">
+                            <div class="metric-row">
+                                <span class="metric-label">Total Revenue</span>
+                                <span class="metric-value">€2.4M</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-label">Monthly Revenue</span>
+                                <span class="metric-value">€456K</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-label">Commission Rate</span>
+                                <span class="metric-value">3.5%</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-label">Growth</span>
+                                <span class="metric-value">+18.3%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Admin Sections -->
+                <div class="admin-sections">
+                    <!-- Recent Users -->
+                    <div class="section-card">
+                        <div class="section-header">
+                            <h2 class="section-title">Recent User Registrations</h2>
+                            <a href="#" class="btn btn-sm btn-secondary">Manage Users</a>
+                        </div>
+                        <div class="section-content">
+                            <table class="user-table">
+                                <thead>
+                                    <tr>
+                                        <th>User</th>
+                                        <th>Role</th>
+                                        <th>Status</th>
+                                        <th>Joined</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <div class="user-avatar-small">MK</div>
+                                                <div>
+                                                    <div style="font-weight: 500;">Marcus Klein</div>
+                                                    <div style="font-size: 12px; color: #6b7280;">marcus@transport-gmbh.de</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><span class="status-badge status-active">Fleet Owner</span></td>
+                                        <td><span class="status-badge status-pending">Pending</span></td>
+                                        <td>2 hours ago</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <div class="user-avatar-small">SL</div>
+                                                <div>
+                                                    <div style="font-weight: 500;">Sophie Laurent</div>
+                                                    <div style="font-size: 12px; color: #6b7280;">sophie@logistique-fr.com</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><span class="status-badge status-active">Shipper</span></td>
+                                        <td><span class="status-badge status-active">Active</span></td>
+                                        <td>5 hours ago</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <div class="user-avatar-small">AR</div>
+                                                <div>
+                                                    <div style="font-weight: 500;">Antonio Rossi</div>
+                                                    <div style="font-size: 12px; color: #6b7280;">antonio@spedizioni-it.com</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><span class="status-badge status-active">Fleet Owner</span></td>
+                                        <td><span class="status-badge status-active">Active</span></td>
+                                        <td>1 day ago</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- System Activity -->
+                    <div class="section-card">
+                        <div class="section-header">
+                            <h2 class="section-title">System Activity Log</h2>
+                            <a href="#" class="btn btn-sm btn-secondary">View All Logs</a>
+                        </div>
+                        <div class="section-content">
+                            <div class="activity-feed">
+                                <div class="activity-item">
+                                    <div class="activity-icon blue">👤</div>
+                                    <div class="activity-content">
+                                        <div class="activity-text">New user registration: Marcus Klein</div>
+                                        <div class="activity-meta">Admin review required • 2 hours ago</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="activity-item">
+                                    <div class="activity-icon green">✅</div>
+                                    <div class="activity-content">
+                                        <div class="activity-text">User verification completed: Sophie Laurent</div>
+                                        <div class="activity-meta">Account activated • 5 hours ago</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="activity-item">
+                                    <div class="activity-icon amber">⚠️</div>
+                                    <div class="activity-content">
+                                        <div class="activity-text">Security alert: Multiple login attempts</div>
+                                        <div class="activity-meta">IP: 192.168.1.100 • 8 hours ago</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="activity-item">
+                                    <div class="activity-icon blue">🔧</div>
+                                    <div class="activity-content">
+                                        <div class="activity-text">System maintenance completed</div>
+                                        <div class="activity-meta">Database optimization • 12 hours ago</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="activity-item">
+                                    <div class="activity-icon green">📊</div>
+                                    <div class="activity-content">
+                                        <div class="activity-text">Monthly report generated</div>
+                                        <div class="activity-meta">Revenue report for November • 1 day ago</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="bottom-nav">
+        <div class="bottom-nav-items">
+            <!-- Navigation items will be populated by JavaScript -->
+        </div>
+    </nav>
+
+    <!-- Scripts -->
+    <script src="js/user-session.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/breadcrumb.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click handlers for action cards
+            document.querySelectorAll('.action-card').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    if (this.href === '#' || this.href.endsWith('#')) {
+                        e.preventDefault();
+                        alert('This admin function would be implemented with proper backend integration.');
+                    }
+                });
+            });
+            
+            // Add click handlers for user table rows
+            document.querySelectorAll('.user-table tbody tr').forEach(row => {
+                row.addEventListener('click', function() {
+                    const userName = this.querySelector('div[style*="font-weight: 500"]').textContent;
+                    alert(`User management for ${userName} would open here.`);
+                });
+            });
+            
+            // Simulate real-time updates for admin dashboard
+            setInterval(updateAdminMetrics, 60000); // Update every minute
+        });
+        
+        function updateAdminMetrics() {
+            // This would fetch real-time admin data from the server
+            console.log('Updating admin metrics...');
+        }
+        
+        function logout() {
+            if (window.userSessionController) {
+                window.userSessionController.logout();
+            } else {
+                sessionStorage.clear();
+                window.location.href = '01-login-european.html';
+            }
+        }
+    </script>
+</body>
+</html>
