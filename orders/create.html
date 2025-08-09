@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New Order - Circling Logistics</title>
+    <meta name="description" content="Create a new shipping order and find the best carriers for your cargo.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="../assets/css/design-system-european.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="../" class="navbar-brand">🚛 Circling Logistics</a>
+                
+                <!-- Desktop Navigation -->
+                <ul class="navbar-nav" id="navbarNav">
+                    <!-- Will be populated by JavaScript based on user role -->
+                </ul>
+                
+                <!-- Mobile Menu Toggle -->
+                <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle navigation">
+                    ☰
+                </button>
+                
+                <!-- Mobile Navigation -->
+                <div class="mobile-nav" id="mobileNav">
+                    <ul class="navbar-nav">
+                        <!-- Will be populated by JavaScript based on user role -->
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container" style="margin-top: 2rem; margin-bottom: 2rem;">
+        <!-- Page Header -->
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h1>Create New Order</h1>
+                <p class="text-muted">Fill in the details below to get quotes from reliable carriers</p>
+            </div>
+            <a href="list.html" class="btn btn-outline">
+                ← Back to Orders
+            </a>
+        </div>
+
+        <!-- Progress Steps -->
+        <div class="card mb-8">
+            <div class="card-body">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center">
+                        <div class="step-indicator active">1</div>
+                        <span class="step-label active">Order Details</span>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="flex items-center">
+                        <div class="step-indicator">2</div>
+                        <span class="step-label">Review & Quotes</span>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="flex items-center">
+                        <div class="step-indicator">3</div>
+                        <span class="step-label">Confirmation</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <form id="createOrderForm" novalidate>
+            <div class="grid grid-cols-2" style="gap: 2rem;">
+                <!-- Left Column - Main Order Details -->
+                <div>
+                    <!-- Pickup Information -->
+                    <div class="card mb-6">
+                        <div class="card-header">
+                            <h3 class="mb-0">📍 Pickup Information</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="pickupCountry" class="form-label">Country *</label>
+                                <select id="pickupCountry" name="pickupCountry" class="form-control" required>
+                                    <option value="">Select pickup country</option>
+                                    <option value="DE">Germany</option>
+                                    <option value="FR">France</option>
+                                    <option value="IT">Italy</option>
+                                    <option value="ES">Spain</option>
+                                    <option value="NL">Netherlands</option>
+                                    <option value="BE">Belgium</option>
+                                    <option value="AT">Austria</option>
+                                    <option value="CH">Switzerland</option>
+                                    <option value="PL">Poland</option>
+                                    <option value="CZ">Czech Republic</option>
+                                </select>
+                            </div>
+
+                            <div class="grid grid-cols-2" style="gap: 1rem;">
+                                <div class="form-group">
+                                    <label for="pickupCity" class="form-label">City *</label>
+                                    <input type="text" id="pickupCity" name="pickupCity" class="form-control" placeholder="Frankfurt" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="pickupPostalCode" class="form-label">Postal Code *</label>
+                                    <input type="text" id="pickupPostalCode" name="pickupPostalCode" class="form-control" placeholder="60322" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="pickupAddress" class="form-label">Street Address *</label>
+                                <input type="text" id="pickupAddress" name="pickupAddress" class="form-control" placeholder="123 Industrial Street" required>
+                            </div>
+
+                            <div class="grid grid-cols-2" style="gap: 1rem;">
+                                <div class="form-group">
+                                    <label for="pickupDate" class="form-label">Pickup Date *</label>
+                                    <input type="date" id="pickupDate" name="pickupDate" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="pickupTime" class="form-label">Preferred Time</label>
+                                    <select id="pickupTime" name="pickupTime" class="form-control">
+                                        <option value="">Any time</option>
+                                        <option value="morning">Morning (8:00-12:00)</option>
+                                        <option value="afternoon">Afternoon (12:00-17:00)</option>
+                                        <option value="evening">Evening (17:00-20:00)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Delivery Information -->
+                    <div class="card mb-6">
+                        <div class="card-header">
+                            <h3 class="mb-0">🎯 Delivery Information</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="deliveryCountry" class="form-label">Country *</label>
+                                <select id="deliveryCountry" name="deliveryCountry" class="form-control" required>
+                                    <option value="">Select delivery country</option>
+                                    <option value="DE">Germany</option>
+                                    <option value="FR">France</option>
+                                    <option value="IT">Italy</option>
+                                    <option value="ES">Spain</option>
+                                    <option value="NL">Netherlands</option>
+                                    <option value="BE">Belgium</option>
+                                    <option value="AT">Austria</option>
+                                    <option value="CH">Switzerland</option>
+                                    <option value="PL">Poland</option>
+                                    <option value="CZ">Czech Republic</option>
+                                </select>
+                            </div>
+
+                            <div class="grid grid-cols-2" style="gap: 1rem;">
+                                <div class="form-group">
+                                    <label for="deliveryCity" class="form-label">City *</label>
+                                    <input type="text" id="deliveryCity" name="deliveryCity" class="form-control" placeholder="Milan" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="deliveryPostalCode" class="form-label">Postal Code *</label>
+                                    <input type="text" id="deliveryPostalCode" name="deliveryPostalCode" class="form-control" placeholder="20121" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="deliveryAddress" class="form-label">Street Address *</label>
+                                <input type="text" id="deliveryAddress" name="deliveryAddress" class="form-control" placeholder="456 Warehouse Avenue" required>
+                            </div>
+
+                            <div class="grid grid-cols-2" style="gap: 1rem;">
+                                <div class="form-group">
+                                    <label for="deliveryDate" class="form-label">Required Delivery Date</label>
+                                    <input type="date" id="deliveryDate" name="deliveryDate" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="deliveryTime" class="form-label">Preferred Time</label>
+                                    <select id="deliveryTime" name="deliveryTime" class="form-control">
+                                        <option value="">Any time</option>
+                                        <option value="morning">Morning (8:00-12:00)</option>
+                                        <option value="afternoon">Afternoon (12:00-17:00)</option>
+                                        <option value="evening">Evening (17:00-20:00)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column - Cargo Details -->
+                <div>
+                    <!-- Cargo Information -->
+                    <div class="card mb-6">
+                        <div class="card-header">
+                            <h3 class="mb-0">📦 Cargo Information</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="cargoType" class="form-label">Cargo Type *</label>
+                                <select id="cargoType" name="cargoType" class="form-control" required>
+                                    <option value="">Select cargo type</option>
+                                    <option value="general">General Cargo</option>
+                                    <option value="electronics">Electronics</option>
+                                    <option value="automotive">Automotive Parts</option>
+                                    <option value="textiles">Textiles</option>
+                                    <option value="food">Food Products</option>
+                                    <option value="machinery">Machinery</option>
+                                    <option value="chemicals">Chemicals</option>
+                                    <option value="pharmaceuticals">Pharmaceuticals</option>
+                                    <option value="furniture">Furniture</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="cargoDescription" class="form-label">Description *</label>
+                                <textarea id="cargoDescription" name="cargoDescription" class="form-control" rows="3" placeholder="Detailed description of your cargo..." required></textarea>
+                            </div>
+
+                            <div class="grid grid-cols-2" style="gap: 1rem;">
+                                <div class="form-group">
+                                    <label for="totalWeight" class="form-label">Total Weight (kg) *</label>
+                                    <input type="number" id="totalWeight" name="totalWeight" class="form-control" placeholder="1000" min="1" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="totalVolume" class="form-label">Total Volume (m³)</label>
+                                    <input type="number" id="totalVolume" name="totalVolume" class="form-control" placeholder="10" min="0.1" step="0.1">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2" style="gap: 1rem;">
+                                <div class="form-group">
+                                    <label for="packageCount" class="form-label">Number of Packages *</label>
+                                    <input type="number" id="packageCount" name="packageCount" class="form-control" placeholder="15" min="1" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="packageType" class="form-label">Package Type *</label>
+                                    <select id="packageType" name="packageType" class="form-control" required>
+                                        <option value="">Select package type</option>
+                                        <option value="pallets">Pallets</option>
+                                        <option value="boxes">Boxes</option>
+                                        <option value="crates">Crates</option>
+                                        <option value="drums">Drums</option>
+                                        <option value="rolls">Rolls</option>
+                                        <option value="loose">Loose Items</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Special Requirements -->
+                            <div class="form-group">
+                                <label class="form-label">Special Requirements</label>
+                                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; margin-top: 0.5rem;">
+                                    <label class="flex items-center"><input type="checkbox" name="requirements" value="refrigerated" style="margin-right: 8px;"> Refrigerated</label>
+                                    <label class="flex items-center"><input type="checkbox" name="requirements" value="fragile" style="margin-right: 8px;"> Fragile</label>
+                                    <label class="flex items-center"><input type="checkbox" name="requirements" value="hazardous" style="margin-right: 8px;"> Hazardous Materials</label>
+                                    <label class="flex items-center"><input type="checkbox" name="requirements" value="insurance" style="margin-right: 8px;"> Additional Insurance</label>
+                                    <label class="flex items-center"><input type="checkbox" name="requirements" value="tracking" style="margin-right: 8px;"> Real-time Tracking</label>
+                                    <label class="flex items-center"><input type="checkbox" name="requirements" value="express" style="margin-right: 8px;"> Express Delivery</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Additional Information -->
+                    <div class="card mb-6">
+                        <div class="card-header">
+                            <h3 class="mb-0">ℹ️ Additional Information</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="estimatedValue" class="form-label">Estimated Cargo Value (€)</label>
+                                <input type="number" id="estimatedValue" name="estimatedValue" class="form-control" placeholder="10000" min="0" step="0.01">
+                                <div class="form-text">This helps carriers provide appropriate insurance coverage</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="contactPerson" class="form-label">Contact Person *</label>
+                                <input type="text" id="contactPerson" name="contactPerson" class="form-control" placeholder="John Doe" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="contactPhone" class="form-label">Contact Phone *</label>
+                                <input type="tel" id="contactPhone" name="contactPhone" class="form-control" placeholder="+49 123 456 7890" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="specialInstructions" class="form-label">Special Instructions</label>
+                                <textarea id="specialInstructions" name="specialInstructions" class="form-control" rows="3" placeholder="Any additional instructions for pickup or delivery..."></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="preferredCarrier" class="form-label">Preferred Carrier (Optional)</label>
+                                <select id="preferredCarrier" name="preferredCarrier" class="form-control">
+                                    <option value="">No preference</option>
+                                    <option value="mueller-transport">Mueller Transport GmbH</option>
+                                    <option value="euro-logistics">EuroLogistics SA</option>
+                                    <option value="alpine-freight">Alpine Freight</option>
+                                    <option value="rhine-cargo">Rhine Cargo Solutions</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Order Summary Card -->
+                    <div class="card" style="position: sticky; top: 100px;">
+                        <div class="card-header">
+                            <h3 class="mb-0">📋 Order Summary</h3>
+                        </div>
+                        <div class="card-body">
+                            <div id="orderSummary">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                    <span>Route:</span>
+                                    <span id="summaryRoute" class="font-semibold">-</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                    <span>Cargo Type:</span>
+                                    <span id="summaryCargoType" class="font-semibold">-</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                    <span>Weight:</span>
+                                    <span id="summaryWeight" class="font-semibold">-</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                    <span>Packages:</span>
+                                    <span id="summaryPackages" class="font-semibold">-</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                                    <span>Pickup Date:</span>
+                                    <span id="summaryPickupDate" class="font-semibold">-</span>
+                                </div>
+                                
+                                <hr style="margin: 1rem 0;">
+                                
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                                    <span class="text-lg font-semibold">Estimated Cost:</span>
+                                    <span id="estimatedCost" class="text-lg font-bold text-primary">€ -</span>
+                                </div>
+                                
+                                <div class="form-text text-center">
+                                    Final price will be determined by carrier bids
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="card mt-8">
+                <div class="card-body">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <label class="flex items-center">
+                                <input type="checkbox" id="termsAccepted" name="termsAccepted" required style="margin-right: 8px;">
+                                <span class="text-sm">
+                                    I agree to the <a href="#" class="text-primary">Terms of Service</a> and 
+                                    <a href="#" class="text-primary">Shipping Terms</a> *
+                                </span>
+                            </label>
+                        </div>
+                        
+                        <div class="flex" style="gap: 1rem;">
+                            <button type="button" class="btn btn-outline" onclick="saveDraft()">Save Draft</button>
+                            <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">
+                                <span class="btn-text">Get Quotes</span>
+                                <span class="spinner" style="display: none;"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </main>
+
+    <!-- JavaScript -->
+    <script src="../assets/js/app.js"></script>
+    <script>
+        // Ensure user is authenticated as cargo owner
+        if (!app.currentUser || app.currentRole !== 'cargo') {
+            if (!app.currentUser) {
+                window.location.href = '../auth/login.html';
+            } else {
+                app.redirectToDashboard(app.currentRole);
+            }
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeDateFields();
+            initializeFormValidation();
+            initializeOrderSummary();
+            initializeCostEstimation();
+        });
+
+        function initializeDateFields() {
+            // Set minimum pickup date to tomorrow
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            document.getElementById('pickupDate').min = tomorrow.toISOString().split('T')[0];
+            
+            // Set minimum delivery date based on pickup date
+            document.getElementById('pickupDate').addEventListener('change', function() {
+                const pickupDate = new Date(this.value);
+                pickupDate.setDate(pickupDate.getDate() + 1);
+                document.getElementById('deliveryDate').min = pickupDate.toISOString().split('T')[0];
+            });
+        }
+
+        function initializeFormValidation() {
+            const form = document.getElementById('createOrderForm');
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (validateForm()) {
+                    submitOrder();
+                }
+            });
+        }
+
+        function initializeOrderSummary() {
+            // Update summary when form fields change
+            const fields = ['pickupCity', 'deliveryCity', 'cargoType', 'totalWeight', 'packageCount', 'pickupDate'];
+            fields.forEach(fieldId => {
+                document.getElementById(fieldId).addEventListener('input', updateOrderSummary);
+                document.getElementById(fieldId).addEventListener('change', updateOrderSummary);
+            });
+        }
+
+        function updateOrderSummary() {
+            const pickupCity = document.getElementById('pickupCity').value;
+            const deliveryCity = document.getElementById('deliveryCity').value;
+            const cargoType = document.getElementById('cargoType').value;
+            const totalWeight = document.getElementById('totalWeight').value;
+            const packageCount = document.getElementById('packageCount').value;
+            const pickupDate = document.getElementById('pickupDate').value;
+
+            // Update summary fields
+            document.getElementById('summaryRoute').textContent = 
+                (pickupCity && deliveryCity) ? `${pickupCity} → ${deliveryCity}` : '-';
+            
+            document.getElementById('summaryCargoType').textContent = 
+                cargoType ? cargoType.charAt(0).toUpperCase() + cargoType.slice(1) : '-';
+            
+            document.getElementById('summaryWeight').textContent = 
+                totalWeight ? `${totalWeight} kg` : '-';
+            
+            document.getElementById('summaryPackages').textContent = 
+                packageCount ? `${packageCount} packages` : '-';
+            
+            document.getElementById('summaryPickupDate').textContent = 
+                pickupDate ? new Date(pickupDate).toLocaleDateString() : '-';
+        }
+
+        function initializeCostEstimation() {
+            // Simple cost estimation based on weight and distance
+            const costFields = ['totalWeight', 'pickupCity', 'deliveryCity'];
+            costFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (field) {
+                    field.addEventListener('input', estimateCost);
+                    field.addEventListener('change', estimateCost);
+                }
+            });
+        }
+
+        function estimateCost() {
+            const weight = parseFloat(document.getElementById('totalWeight').value) || 0;
+            const pickupCity = document.getElementById('pickupCity').value;
+            const deliveryCity = document.getElementById('deliveryCity').value;
+
+            if (weight > 0 && pickupCity && deliveryCity) {
+                // Simple estimation: base rate + weight rate + distance modifier
+                const baseRate = 500;
+                const weightRate = weight * 1.2;
+                const distanceModifier = Math.random() * 500 + 300; // Simulate distance calculation
+                
+                const estimatedCost = Math.round(baseRate + weightRate + distanceModifier);
+                document.getElementById('estimatedCost').textContent = `€ ${estimatedCost.toLocaleString()}`;
+            } else {
+                document.getElementById('estimatedCost').textContent = '€ -';
+            }
+        }
+
+        function validateForm() {
+            const requiredFields = document.querySelectorAll('[required]');
+            let isValid = true;
+
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.classList.add('error');
+                    isValid = false;
+                } else {
+                    field.classList.remove('error');
+                }
+            });
+
+            if (!isValid) {
+                app.showNotification('Please fill in all required fields', 'error');
+                return false;
+            }
+
+            return true;
+        }
+
+        function submitOrder() {
+            const submitBtn = document.getElementById('submitBtn');
+            const btnText = submitBtn.querySelector('.btn-text');
+            const spinner = submitBtn.querySelector('.spinner');
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            btnText.style.display = 'none';
+            spinner.style.display = 'inline-block';
+            
+            // Simulate order submission
+            setTimeout(() => {
+                const formData = new FormData(document.getElementById('createOrderForm'));
+                const orderData = Object.fromEntries(formData.entries());
+                
+                // Store order in localStorage for demo
+                const orderId = 'ORD-2024-' + String(Date.now()).slice(-3);
+                localStorage.setItem(`order_${orderId}`, JSON.stringify(orderData));
+                
+                app.showNotification('Order created successfully! Carriers will start bidding soon.', 'success');
+                
+                // Redirect to order details or bidding page
+                setTimeout(() => {
+                    window.location.href = `../fleet/bidding.html?order=${orderId}`;
+                }, 2000);
+            }, 2000);
+        }
+
+        function saveDraft() {
+            const formData = new FormData(document.getElementById('createOrderForm'));
+            const draftData = Object.fromEntries(formData.entries());
+            
+            localStorage.setItem('order_draft', JSON.stringify(draftData));
+            app.showNotification('Draft saved successfully', 'success');
+        }
+
+        // Load draft if available
+        document.addEventListener('DOMContentLoaded', function() {
+            const draft = localStorage.getItem('order_draft');
+            if (draft) {
+                const draftData = JSON.parse(draft);
+                Object.keys(draftData).forEach(key => {
+                    const field = document.getElementById(key) || document.querySelector(`[name="${key}"]`);
+                    if (field) {
+                        field.value = draftData[key];
+                    }
+                });
+                updateOrderSummary();
+                estimateCost();
+                app.showNotification('Draft loaded', 'info');
+            }
+        });
+    </script>
+
+    <style>
+        .step-indicator {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--neutral-300);
+            color: var(--neutral-600);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+        
+        .step-indicator.active {
+            background: var(--primary-blue);
+            color: white;
+        }
+        
+        .step-label {
+            color: var(--neutral-600);
+            font-weight: 500;
+        }
+        
+        .step-label.active {
+            color: var(--primary-blue);
+            font-weight: 600;
+        }
+        
+        .step-connector {
+            flex: 1;
+            height: 2px;
+            background: var(--neutral-300);
+            margin: 0 1rem;
+        }
+        
+        .form-control.error {
+            border-color: var(--error);
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .grid-cols-2 {
+                grid-template-columns: 1fr;
+            }
+            
+            .card[style*="position: sticky"] {
+                position: static !important;
+            }
+        }
+    </style>
+</body>
+</html>

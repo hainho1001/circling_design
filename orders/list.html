@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders - Circling Logistics</title>
+    <meta name="description" content="View and manage all your shipping orders in one place.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="../assets/css/design-system-european.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="../" class="navbar-brand">🚛 Circling Logistics</a>
+                
+                <!-- Desktop Navigation -->
+                <ul class="navbar-nav" id="navbarNav">
+                    <!-- Will be populated by JavaScript based on user role -->
+                </ul>
+                
+                <!-- Mobile Menu Toggle -->
+                <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle navigation">
+                    ☰
+                </button>
+                
+                <!-- Mobile Navigation -->
+                <div class="mobile-nav" id="mobileNav">
+                    <ul class="navbar-nav">
+                        <!-- Will be populated by JavaScript based on user role -->
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container" style="margin-top: 2rem; margin-bottom: 2rem;">
+        <!-- Page Header -->
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h1>My Orders</h1>
+                <p class="text-muted">Track and manage all your shipping orders</p>
+            </div>
+            <a href="create.html" class="btn btn-primary">
+                ➕ Create New Order
+            </a>
+        </div>
+
+        <!-- Filters and Search -->
+        <div class="card mb-8">
+            <div class="card-body">
+                <div class="grid grid-cols-4" style="gap: 1rem; align-items: end;">
+                    <div class="form-group mb-0">
+                        <label for="searchOrders" class="form-label">Search Orders</label>
+                        <input type="text" id="searchOrders" class="form-control" placeholder="Order ID, route, or cargo type...">
+                    </div>
+                    
+                    <div class="form-group mb-0">
+                        <label for="statusFilter" class="form-label">Status</label>
+                        <select id="statusFilter" class="form-control">
+                            <option value="">All Statuses</option>
+                            <option value="pending">Pending</option>
+                            <option value="confirmed">Confirmed</option>
+                            <option value="in-transit">In Transit</option>
+                            <option value="delivered">Delivered</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group mb-0">
+                        <label for="dateFilter" class="form-label">Date Range</label>
+                        <select id="dateFilter" class="form-control">
+                            <option value="">All Time</option>
+                            <option value="today">Today</option>
+                            <option value="week">This Week</option>
+                            <option value="month">This Month</option>
+                            <option value="quarter">This Quarter</option>
+                        </select>
+                    </div>
+                    
+                    <div class="flex" style="gap: 0.5rem;">
+                        <button type="button" class="btn btn-outline" onclick="clearFilters()">Clear</button>
+                        <button type="button" class="btn btn-secondary" onclick="exportOrders()">Export</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order Summary Stats -->
+        <div class="dashboard-stats mb-8">
+            <div class="stat-card">
+                <div class="stat-value">24</div>
+                <div class="stat-label">Total Orders</div>
+                <div class="mt-2">
+                    <span class="badge badge-info">This Month</span>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-value">8</div>
+                <div class="stat-label">In Transit</div>
+                <div class="mt-2">
+                    <span class="badge badge-warning">Active</span>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-value">€18,750</div>
+                <div class="stat-label">Total Value</div>
+                <div class="mt-2">
+                    <span class="badge badge-success">This Month</span>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-value">96%</div>
+                <div class="stat-label">On-Time Rate</div>
+                <div class="mt-2">
+                    <span class="badge badge-success">Excellent</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Orders Table -->
+        <div class="card">
+            <div class="card-header">
+                <div class="flex justify-between items-center">
+                    <h3 class="mb-0">Order History</h3>
+                    <div class="flex items-center" style="gap: 1rem;">
+                        <span class="text-sm text-muted">Showing 24 of 24 orders</span>
+                        <select class="form-control" style="width: auto; display: inline-block;">
+                            <option value="10">10 per page</option>
+                            <option value="25" selected>25 per page</option>
+                            <option value="50">50 per page</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body" style="padding: 0;">
+                <div class="table-responsive">
+                    <table class="table" id="ordersTable">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Route</th>
+                                <th>Cargo</th>
+                                <th>Created</th>
+                                <th>Pickup Date</th>
+                                <th>Status</th>
+                                <th>Value</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>#ORD-2024-001</strong></td>
+                                <td>Frankfurt → Milan</td>
+                                <td>Electronics<br><span class="text-sm text-muted">15 pallets</span></td>
+                                <td>Dec 10, 2024</td>
+                                <td>Dec 12, 2024</td>
+                                <td><span class="badge badge-info">In Transit</span></td>
+                                <td><strong>€3,200</strong></td>
+                                <td>
+                                    <div class="flex" style="gap: 0.25rem;">
+                                        <a href="details.html?id=001" class="btn btn-sm btn-outline">View</a>
+                                        <button class="btn btn-sm btn-secondary" onclick="trackOrder('001')">Track</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>#ORD-2024-002</strong></td>
+                                <td>Hamburg → Paris</td>
+                                <td>Automotive Parts<br><span class="text-sm text-muted">20 pallets</span></td>
+                                <td>Dec 8, 2024</td>
+                                <td>Dec 10, 2024</td>
+                                <td><span class="badge badge-warning">Pending</span></td>
+                                <td><strong>€2,450</strong></td>
+                                <td>
+                                    <div class="flex" style="gap: 0.25rem;">
+                                        <a href="details.html?id=002" class="btn btn-sm btn-outline">View</a>
+                                        <button class="btn btn-sm btn-error" onclick="cancelOrder('002')">Cancel</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>#ORD-2024-003</strong></td>
+                                <td>Berlin → Amsterdam</td>
+                                <td>General Cargo<br><span class="text-sm text-muted">12 pallets</span></td>
+                                <td>Dec 5, 2024</td>
+                                <td>Dec 7, 2024</td>
+                                <td><span class="badge badge-success">Delivered</span></td>
+                                <td><strong>€1,850</strong></td>
+                                <td>
+                                    <div class="flex" style="gap: 0.25rem;">
+                                        <a href="details.html?id=003" class="btn btn-sm btn-outline">View</a>
+                                        <button class="btn btn-sm btn-secondary" onclick="downloadInvoice('003')">Invoice</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>#ORD-2024-004</strong></td>
+                                <td>Munich → Barcelona</td>
+                                <td>Textiles<br><span class="text-sm text-muted">8 pallets</span></td>
+                                <td>Dec 3, 2024</td>
+                                <td>Dec 5, 2024</td>
+                                <td><span class="badge badge-info">In Transit</span></td>
+                                <td><strong>€2,100</strong></td>
+                                <td>
+                                    <div class="flex" style="gap: 0.25rem;">
+                                        <a href="details.html?id=004" class="btn btn-sm btn-outline">View</a>
+                                        <button class="btn btn-sm btn-secondary" onclick="trackOrder('004')">Track</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>#ORD-2024-005</strong></td>
+                                <td>Cologne → Lyon</td>
+                                <td>Food Products<br><span class="text-sm text-muted">25 pallets</span></td>
+                                <td>Dec 1, 2024</td>
+                                <td>Dec 3, 2024</td>
+                                <td><span class="badge badge-success">Delivered</span></td>
+                                <td><strong>€3,750</strong></td>
+                                <td>
+                                    <div class="flex" style="gap: 0.25rem;">
+                                        <a href="details.html?id=005" class="btn btn-sm btn-outline">View</a>
+                                        <button class="btn btn-sm btn-secondary" onclick="downloadInvoice('005')">Invoice</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>#ORD-2024-006</strong></td>
+                                <td>Stuttgart → Rome</td>
+                                <td>Machinery<br><span class="text-sm text-muted">5 pallets</span></td>
+                                <td>Nov 28, 2024</td>
+                                <td>Nov 30, 2024</td>
+                                <td><span class="badge badge-success">Delivered</span></td>
+                                <td><strong>€4,200</strong></td>
+                                <td>
+                                    <div class="flex" style="gap: 0.25rem;">
+                                        <a href="details.html?id=006" class="btn btn-sm btn-outline">View</a>
+                                        <button class="btn btn-sm btn-secondary" onclick="downloadInvoice('006')">Invoice</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-muted">Showing 1-6 of 24 orders</span>
+                    <div class="flex" style="gap: 0.5rem;">
+                        <button class="btn btn-sm btn-outline" disabled>Previous</button>
+                        <button class="btn btn-sm btn-outline">1</button>
+                        <button class="btn btn-sm btn-secondary">2</button>
+                        <button class="btn btn-sm btn-outline">3</button>
+                        <button class="btn btn-sm btn-outline">4</button>
+                        <button class="btn btn-sm btn-outline">Next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bulk Actions (when orders are selected) -->
+        <div id="bulkActions" class="card mt-4" style="display: none;">
+            <div class="card-body">
+                <div class="flex justify-between items-center">
+                    <span id="selectedCount" class="font-semibold">0 orders selected</span>
+                    <div class="flex" style="gap: 0.5rem;">
+                        <button class="btn btn-secondary" onclick="bulkExport()">Export Selected</button>
+                        <button class="btn btn-warning" onclick="bulkCancel()">Cancel Selected</button>
+                        <button class="btn btn-outline" onclick="clearSelection()">Clear Selection</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- JavaScript -->
+    <script src="../assets/js/app.js"></script>
+    <script>
+        // Ensure user is authenticated
+        if (!app.currentUser) {
+            window.location.href = '../auth/login.html';
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeFilters();
+            initializeTable();
+        });
+
+        function initializeFilters() {
+            // Search functionality
+            document.getElementById('searchOrders').addEventListener('input', filterOrders);
+            document.getElementById('statusFilter').addEventListener('change', filterOrders);
+            document.getElementById('dateFilter').addEventListener('change', filterOrders);
+        }
+
+        function initializeTable() {
+            // Add checkboxes for bulk actions
+            const table = document.getElementById('ordersTable');
+            const headerRow = table.querySelector('thead tr');
+            const bodyRows = table.querySelectorAll('tbody tr');
+            
+            // Add master checkbox to header
+            const masterCheckbox = document.createElement('th');
+            masterCheckbox.innerHTML = '<input type="checkbox" id="selectAll" onchange="toggleAllOrders()">';
+            headerRow.insertBefore(masterCheckbox, headerRow.firstChild);
+            
+            // Add checkboxes to each row
+            bodyRows.forEach(row => {
+                const checkbox = document.createElement('td');
+                checkbox.innerHTML = '<input type="checkbox" class="order-checkbox" onchange="updateBulkActions()">';
+                row.insertBefore(checkbox, row.firstChild);
+            });
+        }
+
+        function filterOrders() {
+            const searchTerm = document.getElementById('searchOrders').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value;
+            const dateFilter = document.getElementById('dateFilter').value;
+            
+            const rows = document.querySelectorAll('#ordersTable tbody tr');
+            
+            rows.forEach(row => {
+                const orderText = row.textContent.toLowerCase();
+                const statusBadge = row.querySelector('.badge');
+                const orderStatus = statusBadge ? statusBadge.textContent.toLowerCase() : '';
+                
+                let showRow = true;
+                
+                // Search filter
+                if (searchTerm && !orderText.includes(searchTerm)) {
+                    showRow = false;
+                }
+                
+                // Status filter
+                if (statusFilter && !orderStatus.includes(statusFilter.replace('-', ' '))) {
+                    showRow = false;
+                }
+                
+                // Date filter logic would go here
+                // For demo purposes, we'll just show all dates
+                
+                row.style.display = showRow ? '' : 'none';
+            });
+        }
+
+        function clearFilters() {
+            document.getElementById('searchOrders').value = '';
+            document.getElementById('statusFilter').value = '';
+            document.getElementById('dateFilter').value = '';
+            filterOrders();
+        }
+
+        function exportOrders() {
+            app.showNotification('Export functionality will be available soon', 'info');
+        }
+
+        function toggleAllOrders() {
+            const masterCheckbox = document.getElementById('selectAll');
+            const orderCheckboxes = document.querySelectorAll('.order-checkbox');
+            
+            orderCheckboxes.forEach(checkbox => {
+                checkbox.checked = masterCheckbox.checked;
+            });
+            
+            updateBulkActions();
+        }
+
+        function updateBulkActions() {
+            const checkedBoxes = document.querySelectorAll('.order-checkbox:checked');
+            const bulkActions = document.getElementById('bulkActions');
+            const selectedCount = document.getElementById('selectedCount');
+            
+            if (checkedBoxes.length > 0) {
+                bulkActions.style.display = 'block';
+                selectedCount.textContent = `${checkedBoxes.length} order${checkedBoxes.length > 1 ? 's' : ''} selected`;
+            } else {
+                bulkActions.style.display = 'none';
+            }
+        }
+
+        function clearSelection() {
+            document.getElementById('selectAll').checked = false;
+            document.querySelectorAll('.order-checkbox').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            updateBulkActions();
+        }
+
+        function trackOrder(orderId) {
+            // In a real app, this would show a tracking modal or redirect to tracking page
+            app.showNotification(`Tracking order #${orderId}...`, 'info');
+            // Simulate redirect to tracking
+            setTimeout(() => {
+                window.location.href = `details.html?id=${orderId}&tab=tracking`;
+            }, 1000);
+        }
+
+        function cancelOrder(orderId) {
+            if (confirm('Are you sure you want to cancel this order?')) {
+                app.showNotification(`Order #${orderId} has been cancelled`, 'success');
+                // In a real app, this would make an API call
+                // For demo, just update the badge
+                setTimeout(() => {
+                    const row = Array.from(document.querySelectorAll('tbody tr')).find(row => 
+                        row.textContent.includes(orderId)
+                    );
+                    if (row) {
+                        const badge = row.querySelector('.badge');
+                        badge.className = 'badge badge-error';
+                        badge.textContent = 'Cancelled';
+                    }
+                }, 500);
+            }
+        }
+
+        function downloadInvoice(orderId) {
+            app.showNotification(`Downloading invoice for order #${orderId}...`, 'info');
+            // In a real app, this would download the invoice file
+        }
+
+        function bulkExport() {
+            const checkedBoxes = document.querySelectorAll('.order-checkbox:checked');
+            app.showNotification(`Exporting ${checkedBoxes.length} selected orders...`, 'info');
+        }
+
+        function bulkCancel() {
+            const checkedBoxes = document.querySelectorAll('.order-checkbox:checked');
+            if (confirm(`Are you sure you want to cancel ${checkedBoxes.length} selected orders?`)) {
+                app.showNotification(`${checkedBoxes.length} orders have been cancelled`, 'success');
+                clearSelection();
+            }
+        }
+    </script>
+
+    <style>
+        .table th:first-child,
+        .table td:first-child {
+            width: 40px;
+            text-align: center;
+        }
+        
+        .table tbody tr:hover {
+            background-color: var(--neutral-50);
+        }
+        
+        .card-footer {
+            background-color: var(--neutral-50);
+            border-top: 1px solid var(--neutral-200);
+            padding: 1rem 1.5rem;
+        }
+        
+        .btn-sm {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .grid-cols-4 {
+                grid-template-columns: 1fr;
+            }
+            
+            .table {
+                font-size: 0.875rem;
+            }
+            
+            .table th,
+            .table td {
+                padding: 0.5rem 0.25rem;
+            }
+            
+            .flex {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</body>
+</html>
