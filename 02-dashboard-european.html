@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cargo Owner Dashboard - Circling Logistics</title>
+    <meta name="description" content="Manage your cargo shipments, track deliveries, and optimize logistics operations with Circling Logistics.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Design System -->
+    <link rel="stylesheet" href="design-system-european.css">
+    
+    <!-- Cargo Dashboard Styles -->
+    <link rel="stylesheet" href="02-dashboard-european.css">
+</head>
+<body>
+    <!-- Skip link for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <div class="dashboard-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" role="navigation" aria-label="Main navigation">
+            <div class="sidebar-header">
+                <a href="06-home-page-european.html" class="sidebar-logo">
+                    <div class="sidebar-logo-icon">C</div>
+                    <span>Circling Logistics</span>
+                </a>
+            </div>
+            
+            <nav class="sidebar-nav" role="navigation">
+                <ul class="sidebar-nav">
+                    <li class="sidebar-nav-item">
+                        <a href="#" class="sidebar-nav-link active">
+                            <span>📊</span>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="07-orders-european.html" class="sidebar-nav-link">
+                            <span>📦</span>
+                            <span>Orders</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="09-create-order-european.html" class="sidebar-nav-link">
+                            <span>➕</span>
+                            <span>Create Order</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="10-bidding-european.html" class="sidebar-nav-link">
+                            <span>🎯</span>
+                            <span>Bidding</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="#" class="sidebar-nav-link">
+                            <span>📊</span>
+                            <span>Analytics</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="#" class="sidebar-nav-link">
+                            <span>💬</span>
+                            <span>Messages</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="#" class="sidebar-nav-link">
+                            <span>⚙️</span>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Navigation -->
+            <header class="top-nav">
+                <nav class="breadcrumb" aria-label="Breadcrumb">
+                    <span>Cargo Owner</span>
+                    <span class="breadcrumb-separator">/</span>
+                    <span>Dashboard</span>
+                </nav>
+                
+                <div class="user-menu">
+                    <button class="notifications-btn" aria-label="Notifications">
+                        <span>🔔</span>
+                        <span class="notification-badge">3</span>
+                    </button>
+                    
+                    <div class="user-avatar" title="John Doe - Cargo Owner">
+                        JD
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Dashboard Content -->
+            <div class="dashboard-content" id="main-content">
+                <!-- Dashboard Header -->
+                <div class="dashboard-header">
+                    <h1 class="dashboard-title">Good morning, John! 👋</h1>
+                    <p class="dashboard-subtitle">Here's what's happening with your shipments today</p>
+                </div>
+                
+                <!-- Statistics Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-title">Active Orders</div>
+                            <div class="stat-icon primary">📦</div>
+                        </div>
+                        <div class="stat-value">24</div>
+                        <div class="stat-change positive">
+                            <span class="stat-change-icon">↗</span>
+                            <span>+12% from last month</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-title">In Transit</div>
+                            <div class="stat-icon warning">🚛</div>
+                        </div>
+                        <div class="stat-value">18</div>
+                        <div class="stat-change positive">
+                            <span class="stat-change-icon">↗</span>
+                            <span>+5% from yesterday</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-title">Delivered</div>
+                            <div class="stat-icon success">✅</div>
+                        </div>
+                        <div class="stat-value">156</div>
+                        <div class="stat-change positive">
+                            <span class="stat-change-icon">↗</span>
+                            <span>+23% this week</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-title">Total Savings</div>
+                            <div class="stat-icon success">💰</div>
+                        </div>
+                        <div class="stat-value">€12,450</div>
+                        <div class="stat-change positive">
+                            <span class="stat-change-icon">↗</span>
+                            <span>+18% cost optimization</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Quick Actions -->
+                <section class="quick-actions">
+                    <h2 class="section-title">Quick Actions</h2>
+                    <div class="actions-grid">
+                        <a href="09-create-order-european.html" class="action-card">
+                            <div class="action-icon">📦</div>
+                            <div class="action-title">Create Order</div>
+                            <div class="action-description">Ship new cargo quickly</div>
+                        </a>
+                        
+                        <a href="10-bidding-european.html" class="action-card">
+                            <div class="action-icon">🎯</div>
+                            <div class="action-title">View Bids</div>
+                            <div class="action-description">Review transport offers</div>
+                        </a>
+                        
+                        <a href="07-orders-european.html" class="action-card">
+                            <div class="action-icon">📊</div>
+                            <div class="action-title">Track Shipments</div>
+                            <div class="action-description">Monitor delivery status</div>
+                        </a>
+                        
+                        <a href="#" class="action-card">
+                            <div class="action-icon">📈</div>
+                            <div class="action-title">Analytics</div>
+                            <div class="action-description">View performance data</div>
+                        </a>
+                    </div>
+                </section>
+                
+                <!-- Dashboard Grid -->
+                <div class="dashboard-grid">
+                    <!-- Recent Orders -->
+                    <section class="recent-orders">
+                        <div class="card-header">
+                            <h3 class="section-title mb-0">Recent Orders</h3>
+                            <a href="07-orders-european.html" class="btn btn-ghost btn-sm">View All</a>
+                        </div>
+                        
+                        <div style="overflow-x: auto;">
+                            <table class="orders-table">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Route</th>
+                                        <th>Status</th>
+                                        <th>Delivery Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="order-id">#ORD-2024-001</span></td>
+                                        <td>Amsterdam → Berlin</td>
+                                        <td><span class="badge badge-warning">In Transit</span></td>
+                                        <td>Mar 15, 2024</td>
+                                        <td>
+                                            <a href="08-order-details-european.html" class="btn btn-ghost btn-sm">View</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="order-id">#ORD-2024-002</span></td>
+                                        <td>Hamburg → Paris</td>
+                                        <td><span class="badge badge-primary">Processing</span></td>
+                                        <td>Mar 18, 2024</td>
+                                        <td>
+                                            <a href="08-order-details-european.html" class="btn btn-ghost btn-sm">View</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="order-id">#ORD-2024-003</span></td>
+                                        <td>Rotterdam → Milan</td>
+                                        <td><span class="badge badge-success">Delivered</span></td>
+                                        <td>Mar 12, 2024</td>
+                                        <td>
+                                            <a href="08-order-details-european.html" class="btn btn-ghost btn-sm">View</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="order-id">#ORD-2024-004</span></td>
+                                        <td>Vienna → Munich</td>
+                                        <td><span class="badge badge-info">Pending</span></td>
+                                        <td>Mar 20, 2024</td>
+                                        <td>
+                                            <a href="08-order-details-european.html" class="btn btn-ghost btn-sm">View</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                    
+                    <!-- Activity Feed -->
+                    <section class="activity-feed">
+                        <div class="card-header">
+                            <h3 class="section-title mb-0">Recent Activity</h3>
+                        </div>
+                        
+                        <div>
+                            <div class="activity-item">
+                                <div class="activity-icon" style="background: var(--color-accent); color: white;">✓</div>
+                                <div class="activity-content">
+                                    <div class="activity-text">Order #ORD-2024-003 delivered successfully</div>
+                                    <div class="activity-time">2 hours ago</div>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon" style="background: var(--color-primary); color: white;">🚛</div>
+                                <div class="activity-content">
+                                    <div class="activity-text">Shipment #ORD-2024-001 departed from Amsterdam</div>
+                                    <div class="activity-time">4 hours ago</div>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon" style="background: var(--color-warning); color: white;">💰</div>
+                                <div class="activity-content">
+                                    <div class="activity-text">New bid received for Order #ORD-2024-005</div>
+                                    <div class="activity-time">6 hours ago</div>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon" style="background: var(--color-info); color: white;">📦</div>
+                                <div class="activity-content">
+                                    <div class="activity-text">Order #ORD-2024-004 created and published</div>
+                                    <div class="activity-time">1 day ago</div>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon" style="background: var(--color-accent); color: white;">✓</div>
+                                <div class="activity-content">
+                                    <div class="activity-text">Payment confirmed for Order #ORD-2024-002</div>
+                                    <div class="activity-time">1 day ago</div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        // Dashboard functionality
+        class CargoOwnerDashboard {
+            constructor() {
+                this.init();
+            }
+            
+            init() {
+                // Initialize components
+                this.initNotifications();
+                this.initRealtimeUpdates();
+                this.initUserMenu();
+                
+                // Check authentication
+                this.checkAuth();
+            }
+            
+            checkAuth() {
+                const isAuthenticated = sessionStorage.getItem('isAuthenticated');
+                const userRole = sessionStorage.getItem('userRole');
+                
+                if (!isAuthenticated || userRole !== 'cargo-owner') {
+                    // Redirect to login if not authenticated or wrong role
+                    window.location.href = '01-login-european.html';
+                    return;
+                }
+                
+                // Set user info in the UI
+                this.updateUserInfo();
+            }
+            
+            updateUserInfo() {
+                // In a real app, this would fetch user data from an API
+                const userAvatar = document.querySelector('.user-avatar');
+                if (userAvatar) {
+                    userAvatar.textContent = 'JD';
+                    userAvatar.title = 'John Doe - Cargo Owner';
+                }
+            }
+            
+            initNotifications() {
+                const notificationBtn = document.querySelector('.notifications-btn');
+                if (notificationBtn) {
+                    notificationBtn.addEventListener('click', this.showNotifications.bind(this));
+                }
+            }
+            
+            showNotifications() {
+                // Simple notification demo
+                const notifications = [
+                    'Order #ORD-2024-001 is now in transit',
+                    'New bid received for Order #ORD-2024-005',
+                    'Payment confirmed for Order #ORD-2024-002'
+                ];
+                
+                alert('Recent Notifications:\n\n' + notifications.join('\n'));
+            }
+            
+            initUserMenu() {
+                const userAvatar = document.querySelector('.user-avatar');
+                if (userAvatar) {
+                    userAvatar.addEventListener('click', this.showUserMenu.bind(this));
+                }
+            }
+            
+            showUserMenu() {
+                const options = ['Profile Settings', 'Account Preferences', 'Sign Out'];
+                const choice = prompt('User Menu:\n\n' + options.map((opt, i) => `${i + 1}. ${opt}`).join('\n') + '\n\nEnter option number:');
+                
+                if (choice === '3') {
+                    this.signOut();
+                } else if (choice === '1' || choice === '2') {
+                    alert('This feature will be available in the full implementation.');
+                }
+            }
+            
+            signOut() {
+                sessionStorage.removeItem('isAuthenticated');
+                sessionStorage.removeItem('userRole');
+                window.location.href = '01-login-european.html';
+            }
+            
+            initRealtimeUpdates() {
+                // Simulate real-time updates
+                setInterval(() => {
+                    this.updateStats();
+                    this.updateActivity();
+                }, 30000); // Update every 30 seconds
+            }
+            
+            updateStats() {
+                // Simulate real-time stat updates
+                const statValues = document.querySelectorAll('.stat-value');
+                statValues.forEach(stat => {
+                    const currentValue = parseInt(stat.textContent.replace(/[^\d]/g, ''));
+                    if (currentValue && Math.random() > 0.8) {
+                        // Occasionally update stats to simulate real-time changes
+                        const change = Math.random() > 0.5 ? 1 : -1;
+                        const newValue = currentValue + change;
+                        if (newValue >= 0) {
+                            stat.textContent = stat.textContent.replace(currentValue.toString(), newValue.toString());
+                        }
+                    }
+                });
+            }
+            
+            updateActivity() {
+                // Add new activity items occasionally
+                if (Math.random() > 0.9) {
+                    const activities = [
+                        'New shipment request received',
+                        'Route optimization completed',
+                        'Driver assigned to shipment',
+                        'Customs clearance completed'
+                    ];
+                    
+                    const randomActivity = activities[Math.floor(Math.random() * activities.length)];
+                    this.addActivityItem(randomActivity, 'Just now');
+                }
+            }
+            
+            addActivityItem(text, time) {
+                const activityFeed = document.querySelector('.activity-feed > div:last-child');
+                if (activityFeed) {
+                    const activityItem = document.createElement('div');
+                    activityItem.className = 'activity-item';
+                    activityItem.innerHTML = `
+                        <div class="activity-icon" style="background: var(--color-primary); color: white;">🔔</div>
+                        <div class="activity-content">
+                            <div class="activity-text">${text}</div>
+                            <div class="activity-time">${time}</div>
+                        </div>
+                    `;
+                    
+                    activityFeed.insertBefore(activityItem, activityFeed.firstChild);
+                    
+                    // Remove old items if too many
+                    const items = activityFeed.querySelectorAll('.activity-item');
+                    if (items.length > 6) {
+                        items[items.length - 1].remove();
+                    }
+                }
+            }
+        }
+        
+        // Initialize dashboard when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new CargoOwnerDashboard();
+        });
+        
+        // Accessibility enhancements
+        document.addEventListener('keydown', (e) => {
+            // Escape key to close any open modals/menus
+            if (e.key === 'Escape') {
+                // Close any open elements
+            }
+            
+            // Quick navigation shortcuts
+            if (e.ctrlKey || e.metaKey) {
+                switch (e.key) {
+                    case '1':
+                        e.preventDefault();
+                        window.location.href = '#'; // Dashboard
+                        break;
+                    case '2':
+                        e.preventDefault();
+                        window.location.href = '07-orders-european.html';
+                        break;
+                    case '3':
+                        e.preventDefault();
+                        window.location.href = '09-create-order-european.html';
+                        break;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
