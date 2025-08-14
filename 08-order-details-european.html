@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details - Circling Logistics Platform</title>
+    <link rel="stylesheet" href="design-system-european.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .order-detail-layout {
+            display: flex;
+            min-height: 100vh;
+            background: var(--bg-secondary);
+        }
+        
+        .sidebar {
+            width: 280px;
+            background: var(--white);
+            border-right: 1px solid var(--border-primary);
+            padding: var(--space-6);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: var(--space-6);
+        }
+        
+        .order-header {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            margin-bottom: var(--space-6);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: between;
+            align-items: flex-start;
+            margin-bottom: var(--space-4);
+        }
+        
+        .order-title {
+            margin: 0;
+            margin-bottom: var(--space-2);
+        }
+        
+        .order-route {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            font-size: var(--font-size-lg);
+            color: var(--text-secondary);
+        }
+        
+        .route-location {
+            font-weight: var(--font-weight-semibold);
+            color: var(--text-primary);
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: var(--space-3);
+        }
+        
+        .order-meta {
+            display: flex;
+            gap: var(--space-6);
+            color: var(--text-secondary);
+            font-size: var(--font-size-sm);
+        }
+        
+        .order-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: var(--space-6);
+        }
+        
+        .main-column {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-6);
+        }
+        
+        .side-column {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-6);
+        }
+        
+        .content-section {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .section-title {
+            margin: 0 0 var(--space-4) 0;
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-semibold);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+        }
+        
+        .section-icon {
+            width: 24px;
+            height: 24px;
+            color: var(--primary-600);
+        }
+        
+        .tracking-map {
+            height: 300px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-base);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            margin-bottom: var(--space-4);
+            position: relative;
+        }
+        
+        .map-placeholder {
+            text-align: center;
+        }
+        
+        .live-indicator {
+            position: absolute;
+            top: var(--space-4);
+            right: var(--space-4);
+            background: var(--success);
+            color: var(--white);
+            padding: var(--space-2) var(--space-3);
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-semibold);
+            display: flex;
+            align-items: center;
+            gap: var(--space-1);
+        }
+        
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--white);
+            border-radius: var(--radius-full);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .tracking-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-4);
+        }
+        
+        .tracking-item {
+            text-align: center;
+            padding: var(--space-4);
+            background: var(--bg-secondary);
+            border-radius: var(--radius-base);
+        }
+        
+        .tracking-label {
+            font-size: var(--font-size-xs);
+            color: var(--text-secondary);
+            margin-bottom: var(--space-1);
+            text-transform: uppercase;
+            font-weight: var(--font-weight-medium);
+        }
+        
+        .tracking-value {
+            font-weight: var(--font-weight-semibold);
+            color: var(--text-primary);
+        }
+        
+        .order-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-4);
+        }
+        
+        .info-item {
+            padding: var(--space-4);
+            background: var(--bg-secondary);
+            border-radius: var(--radius-base);
+        }
+        
+        .info-label {
+            font-size: var(--font-size-sm);
+            color: var(--text-secondary);
+            margin-bottom: var(--space-2);
+            font-weight: var(--font-weight-medium);
+        }
+        
+        .info-value {
+            font-weight: var(--font-weight-semibold);
+            color: var(--text-primary);
+        }
+        
+        .timeline {
+            position: relative;
+        }
+        
+        .timeline-item {
+            display: flex;
+            gap: var(--space-4);
+            margin-bottom: var(--space-6);
+            position: relative;
+        }
+        
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 19px;
+            top: 40px;
+            bottom: -24px;
+            width: 2px;
+            background: var(--border-primary);
+        }
+        
+        .timeline-item:last-child::before {
+            display: none;
+        }
+        
+        .timeline-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            z-index: 1;
+        }
+        
+        .timeline-icon.completed {
+            background: var(--success);
+            color: var(--white);
+        }
+        
+        .timeline-icon.active {
+            background: var(--primary-600);
+            color: var(--white);
+        }
+        
+        .timeline-icon.pending {
+            background: var(--border-primary);
+            color: var(--text-muted);
+        }
+        
+        .timeline-content {
+            flex: 1;
+            padding-top: var(--space-1);
+        }
+        
+        .timeline-title {
+            font-weight: var(--font-weight-semibold);
+            color: var(--text-primary);
+            margin-bottom: var(--space-1);
+        }
+        
+        .timeline-meta {
+            font-size: var(--font-size-sm);
+            color: var(--text-secondary);
+            margin-bottom: var(--space-2);
+        }
+        
+        .timeline-description {
+            font-size: var(--font-size-sm);
+            color: var(--text-secondary);
+            line-height: var(--line-height-relaxed);
+        }
+        
+        .communication-tools {
+            display: flex;
+            gap: var(--space-3);
+            margin-bottom: var(--space-6);
+        }
+        
+        .comm-button {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-2);
+            padding: var(--space-3);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-base);
+            background: var(--white);
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: var(--font-weight-medium);
+            transition: all 0.2s ease;
+        }
+        
+        .comm-button:hover {
+            background: var(--primary-100);
+            border-color: var(--primary-600);
+            color: var(--primary-600);
+        }
+        
+        .comm-button.primary {
+            background: var(--primary-600);
+            border-color: var(--primary-600);
+            color: var(--white);
+        }
+        
+        .comm-button.primary:hover {
+            background: var(--primary-800);
+        }
+        
+        .chat-messages {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: var(--space-4);
+        }
+        
+        .message {
+            margin-bottom: var(--space-4);
+        }
+        
+        .message.outgoing {
+            text-align: right;
+        }
+        
+        .message-content {
+            display: inline-block;
+            max-width: 80%;
+            padding: var(--space-3);
+            border-radius: var(--radius-base);
+            font-size: var(--font-size-sm);
+        }
+        
+        .message.incoming .message-content {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        
+        .message.outgoing .message-content {
+            background: var(--primary-600);
+            color: var(--white);
+        }
+        
+        .message-meta {
+            font-size: var(--font-size-xs);
+            color: var(--text-muted);
+            margin-top: var(--space-1);
+        }
+        
+        .chat-input {
+            display: flex;
+            gap: var(--space-2);
+        }
+        
+        .document-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .document-item {
+            display: flex;
+            align-items: center;
+            justify-content: between;
+            padding: var(--space-3);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-base);
+            margin-bottom: var(--space-3);
+        }
+        
+        .document-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .document-info {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+        }
+        
+        .document-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-100);
+            color: var(--primary-600);
+            border-radius: var(--radius-base);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .document-details {
+            flex: 1;
+        }
+        
+        .document-name {
+            font-weight: var(--font-weight-medium);
+            color: var(--text-primary);
+            margin-bottom: var(--space-1);
+        }
+        
+        .document-meta {
+            font-size: var(--font-size-sm);
+            color: var(--text-secondary);
+        }
+        
+        .vehicle-info {
+            display: flex;
+            gap: var(--space-4);
+            margin-bottom: var(--space-4);
+        }
+        
+        .vehicle-image {
+            width: 80px;
+            height: 80px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-base);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+        }
+        
+        .vehicle-details {
+            flex: 1;
+        }
+        
+        .vehicle-name {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            color: var(--text-primary);
+            margin-bottom: var(--space-1);
+        }
+        
+        .vehicle-specs {
+            color: var(--text-secondary);
+            font-size: var(--font-size-sm);
+            margin-bottom: var(--space-2);
+        }
+        
+        .driver-info {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            padding: var(--space-4);
+            background: var(--bg-secondary);
+            border-radius: var(--radius-base);
+        }
+        
+        .driver-avatar {
+            width: 48px;
+            height: 48px;
+            background: var(--primary-600);
+            color: var(--white);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: var(--font-weight-semibold);
+        }
+        
+        .driver-details {
+            flex: 1;
+        }
+        
+        .driver-name {
+            font-weight: var(--font-weight-semibold);
+            color: var(--text-primary);
+            margin-bottom: var(--space-1);
+        }
+        
+        .driver-rating {
+            color: var(--text-secondary);
+            font-size: var(--font-size-sm);
+        }
+        
+        .payment-summary {
+            border-top: 1px solid var(--border-primary);
+            padding-top: var(--space-4);
+        }
+        
+        .payment-row {
+            display: flex;
+            justify-content: between;
+            margin-bottom: var(--space-2);
+        }
+        
+        .payment-row.total {
+            font-weight: var(--font-weight-semibold);
+            font-size: var(--font-size-lg);
+            border-top: 1px solid var(--border-primary);
+            padding-top: var(--space-3);
+            margin-top: var(--space-3);
+        }
+        
+        .issue-form {
+            margin-top: var(--space-4);
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: var(--space-4);
+            }
+            
+            .order-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-top {
+                flex-direction: column;
+                gap: var(--space-4);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="order-detail-layout">
+        <!-- Sidebar (reusing from other pages) -->
+        <nav class="sidebar">
+            <div class="sidebar-logo">Circling</div>
+            
+            <ul class="sidebar-nav">
+                <li class="nav-item">
+                    <a href="02-dashboard-european.html" class="nav-link">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9,22 9,12 15,12 15,22"></polyline>
+                        </svg>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="09-create-order-european.html" class="nav-link">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="16"></line>
+                            <line x1="8" y1="12" x2="16" y2="12"></line>
+                        </svg>
+                        Create Order
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="07-orders-european.html" class="nav-link active">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                        </svg>
+                        My Orders
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="10-bidding-european.html" class="nav-link">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                        </svg>
+                        Bids & Quotes
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                            <line x1="8" y1="21" x2="16" y2="21"></line>
+                            <line x1="12" y1="17" x2="12" y2="21"></line>
+                        </svg>
+                        Tracking
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                            <line x1="1" y1="10" x2="23" y2="10"></line>
+                        </svg>
+                        Payments
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 9V5a3 3 0 0 0-6 0v4"></path>
+                            <rect x="2" y="9" width="20" height="12" rx="2" ry="2"></rect>
+                        </svg>
+                        Partners
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="22,12 18,12 15,21 9,3 6,12 2,12"></polyline>
+                        </svg>
+                        Analytics
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                        </svg>
+                        Settings
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="user-profile">
+                <div class="user-avatar">JD</div>
+                <div class="user-info">
+                    <div class="user-name">John Doe</div>
+                    <div class="user-role">Cargo Owner</div>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Order Header -->
+            <div class="order-header">
+                <div class="header-top">
+                    <div>
+                        <h1 class="order-title">Order #ORD-2024-1156</h1>
+                        <div class="order-route">
+                            <span class="route-location">Berlin</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="9,18 15,12 9,6"></polyline>
+                            </svg>
+                            <span class="route-location">Munich</span>
+                        </div>
+                    </div>
+                    <div class="header-actions">
+                        <span class="badge badge-success">In Transit</span>
+                        <button class="btn btn-ghost">Share</button>
+                        <button class="btn btn-primary">Track Live</button>
+                    </div>
+                </div>
+                
+                <div class="order-meta">
+                    <span>Created: 2 hours ago</span>
+                    <span>•</span>
+                    <span>Pickup: Today, 14:00</span>
+                    <span>•</span>
+                    <span>Expected Delivery: Tomorrow, 16:00</span>
+                    <span>•</span>
+                    <span>Distance: 584 km</span>
+                </div>
+            </div>
+            
+            <!-- Order Content -->
+            <div class="order-content">
+                <!-- Main Column -->
+                <div class="main-column">
+                    <!-- Real-Time Tracking -->
+                    <div class="content-section">
+                        <h2 class="section-title">
+                            <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            Real-Time Tracking
+                        </h2>
+                        
+                        <div class="tracking-map">
+                            <div class="live-indicator">
+                                <div class="live-dot"></div>
+                                LIVE
+                            </div>
+                            <div class="map-placeholder">
+                                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                                <p>Interactive map would display here</p>
+                                <p class="text-sm">Real-time GPS tracking with route optimization</p>
+                            </div>
+                        </div>
+                        
+                        <div class="tracking-details">
+                            <div class="tracking-item">
+                                <div class="tracking-label">Current Location</div>
+                                <div class="tracking-value">Nuremberg</div>
+                            </div>
+                            <div class="tracking-item">
+                                <div class="tracking-label">Distance Remaining</div>
+                                <div class="tracking-value">287 km</div>
+                            </div>
+                            <div class="tracking-item">
+                                <div class="tracking-label">Estimated Arrival</div>
+                                <div class="tracking-value">Tomorrow 15:30</div>
+                            </div>
+                            <div class="tracking-item">
+                                <div class="tracking-label">Average Speed</div>
+                                <div class="tracking-value">85 km/h</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Order Information -->
+                    <div class="content-section">
+                        <h2 class="section-title">
+                            <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                                <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                            </svg>
+                            Order Information
+                        </h2>
+                        
+                        <div class="order-info-grid">
+                            <div class="info-item">
+                                <div class="info-label">Cargo Type</div>
+                                <div class="info-value">Industrial Machinery</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Weight</div>
+                                <div class="info-value">15.2 tons</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Dimensions</div>
+                                <div class="info-value">6.0 × 2.5 × 3.2 m</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Value</div>
+                                <div class="info-value">€185,000</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Special Requirements</div>
+                                <div class="info-value">Temperature controlled, Fragile handling</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Pickup Address</div>
+                                <div class="info-value">Industriestraße 45, 10365 Berlin</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Delivery Address</div>
+                                <div class="info-value">Maximilianstraße 12, 80539 München</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Contact Person</div>
+                                <div class="info-value">Hans Mueller (+49 30 123456)</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Timeline/Status Tracking -->
+                    <div class="content-section">
+                        <h2 class="section-title">
+                            <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12,6 12,12 16,14"></polyline>
+                            </svg>
+                            Order Timeline
+                        </h2>
+                        
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-icon completed">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="20,6 9,17 4,12"></polyline>
+                                    </svg>
+                                </div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title">Order Created</div>
+                                    <div class="timeline-meta">Today at 12:15 PM</div>
+                                    <div class="timeline-description">Order was successfully created and bid request sent to fleet partners.</div>
+                                </div>
+                            </div>
+                            
+                            <div class="timeline-item">
+                                <div class="timeline-icon completed">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                                    </svg>
+                                </div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title">Bid Accepted</div>
+                                    <div class="timeline-meta">Today at 1:30 PM</div>
+                                    <div class="timeline-description">Bid from TransEuro Logistics accepted. Driver assigned: Klaus Weber.</div>
+                                </div>
+                            </div>
+                            
+                            <div class="timeline-item">
+                                <div class="timeline-icon completed">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+                                            <path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+                                            <path d="M5 17h-2v-6l2-5h9l4 5h1a2 2 0 0 1 2 2v4h-2"/>
+                                            <path d="M9 17v-6h4v6"/>
+                                        </svg>
+                                    </svg>
+                                </div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title">Pickup Completed</div>
+                                    <div class="timeline-meta">Today at 2:00 PM</div>
+                                    <div class="timeline-description">Cargo successfully picked up from Berlin facility. All documentation verified.</div>
+                                </div>
+                            </div>
+                            
+                            <div class="timeline-item">
+                                <div class="timeline-icon active">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                        <circle cx="12" cy="10" r="3"></circle>
+                                    </svg>
+                                </div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title">In Transit</div>
+                                    <div class="timeline-meta">Current status</div>
+                                    <div class="timeline-description">Vehicle is currently en route to Munich. Last update: Nuremberg (30 minutes ago).</div>
+                                </div>
+                            </div>
+                            
+                            <div class="timeline-item">
+                                <div class="timeline-icon pending">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                        <circle cx="12" cy="10" r="3"></circle>
+                                    </svg>
+                                </div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title">Delivery Scheduled</div>
+                                    <div class="timeline-meta">Tomorrow at 4:00 PM</div>
+                                    <div class="timeline-description">Scheduled delivery to Munich facility. Contact person notified.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Communication -->
+                    <div class="content-section">
+                        <h2 class="section-title">
+                            <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                            </svg>
+                            Communication
+                        </h2>
+                        
+                        <div class="communication-tools">
+                            <a href="tel:+491234567890" class="comm-button">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                </svg>
+                                Call Driver
+                            </a>
+                            <button class="comm-button primary" onclick="toggleChat()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                </svg>
+                                Chat
+                            </button>
+                            <button class="comm-button" onclick="reportIssue()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                                </svg>
+                                Report Issue
+                            </button>
+                        </div>
+                        
+                        <div id="chatMessages" class="chat-messages" style="display: none;">
+                            <div class="message incoming">
+                                <div class="message-content">Hello! I'm Klaus, your driver for today's delivery. The pickup was successful and we're on our way to Munich.</div>
+                                <div class="message-meta">Klaus Weber • 2:15 PM</div>
+                            </div>
+                            
+                            <div class="message outgoing">
+                                <div class="message-content">Great! Thank you for the update. What's the expected arrival time?</div>
+                                <div class="message-meta">You • 2:18 PM</div>
+                            </div>
+                            
+                            <div class="message incoming">
+                                <div class="message-content">We should arrive around 15:30 tomorrow afternoon. I'll send another update when we're 30 minutes away.</div>
+                                <div class="message-meta">Klaus Weber • 2:20 PM</div>
+                            </div>
+                        </div>
+                        
+                        <div id="chatInput" class="chat-input" style="display: none;">
+                            <input type="text" class="form-control" placeholder="Type your message..." style="flex: 1;">
+                            <button class="btn btn-primary">Send</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Side Column -->
+                <div class="side-column">
+                    <!-- Vehicle & Driver Info -->
+                    <div class="content-section">
+                        <h2 class="section-title">
+                            <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+                                <path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+                                <path d="M5 17h-2v-6l2-5h9l4 5h1a2 2 0 0 1 2 2v4h-2"/>
+                                <path d="M9 17v-6h4v6"/>
+                            </svg>
+                            Vehicle & Driver
+                        </h2>
+                        
+                        <div class="vehicle-info">
+                            <div class="vehicle-image">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                                    <path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+                                    <path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+                                    <path d="M5 17h-2v-6l2-5h9l4 5h1a2 2 0 0 1 2 2v4h-2"/>
+                                    <path d="M9 17v-6h4v6"/>
+                                </svg>
+                            </div>
+                            <div class="vehicle-details">
+                                <div class="vehicle-name">Mercedes Actros 1845</div>
+                                <div class="vehicle-specs">Semi-trailer • 40t capacity • Euro 6</div>
+                                <div class="vehicle-specs">License: M-TR 2847</div>
+                            </div>
+                        </div>
+                        
+                        <div class="driver-info">
+                            <div class="driver-avatar">KW</div>
+                            <div class="driver-details">
+                                <div class="driver-name">Klaus Weber</div>
+                                <div class="driver-rating">⭐ 4.9/5 • 8 years experience</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Documents -->
+                    <div class="content-section">
+                        <h2 class="section-title">
+                            <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14,2 14,8 20,8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10,9 9,9 8,9"></polyline>
+                            </svg>
+                            Documents
+                        </h2>
+                        
+                        <ul class="document-list">
+                            <li class="document-item">
+                                <div class="document-info">
+                                    <div class="document-icon">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                            <polyline points="14,2 14,8 20,8"></polyline>
+                                        </svg>
+                                    </div>
+                                    <div class="document-details">
+                                        <div class="document-name">Bill of Lading</div>
+                                        <div class="document-meta">PDF • 2.3 MB</div>
+                                    </div>
+                                </div>
+                                <button class="btn btn-sm btn-ghost">Download</button>
+                            </li>
+                            
+                            <li class="document-item">
+                                <div class="document-info">
+                                    <div class="document-icon">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                            <polyline points="14,2 14,8 20,8"></polyline>
+                                        </svg>
+                                    </div>
+                                    <div class="document-details">
+                                        <div class="document-name">Insurance Certificate</div>
+                                        <div class="document-meta">PDF • 1.8 MB</div>
+                                    </div>
+                                </div>
+                                <button class="btn btn-sm btn-ghost">Download</button>
+                            </li>
+                            
+                            <li class="document-item">
+                                <div class="document-info">
+                                    <div class="document-icon">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                            <rect x="7" y="7" width="3" height="9"></rect>
+                                            <rect x="14" y="7" width="3" height="5"></rect>
+                                        </svg>
+                                    </div>
+                                    <div class="document-details">
+                                        <div class="document-name">Pickup Photos</div>
+                                        <div class="document-meta">4 images • 8.2 MB</div>
+                                    </div>
+                                </div>
+                                <button class="btn btn-sm btn-ghost">View</button>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Payment Information -->
+                    <div class="content-section">
+                        <h2 class="section-title">
+                            <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                                <line x1="1" y1="10" x2="23" y2="10"></line>
+                            </svg>
+                            Payment Information
+                        </h2>
+                        
+                        <div class="payment-summary">
+                            <div class="payment-row">
+                                <span>Base Transport Cost</span>
+                                <span>€2,200.00</span>
+                            </div>
+                            <div class="payment-row">
+                                <span>Fuel Surcharge</span>
+                                <span>€180.00</span>
+                            </div>
+                            <div class="payment-row">
+                                <span>Insurance</span>
+                                <span>€70.00</span>
+                            </div>
+                            <div class="payment-row total">
+                                <span>Total Amount</span>
+                                <span>€2,450.00</span>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: var(--space-4);">
+                            <span class="badge badge-warning">Payment on Delivery</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function toggleChat() {
+            const chatMessages = document.getElementById('chatMessages');
+            const chatInput = document.getElementById('chatInput');
+            
+            if (chatMessages.style.display === 'none') {
+                chatMessages.style.display = 'block';
+                chatInput.style.display = 'flex';
+            } else {
+                chatMessages.style.display = 'none';
+                chatInput.style.display = 'none';
+            }
+        }
+        
+        function reportIssue() {
+            const issueForm = `
+                <div class="issue-form">
+                    <h4>Report an Issue</h4>
+                    <div class="form-group">
+                        <label class="form-label">Issue Type</label>
+                        <select class="form-control">
+                            <option>Delivery Delay</option>
+                            <option>Damaged Cargo</option>
+                            <option>Communication Issue</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" rows="3" placeholder="Please describe the issue..."></textarea>
+                    </div>
+                    <div style="display: flex; gap: var(--space-3);">
+                        <button class="btn btn-primary">Submit Report</button>
+                        <button class="btn btn-ghost" onclick="this.closest('.issue-form').remove()">Cancel</button>
+                    </div>
+                </div>
+            `;
+            
+            // Add form to communication section
+            const commSection = document.querySelector('.content-section:has(.communication-tools)');
+            if (!commSection.querySelector('.issue-form')) {
+                commSection.insertAdjacentHTML('beforeend', issueForm);
+            }
+        }
+        
+        // Simulate real-time updates
+        function updateLocation() {
+            const locations = ['Nuremberg', 'Ingolstadt', 'Pfaffenhofen', 'Freising'];
+            const currentLocation = document.querySelector('.tracking-details .tracking-value');
+            
+            // Simulate location changes every 30 seconds for demo
+            let currentIndex = 0;
+            setInterval(() => {
+                if (currentIndex < locations.length - 1) {
+                    currentIndex++;
+                    currentLocation.textContent = locations[currentIndex];
+                    
+                    // Update distance remaining
+                    const distances = ['287 km', '245 km', '198 km', '156 km'];
+                    document.querySelectorAll('.tracking-value')[1].textContent = distances[currentIndex];
+                }
+            }, 30000);
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateLocation();
+            
+            // Get order ID from URL if present
+            const urlParams = new URLSearchParams(window.location.search);
+            const orderId = urlParams.get('id');
+            if (orderId) {
+                document.querySelector('.order-title').textContent = `Order #${orderId}`;
+            }
+        });
+    </script>
+</body>
+</html>

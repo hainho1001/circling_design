@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Circling Logistics Platform</title>
+    <link rel="stylesheet" href="design-system-european.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .register-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary-900) 0%, var(--primary-800) 100%);
+            padding: var(--space-6);
+        }
+        
+        .register-content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: var(--space-8) 0;
+        }
+        
+        .register-header {
+            text-align: center;
+            color: var(--white);
+            margin-bottom: var(--space-8);
+        }
+        
+        .register-logo {
+            font-size: var(--font-size-3xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--white);
+            margin-bottom: var(--space-4);
+        }
+        
+        .register-title {
+            font-size: var(--font-size-2xl);
+            margin-bottom: var(--space-3);
+        }
+        
+        .register-subtitle {
+            font-size: var(--font-size-lg);
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .user-type-selection {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            padding: var(--space-8);
+            margin-bottom: var(--space-8);
+            box-shadow: var(--shadow-2xl);
+        }
+        
+        .user-type-title {
+            text-align: center;
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-semibold);
+            color: var(--text-primary);
+            margin-bottom: var(--space-6);
+        }
+        
+        .user-type-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-6);
+        }
+        
+        .user-type-card {
+            border: 2px solid var(--border-primary);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .user-type-card:hover {
+            border-color: var(--primary-600);
+            background: var(--primary-50);
+        }
+        
+        .user-type-card.selected {
+            border-color: var(--primary-600);
+            background: var(--primary-100);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .user-type-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--primary-100);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto var(--space-4);
+            color: var(--primary-600);
+        }
+        
+        .user-type-card.selected .user-type-icon {
+            background: var(--primary-600);
+            color: var(--white);
+        }
+        
+        .user-type-name {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-semibold);
+            color: var(--text-primary);
+            margin-bottom: var(--space-2);
+        }
+        
+        .user-type-description {
+            color: var(--text-secondary);
+            font-size: var(--font-size-sm);
+            line-height: var(--line-height-relaxed);
+        }
+        
+        .register-form {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            padding: var(--space-8);
+            box-shadow: var(--shadow-2xl);
+            display: none;
+        }
+        
+        .register-form.active {
+            display: block;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-4);
+        }
+        
+        .form-section {
+            margin-bottom: var(--space-8);
+        }
+        
+        .form-section-title {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            color: var(--text-primary);
+            margin-bottom: var(--space-4);
+            padding-bottom: var(--space-2);
+            border-bottom: 2px solid var(--border-primary);
+        }
+        
+        .password-requirements {
+            margin-top: var(--space-4);
+            padding: var(--space-4);
+            background: var(--bg-secondary);
+            border-radius: var(--radius-base);
+        }
+        
+        .requirement {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            font-size: var(--font-size-sm);
+            margin-bottom: var(--space-2);
+            color: var(--text-secondary);
+        }
+        
+        .requirement:last-child {
+            margin-bottom: 0;
+        }
+        
+        .requirement.met {
+            color: var(--success);
+        }
+        
+        .requirement-icon {
+            width: 16px;
+            height: 16px;
+            border-radius: var(--radius-full);
+            border: 2px solid var(--border-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .requirement.met .requirement-icon {
+            background: var(--success);
+            border-color: var(--success);
+            color: var(--white);
+        }
+        
+        .terms-section {
+            margin: var(--space-6) 0;
+            padding: var(--space-4);
+            background: var(--info-bg);
+            border-radius: var(--radius-base);
+        }
+        
+        .terms-checkbox {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-3);
+        }
+        
+        .terms-checkbox input[type="checkbox"] {
+            margin-top: 4px;
+        }
+        
+        .terms-text {
+            font-size: var(--font-size-sm);
+            line-height: var(--line-height-relaxed);
+            color: var(--text-primary);
+        }
+        
+        .terms-text a {
+            color: var(--primary-600);
+            text-decoration: none;
+        }
+        
+        .terms-text a:hover {
+            text-decoration: underline;
+        }
+        
+        .signin-link {
+            text-align: center;
+            margin-top: var(--space-6);
+            padding-top: var(--space-6);
+            border-top: 1px solid var(--border-primary);
+            color: var(--text-secondary);
+            font-size: var(--font-size-sm);
+        }
+        
+        .signin-link a {
+            color: var(--primary-600);
+            text-decoration: none;
+            font-weight: var(--font-weight-medium);
+        }
+        
+        .signin-link a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .user-type-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .register-content {
+                padding: var(--space-4) 0;
+            }
+            
+            .user-type-selection,
+            .register-form {
+                padding: var(--space-6);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-content">
+            <div class="register-header">
+                <div class="register-logo">Circling</div>
+                <h1 class="register-title">Join the Leading Logistics Platform</h1>
+                <p class="register-subtitle">Connect with thousands of partners across Europe</p>
+            </div>
+            
+            <!-- User Type Selection -->
+            <div class="user-type-selection" id="userTypeSelection">
+                <h2 class="user-type-title">What best describes you?</h2>
+                <div class="user-type-options">
+                    <div class="user-type-card" data-type="cargo" onclick="selectUserType('cargo')">
+                        <div class="user-type-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 3h15v9a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3z"/>
+                                <path d="M16 8h2a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-2"/>
+                                <circle cx="7" cy="19" r="2"/>
+                                <path d="M20 8v10a2 2 0 0 1-2 2H2"/>
+                                <circle cx="17" cy="19" r="2"/>
+                            </svg>
+                        </div>
+                        <h3 class="user-type-name">Cargo Owner</h3>
+                        <p class="user-type-description">
+                            I need to ship cargo and looking for reliable fleet owners to transport my goods across Europe.
+                        </p>
+                    </div>
+                    
+                    <div class="user-type-card" data-type="fleet" onclick="selectUserType('fleet')">
+                        <div class="user-type-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+                                <path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+                                <path d="M5 17h-2v-6l2-5h9l4 5h1a2 2 0 0 1 2 2v4h-2"/>
+                                <path d="M9 17v-6h4v6"/>
+                                <path d="M3 9h4"/>
+                            </svg>
+                        </div>
+                        <h3 class="user-type-name">Fleet Owner</h3>
+                        <p class="user-type-description">
+                            I own vehicles and want to find cargo transportation opportunities to maximize my fleet utilization.
+                        </p>
+                    </div>
+                </div>
+                
+                <button type="button" class="btn btn-primary btn-full mt-6" id="continueBtn" onclick="showRegistrationForm()" disabled>
+                    Continue Registration
+                </button>
+            </div>
+            
+            <!-- Registration Form -->
+            <form class="register-form" id="registrationForm">
+                <div class="form-section">
+                    <h3 class="form-section-title">Personal Information</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName" class="form-label required">First Name</label>
+                            <input type="text" id="firstName" name="firstName" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName" class="form-label required">Last Name</label>
+                            <input type="text" id="lastName" name="lastName" class="form-control" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email" class="form-label required">Email Address</label>
+                            <input type="email" id="email" name="email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone" class="form-label required">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" class="form-control" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3 class="form-section-title">Company Information</h3>
+                    <div class="form-group">
+                        <label for="companyName" class="form-label required">Company Name</label>
+                        <input type="text" id="companyName" name="companyName" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="vatNumber" class="form-label">VAT Number</label>
+                            <input type="text" id="vatNumber" name="vatNumber" class="form-control" placeholder="EU VAT Number (optional)">
+                        </div>
+                        <div class="form-group">
+                            <label for="country" class="form-label required">Country</label>
+                            <select id="country" name="country" class="form-control" required>
+                                <option value="">Select your country</option>
+                                <option value="DE">Germany</option>
+                                <option value="FR">France</option>
+                                <option value="IT">Italy</option>
+                                <option value="ES">Spain</option>
+                                <option value="NL">Netherlands</option>
+                                <option value="AT">Austria</option>
+                                <option value="CH">Switzerland</option>
+                                <option value="BE">Belgium</option>
+                                <option value="PL">Poland</option>
+                                <option value="CZ">Czech Republic</option>
+                                <option value="HU">Hungary</option>
+                                <option value="SK">Slovakia</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="address" class="form-label required">Business Address</label>
+                        <input type="text" id="address" name="address" class="form-control" placeholder="Street address" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="city" class="form-label required">City</label>
+                            <input type="text" id="city" name="city" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="postalCode" class="form-label required">Postal Code</label>
+                            <input type="text" id="postalCode" name="postalCode" class="form-control" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Fleet-specific fields -->
+                <div class="form-section" id="fleetSection" style="display: none;">
+                    <h3 class="form-section-title">Fleet Information</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fleetSize" class="form-label required">Fleet Size</label>
+                            <select id="fleetSize" name="fleetSize" class="form-control">
+                                <option value="">Select fleet size</option>
+                                <option value="1-5">1-5 vehicles</option>
+                                <option value="6-20">6-20 vehicles</option>
+                                <option value="21-50">21-50 vehicles</option>
+                                <option value="51-100">51-100 vehicles</option>
+                                <option value="100+">100+ vehicles</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="vehicleTypes" class="form-label required">Vehicle Types</label>
+                            <select id="vehicleTypes" name="vehicleTypes" class="form-control" multiple>
+                                <option value="van">Van (up to 3.5t)</option>
+                                <option value="truck">Truck (3.5t - 12t)</option>
+                                <option value="semi">Semi-trailer (12t+)</option>
+                                <option value="refrigerated">Refrigerated transport</option>
+                                <option value="flatbed">Flatbed</option>
+                                <option value="container">Container transport</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="operatingRegions" class="form-label required">Operating Regions</label>
+                        <input type="text" id="operatingRegions" name="operatingRegions" class="form-control" 
+                               placeholder="e.g., Germany, France, Netherlands">
+                        <div class="form-help">List the countries/regions where you operate</div>
+                    </div>
+                </div>
+                
+                <!-- Cargo owner specific fields -->
+                <div class="form-section" id="cargoSection" style="display: none;">
+                    <h3 class="form-section-title">Shipping Information</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="monthlyVolume" class="form-label">Monthly Shipping Volume</label>
+                            <select id="monthlyVolume" name="monthlyVolume" class="form-control">
+                                <option value="">Select volume range</option>
+                                <option value="1-10">1-10 shipments</option>
+                                <option value="11-50">11-50 shipments</option>
+                                <option value="51-100">51-100 shipments</option>
+                                <option value="100+">100+ shipments</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="cargoTypes" class="form-label">Typical Cargo Types</label>
+                            <select id="cargoTypes" name="cargoTypes" class="form-control" multiple>
+                                <option value="general">General goods</option>
+                                <option value="food">Food products</option>
+                                <option value="electronics">Electronics</option>
+                                <option value="automotive">Automotive parts</option>
+                                <option value="chemicals">Chemicals</option>
+                                <option value="machinery">Machinery</option>
+                                <option value="textiles">Textiles</option>
+                                <option value="hazardous">Hazardous materials</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3 class="form-section-title">Account Security</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="password" class="form-label required">Password</label>
+                            <input type="password" id="password" name="password" class="form-control" required>
+                            <div class="password-requirements">
+                                <div class="requirement" id="req-length">
+                                    <div class="requirement-icon">✓</div>
+                                    At least 8 characters long
+                                </div>
+                                <div class="requirement" id="req-lowercase">
+                                    <div class="requirement-icon">✓</div>
+                                    Contains lowercase letter (a-z)
+                                </div>
+                                <div class="requirement" id="req-uppercase">
+                                    <div class="requirement-icon">✓</div>
+                                    Contains uppercase letter (A-Z)
+                                </div>
+                                <div class="requirement" id="req-number">
+                                    <div class="requirement-icon">✓</div>
+                                    Contains number (0-9)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword" class="form-label required">Confirm Password</label>
+                            <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="terms-section">
+                    <div class="terms-checkbox">
+                        <input type="checkbox" id="terms" name="terms" required>
+                        <div class="terms-text">
+                            I agree to the <a href="#" target="_blank">Terms of Service</a> and 
+                            <a href="#" target="_blank">Privacy Policy</a>. I understand that my account 
+                            will be verified before I can start using the platform.
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-full" id="submitBtn">
+                    Create Account
+                </button>
+                
+                <div class="signin-link">
+                    Already have an account? 
+                    <a href="01-login-european.html">Sign in here</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let selectedUserType = null;
+        let passwordRequirements = {
+            length: false,
+            lowercase: false,
+            uppercase: false,
+            number: false
+        };
+        
+        // Get user type from URL if present
+        const urlParams = new URLSearchParams(window.location.search);
+        const typeParam = urlParams.get('type');
+        if (typeParam) {
+            selectUserType(typeParam);
+            document.getElementById('continueBtn').disabled = false;
+        }
+        
+        function selectUserType(type) {
+            selectedUserType = type;
+            
+            // Update UI
+            document.querySelectorAll('.user-type-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            document.querySelector(`[data-type="${type}"]`).classList.add('selected');
+            document.getElementById('continueBtn').disabled = false;
+        }
+        
+        function showRegistrationForm() {
+            document.getElementById('userTypeSelection').style.display = 'none';
+            document.getElementById('registrationForm').classList.add('active');
+            
+            // Show relevant sections based on user type
+            if (selectedUserType === 'fleet') {
+                document.getElementById('fleetSection').style.display = 'block';
+                document.getElementById('cargoSection').style.display = 'none';
+            } else {
+                document.getElementById('fleetSection').style.display = 'none';
+                document.getElementById('cargoSection').style.display = 'block';
+            }
+        }
+        
+        function checkPasswordStrength(password) {
+            // Check length
+            passwordRequirements.length = password.length >= 8;
+            
+            // Check lowercase
+            passwordRequirements.lowercase = /[a-z]/.test(password);
+            
+            // Check uppercase
+            passwordRequirements.uppercase = /[A-Z]/.test(password);
+            
+            // Check number
+            passwordRequirements.number = /\d/.test(password);
+            
+            updateRequirementDisplay();
+        }
+        
+        function updateRequirementDisplay() {
+            Object.keys(passwordRequirements).forEach(req => {
+                const element = document.getElementById(`req-${req}`);
+                if (passwordRequirements[req]) {
+                    element.classList.add('met');
+                } else {
+                    element.classList.remove('met');
+                }
+            });
+        }
+        
+        // Password validation
+        document.getElementById('password').addEventListener('input', function() {
+            checkPasswordStrength(this.value);
+        });
+        
+        document.getElementById('confirmPassword').addEventListener('input', function() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = this.value;
+            
+            if (confirmPassword && password !== confirmPassword) {
+                this.classList.add('error');
+            } else {
+                this.classList.remove('error');
+            }
+        });
+        
+        // Form submission
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validate password requirements
+            const allRequirementsMet = Object.values(passwordRequirements).every(req => req);
+            if (!allRequirementsMet) {
+                alert('Please ensure your password meets all requirements.');
+                return;
+            }
+            
+            // Validate password confirmation
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            if (password !== confirmPassword) {
+                alert('Passwords do not match.');
+                return;
+            }
+            
+            // Simulate registration
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Creating Account...';
+            
+            setTimeout(() => {
+                alert('Account created successfully! You will be redirected to verify your email address.');
+                
+                // Redirect based on user type
+                if (selectedUserType === 'fleet') {
+                    window.location.href = '03-dashboard-fleet-european.html';
+                } else {
+                    window.location.href = '02-dashboard-european.html';
+                }
+            }, 2000);
+        });
+        
+        // Email validation
+        document.getElementById('email').addEventListener('blur', function() {
+            const email = this.value;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            if (email && !emailRegex.test(email)) {
+                this.classList.add('error');
+            } else {
+                this.classList.remove('error');
+            }
+        });
+    </script>
+</body>
+</html>

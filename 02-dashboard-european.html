@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Circling Logistics Platform</title>
+    <link rel="stylesheet" href="design-system-european.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .dashboard-layout {
+            display: flex;
+            min-height: 100vh;
+            background: var(--bg-secondary);
+        }
+        
+        .sidebar {
+            width: 280px;
+            background: var(--white);
+            border-right: 1px solid var(--border-primary);
+            padding: var(--space-6);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .sidebar-logo {
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--primary-600);
+            margin-bottom: var(--space-8);
+            text-align: center;
+        }
+        
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .nav-item {
+            margin-bottom: var(--space-2);
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            padding: var(--space-3) var(--space-4);
+            color: var(--text-primary);
+            text-decoration: none;
+            border-radius: var(--radius-base);
+            font-weight: var(--font-weight-medium);
+            transition: all 0.2s ease;
+        }
+        
+        .nav-link:hover,
+        .nav-link.active {
+            background: var(--primary-100);
+            color: var(--primary-600);
+        }
+        
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            color: currentColor;
+        }
+        
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: var(--space-6);
+        }
+        
+        .dashboard-header {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            margin-bottom: var(--space-6);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: var(--space-4);
+        }
+        
+        .header-title {
+            margin: 0;
+            color: var(--text-primary);
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: var(--space-3);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-6);
+            margin-bottom: var(--space-8);
+        }
+        
+        .stat-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.2s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .stat-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: var(--space-4);
+        }
+        
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .stat-icon.primary {
+            background: var(--primary-100);
+            color: var(--primary-600);
+        }
+        
+        .stat-icon.success {
+            background: var(--success-bg);
+            color: var(--success);
+        }
+        
+        .stat-icon.warning {
+            background: var(--warning-bg);
+            color: var(--warning);
+        }
+        
+        .stat-icon.accent {
+            background: rgba(255, 107, 53, 0.1);
+            color: var(--accent-orange);
+        }
+        
+        .stat-value {
+            font-size: var(--font-size-3xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--text-primary);
+            margin-bottom: var(--space-1);
+        }
+        
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: var(--font-size-sm);
+            margin-bottom: var(--space-2);
+        }
+        
+        .stat-change {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+        }
+        
+        .stat-change.positive {
+            color: var(--success);
+        }
+        
+        .stat-change.negative {
+            color: var(--error);
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: var(--space-6);
+        }
+        
+        .dashboard-section {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: var(--space-6);
+        }
+        
+        .section-title {
+            margin: 0;
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-semibold);
+            color: var(--text-primary);
+        }
+        
+        .section-action {
+            color: var(--primary-600);
+            text-decoration: none;
+            font-weight: var(--font-weight-medium);
+            font-size: var(--font-size-sm);
+        }
+        
+        .section-action:hover {
+            text-decoration: underline;
+        }
+        
+        .order-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .order-item {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            padding: var(--space-4);
+            border-bottom: 1px solid var(--border-primary);
+            transition: background-color 0.2s ease;
+        }
+        
+        .order-item:last-child {
+            border-bottom: none;
+        }
+        
+        .order-item:hover {
+            background: var(--bg-secondary);
+        }
+        
+        .order-info {
+            flex: 1;
+        }
+        
+        .order-route {
+            font-weight: var(--font-weight-semibold);
+            color: var(--text-primary);
+            margin-bottom: var(--space-1);
+        }
+        
+        .order-meta {
+            font-size: var(--font-size-sm);
+            color: var(--text-secondary);
+        }
+        
+        .order-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+        }
+        
+        .activity-item {
+            display: flex;
+            gap: var(--space-3);
+            padding: var(--space-4) 0;
+            border-bottom: 1px solid var(--border-primary);
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .activity-icon.success {
+            background: var(--success-bg);
+            color: var(--success);
+        }
+        
+        .activity-icon.info {
+            background: var(--info-bg);
+            color: var(--info);
+        }
+        
+        .activity-icon.warning {
+            background: var(--warning-bg);
+            color: var(--warning);
+        }
+        
+        .activity-content {
+            flex: 1;
+        }
+        
+        .activity-title {
+            font-weight: var(--font-weight-medium);
+            color: var(--text-primary);
+            margin-bottom: var(--space-1);
+        }
+        
+        .activity-meta {
+            font-size: var(--font-size-sm);
+            color: var(--text-secondary);
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            padding: var(--space-4);
+            background: var(--bg-secondary);
+            border-radius: var(--radius-base);
+            margin-top: auto;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-600);
+            color: var(--white);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: var(--font-weight-semibold);
+        }
+        
+        .user-info {
+            flex: 1;
+        }
+        
+        .user-name {
+            font-weight: var(--font-weight-medium);
+            color: var(--text-primary);
+            margin-bottom: var(--space-1);
+        }
+        
+        .user-role {
+            font-size: var(--font-size-sm);
+            color: var(--text-secondary);
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                z-index: 1000;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: var(--space-4);
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-top {
+                flex-direction: column;
+                gap: var(--space-4);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-logo">Circling</div>
+            
+            <ul class="sidebar-nav">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9,22 9,12 15,12 15,22"></polyline>
+                        </svg>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="09-create-order-european.html" class="nav-link">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="16"></line>
+                            <line x1="8" y1="12" x2="16" y2="12"></line>
+                        </svg>
+                        Create Order
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="07-orders-european.html" class="nav-link">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                        </svg>
+                        My Orders
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="10-bidding-european.html" class="nav-link">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                        </svg>
+                        Bids & Quotes
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                            <line x1="8" y1="21" x2="16" y2="21"></line>
+                            <line x1="12" y1="17" x2="12" y2="21"></line>
+                        </svg>
+                        Tracking
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                            <line x1="1" y1="10" x2="23" y2="10"></line>
+                        </svg>
+                        Payments
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 9V5a3 3 0 0 0-6 0v4"></path>
+                            <rect x="2" y="9" width="20" height="12" rx="2" ry="2"></rect>
+                        </svg>
+                        Partners
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="22,12 18,12 15,21 9,3 6,12 2,12"></polyline>
+                        </svg>
+                        Analytics
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                        </svg>
+                        Settings
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="user-profile">
+                <div class="user-avatar">JD</div>
+                <div class="user-info">
+                    <div class="user-name">John Doe</div>
+                    <div class="user-role">Cargo Owner</div>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Header -->
+            <div class="dashboard-header">
+                <div class="header-top">
+                    <h1 class="header-title">Welcome back, John!</h1>
+                    <div class="header-actions">
+                        <a href="09-create-order-european.html" class="btn btn-primary">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="16"></line>
+                                <line x1="8" y1="12" x2="16" y2="12"></line>
+                            </svg>
+                            Create New Order
+                        </a>
+                        <button class="btn btn-ghost">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <p class="text-secondary">Here's what's happening with your shipments today.</p>
+            </div>
+            
+            <!-- Statistics Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon primary">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                                <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="stat-value">24</div>
+                    <div class="stat-label">Active Orders</div>
+                    <div class="stat-change positive">+3 from last week</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon success">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20,6 9,17 4,12"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="stat-value">156</div>
+                    <div class="stat-label">Completed This Month</div>
+                    <div class="stat-change positive">+12% from last month</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon accent">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="1" x2="12" y2="23"></line>
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="stat-value">€47.2K</div>
+                    <div class="stat-label">Monthly Spending</div>
+                    <div class="stat-change negative">-5% from last month</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon warning">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12,6 12,12 16,14"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="stat-value">2.3h</div>
+                    <div class="stat-label">Average Response Time</div>
+                    <div class="stat-change positive">-0.5h improvement</div>
+                </div>
+            </div>
+            
+            <!-- Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- Recent Orders -->
+                <div class="dashboard-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Recent Orders</h2>
+                        <a href="07-orders-european.html" class="section-action">View All Orders</a>
+                    </div>
+                    
+                    <ul class="order-list">
+                        <li class="order-item">
+                            <div class="order-info">
+                                <div class="order-route">Berlin → Munich</div>
+                                <div class="order-meta">Machinery • 15 tons • Pickup today</div>
+                            </div>
+                            <div class="order-actions">
+                                <span class="badge badge-success">In Transit</span>
+                                <a href="08-order-details-european.html" class="btn btn-sm btn-ghost">View</a>
+                            </div>
+                        </li>
+                        
+                        <li class="order-item">
+                            <div class="order-info">
+                                <div class="order-route">Hamburg → Paris</div>
+                                <div class="order-meta">Electronics • 8.5 tons • Pickup tomorrow</div>
+                            </div>
+                            <div class="order-actions">
+                                <span class="badge badge-warning">Pending</span>
+                                <a href="08-order-details-european.html" class="btn btn-sm btn-ghost">View</a>
+                            </div>
+                        </li>
+                        
+                        <li class="order-item">
+                            <div class="order-info">
+                                <div class="order-route">Frankfurt → Vienna</div>
+                                <div class="order-meta">Automotive parts • 12 tons • Pickup in 2 days</div>
+                            </div>
+                            <div class="order-actions">
+                                <span class="badge badge-primary">Bid Review</span>
+                                <a href="10-bidding-european.html" class="btn btn-sm btn-ghost">View Bids</a>
+                            </div>
+                        </li>
+                        
+                        <li class="order-item">
+                            <div class="order-info">
+                                <div class="order-route">Stuttgart → Rome</div>
+                                <div class="order-meta">Textiles • 6 tons • Delivery completed</div>
+                            </div>
+                            <div class="order-actions">
+                                <span class="badge badge-success">Delivered</span>
+                                <a href="08-order-details-european.html" class="btn btn-sm btn-ghost">View</a>
+                            </div>
+                        </li>
+                        
+                        <li class="order-item">
+                            <div class="order-info">
+                                <div class="order-route">Cologne → Amsterdam</div>
+                                <div class="order-meta">Food products • 4.2 tons • Express delivery</div>
+                            </div>
+                            <div class="order-actions">
+                                <span class="badge badge-info">Scheduled</span>
+                                <a href="08-order-details-european.html" class="btn btn-sm btn-ghost">View</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Recent Activity -->
+                <div class="dashboard-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Recent Activity</h2>
+                        <a href="#" class="section-action">View All</a>
+                    </div>
+                    
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <div class="activity-icon success">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="20,6 9,17 4,12"></polyline>
+                                </svg>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">Order #ORD-2024-1156 delivered</div>
+                                <div class="activity-meta">Stuttgart → Rome • 2 hours ago</div>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-item">
+                            <div class="activity-icon info">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                                </svg>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">New bid received</div>
+                                <div class="activity-meta">Frankfurt → Vienna • 4 hours ago</div>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-item">
+                            <div class="activity-icon info">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">Shipment location updated</div>
+                                <div class="activity-meta">Berlin → Munich • 5 hours ago</div>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-item">
+                            <div class="activity-icon warning">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                                </svg>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">Delivery delay notification</div>
+                                <div class="activity-meta">Hamburg → Paris • 6 hours ago</div>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-item">
+                            <div class="activity-icon success">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="8" x2="12" y2="16"></line>
+                                    <line x1="8" y1="12" x2="16" y2="12"></line>
+                                </svg>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">New order created</div>
+                                <div class="activity-meta">Cologne → Amsterdam • 8 hours ago</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Mock real-time updates
+        function updateOrderStatus() {
+            // Simulate real-time order status updates
+            const statusElements = document.querySelectorAll('.badge');
+            // Add animation or update logic here
+        }
+        
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set up periodic updates
+            setInterval(updateOrderStatus, 30000); // Update every 30 seconds
+            
+            // Add click handlers for navigation
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    if (this.getAttribute('href') === '#') {
+                        e.preventDefault();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
