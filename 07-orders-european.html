@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders - Circling Logistics Platform</title>
+    <link rel="stylesheet" href="design-system-european.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .orders-layout {
+            display: flex;
+            min-height: 100vh;
+            background: var(--bg-secondary);
+        }
+        
+        .sidebar {
+            width: 280px;
+            background: var(--white);
+            border-right: 1px solid var(--border-primary);
+            padding: var(--space-6);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: var(--space-6);
+        }
+        
+        .orders-header {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            margin-bottom: var(--space-6);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: var(--space-4);
+        }
+        
+        .orders-title {
+            margin: 0;
+            color: var(--text-primary);
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: var(--space-3);
+        }
+        
+        .search-filters {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            margin-bottom: var(--space-6);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .filter-section {
+            margin-bottom: var(--space-6);
+        }
+        
+        .filter-title {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            color: var(--text-primary);
+            margin-bottom: var(--space-4);
+        }
+        
+        .filter-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-4);
+        }
+        
+        .quick-filters {
+            display: flex;
+            gap: var(--space-3);
+            margin-bottom: var(--space-4);
+            flex-wrap: wrap;
+        }
+        
+        .filter-chip {
+            padding: var(--space-2) var(--space-4);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-sm);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .filter-chip:hover,
+        .filter-chip.active {
+            background: var(--primary-100);
+            border-color: var(--primary-600);
+            color: var(--primary-600);
+        }
+        
+        .orders-content {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+        
+        .orders-toolbar {
+            padding: var(--space-6);
+            border-bottom: 1px solid var(--border-primary);
+            display: flex;
+            justify-content: between;
+            align-items: center;
+        }
+        
+        .results-info {
+            color: var(--text-secondary);
+            font-size: var(--font-size-sm);
+        }
+        
+        .view-options {
+            display: flex;
+            gap: var(--space-2);
+        }
+        
+        .view-btn {
+            padding: var(--space-2);
+            background: transparent;
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-base);
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: all 0.2s ease;
+        }
+        
+        .view-btn:hover,
+        .view-btn.active {
+            background: var(--primary-100);
+            border-color: var(--primary-600);
+            color: var(--primary-600);
+        }
+        
+        .orders-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .order-card {
+            padding: var(--space-6);
+            border-bottom: 1px solid var(--border-primary);
+            transition: background-color 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .order-card:last-child {
+            border-bottom: none;
+        }
+        
+        .order-card:hover {
+            background: var(--bg-secondary);
+        }
+        
+        .order-header {
+            display: flex;
+            justify-content: between;
+            align-items: flex-start;
+            margin-bottom: var(--space-4);
+        }
+        
+        .order-route {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            margin-bottom: var(--space-2);
+        }
+        
+        .route-location {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            color: var(--text-primary);
+        }
+        
+        .route-arrow {
+            color: var(--text-muted);
+        }
+        
+        .order-meta {
+            display: flex;
+            gap: var(--space-4);
+            font-size: var(--font-size-sm);
+            color: var(--text-secondary);
+            margin-bottom: var(--space-3);
+        }
+        
+        .order-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: var(--space-4);
+            margin-bottom: var(--space-4);
+        }
+        
+        .detail-item {
+            text-align: center;
+            padding: var(--space-3);
+            background: var(--bg-secondary);
+            border-radius: var(--radius-base);
+        }
+        
+        .detail-label {
+            font-size: var(--font-size-xs);
+            color: var(--text-secondary);
+            margin-bottom: var(--space-1);
+            text-transform: uppercase;
+            font-weight: var(--font-weight-medium);
+        }
+        
+        .detail-value {
+            font-weight: var(--font-weight-semibold);
+            color: var(--text-primary);
+        }
+        
+        .order-actions {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+        }
+        
+        .order-price {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--primary-600);
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: var(--space-3);
+        }
+        
+        .urgent-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-1);
+            background: var(--error-bg);
+            color: var(--error);
+            padding: var(--space-1) var(--space-3);
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-medium);
+        }
+        
+        .orders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: var(--space-6);
+            padding: var(--space-6);
+        }
+        
+        .order-grid-card {
+            background: var(--white);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .order-grid-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+        
+        .pagination {
+            padding: var(--space-6);
+            border-top: 1px solid var(--border-primary);
+            display: flex;
+            justify-content: between;
+            align-items: center;
+        }
+        
+        .pagination-info {
+            color: var(--text-secondary);
+            font-size: var(--font-size-sm);
+        }
+        
+        .pagination-controls {
+            display: flex;
+            gap: var(--space-2);
+        }
+        
+        .page-btn {
+            padding: var(--space-2) var(--space-3);
+            background: transparent;
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-base);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .page-btn:hover {
+            background: var(--primary-100);
+            border-color: var(--primary-600);
+        }
+        
+        .page-btn.active {
+            background: var(--primary-600);
+            border-color: var(--primary-600);
+            color: var(--white);
+        }
+        
+        .page-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .saved-searches {
+            margin-bottom: var(--space-6);
+        }
+        
+        .saved-search-item {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            padding: var(--space-3);
+            background: var(--bg-secondary);
+            border-radius: var(--radius-base);
+            margin-bottom: var(--space-2);
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        .saved-search-item:hover {
+            background: var(--primary-100);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: var(--space-16);
+            color: var(--text-secondary);
+        }
+        
+        .empty-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto var(--space-6);
+            background: var(--bg-secondary);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: var(--space-4);
+            }
+            
+            .filter-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .orders-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .order-details {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="orders-layout">
+        <!-- Sidebar (reusing from dashboard) -->
+        <nav class="sidebar">
+            <div class="sidebar-logo">Circling</div>
+            
+            <ul class="sidebar-nav">
+                <li class="nav-item">
+                    <a href="02-dashboard-european.html" class="nav-link">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9,22 9,12 15,12 15,22"></polyline>
+                        </svg>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="09-create-order-european.html" class="nav-link">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="16"></line>
+                            <line x1="8" y1="12" x2="16" y2="12"></line>
+                        </svg>
+                        Create Order
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link active">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                        </svg>
+                        My Orders
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="10-bidding-european.html" class="nav-link">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                        </svg>
+                        Bids & Quotes
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                            <line x1="8" y1="21" x2="16" y2="21"></line>
+                            <line x1="12" y1="17" x2="12" y2="21"></line>
+                        </svg>
+                        Tracking
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                            <line x1="1" y1="10" x2="23" y2="10"></line>
+                        </svg>
+                        Payments
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 9V5a3 3 0 0 0-6 0v4"></path>
+                            <rect x="2" y="9" width="20" height="12" rx="2" ry="2"></rect>
+                        </svg>
+                        Partners
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="22,12 18,12 15,21 9,3 6,12 2,12"></polyline>
+                        </svg>
+                        Analytics
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                        </svg>
+                        Settings
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="user-profile">
+                <div class="user-avatar">JD</div>
+                <div class="user-info">
+                    <div class="user-name">John Doe</div>
+                    <div class="user-role">Cargo Owner</div>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Orders Header -->
+            <div class="orders-header">
+                <div class="header-content">
+                    <h1 class="orders-title">My Orders</h1>
+                    <div class="header-actions">
+                        <button class="btn btn-ghost">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7,10 12,15 17,10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            Export
+                        </button>
+                        <a href="09-create-order-european.html" class="btn btn-primary">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="16"></line>
+                                <line x1="8" y1="12" x2="16" y2="12"></line>
+                            </svg>
+                            Create New Order
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Saved Searches -->
+                <div class="saved-searches">
+                    <h3 class="filter-title">Saved Searches</h3>
+                    <div class="saved-search-item" onclick="applySavedSearch('weekly')">
+                        <span>Weekly Electronics Shipments</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="9,18 15,12 9,6"></polyline>
+                        </svg>
+                    </div>
+                    <div class="saved-search-item" onclick="applySavedSearch('urgent')">
+                        <span>Urgent Automotive Parts</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="9,18 15,12 9,6"></polyline>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Search & Filters -->
+            <div class="search-filters">
+                <div class="filter-section">
+                    <h3 class="filter-title">Search & Filter Orders</h3>
+                    
+                    <div class="quick-filters">
+                        <div class="filter-chip active" onclick="toggleFilter(this, 'all')">All Orders</div>
+                        <div class="filter-chip" onclick="toggleFilter(this, 'active')">Active</div>
+                        <div class="filter-chip" onclick="toggleFilter(this, 'pending')">Pending Pickup</div>
+                        <div class="filter-chip" onclick="toggleFilter(this, 'transit')">In Transit</div>
+                        <div class="filter-chip" onclick="toggleFilter(this, 'delivered')">Delivered</div>
+                        <div class="filter-chip" onclick="toggleFilter(this, 'urgent')">Urgent</div>
+                    </div>
+                    
+                    <div class="filter-row">
+                        <div class="form-group">
+                            <label for="searchOrder" class="form-label">Search Orders</label>
+                            <input type="text" id="searchOrder" class="form-control" placeholder="Order ID, route, or cargo type">
+                        </div>
+                        <div class="form-group">
+                            <label for="statusFilter" class="form-label">Status</label>
+                            <select id="statusFilter" class="form-control">
+                                <option value="">All Statuses</option>
+                                <option value="pending">Pending</option>
+                                <option value="confirmed">Confirmed</option>
+                                <option value="pickup">Pickup Scheduled</option>
+                                <option value="transit">In Transit</option>
+                                <option value="delivered">Delivered</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="dateRange" class="form-label">Date Range</label>
+                            <select id="dateRange" class="form-control">
+                                <option value="">All Dates</option>
+                                <option value="today">Today</option>
+                                <option value="week">This Week</option>
+                                <option value="month">This Month</option>
+                                <option value="custom">Custom Range</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="cargoType" class="form-label">Cargo Type</label>
+                            <select id="cargoType" class="form-control">
+                                <option value="">All Types</option>
+                                <option value="electronics">Electronics</option>
+                                <option value="machinery">Machinery</option>
+                                <option value="automotive">Automotive</option>
+                                <option value="food">Food Products</option>
+                                <option value="textiles">Textiles</option>
+                                <option value="chemicals">Chemicals</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Orders Content -->
+            <div class="orders-content">
+                <div class="orders-toolbar">
+                    <div class="results-info">
+                        Showing 24 of 156 orders
+                    </div>
+                    <div class="view-options">
+                        <button class="view-btn active" onclick="setView('list')" title="List View">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="8" y1="6" x2="21" y2="6"></line>
+                                <line x1="8" y1="12" x2="21" y2="12"></line>
+                                <line x1="8" y1="18" x2="21" y2="18"></line>
+                                <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                                <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                                <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                            </svg>
+                        </button>
+                        <button class="view-btn" onclick="setView('grid')" title="Grid View">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="14" width="7" height="7"></rect>
+                                <rect x="3" y="14" width="7" height="7"></rect>
+                            </svg>
+                        </button>
+                        <button class="view-btn" onclick="setView('map')" title="Map View">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="listView" class="orders-view">
+                    <ul class="orders-list">
+                        <li class="order-card" onclick="openOrderDetails('ORD-2024-1156')">
+                            <div class="order-header">
+                                <div>
+                                    <div class="order-route">
+                                        <span class="route-location">Berlin</span>
+                                        <span class="route-arrow">→</span>
+                                        <span class="route-location">Munich</span>
+                                        <span class="urgent-indicator">
+                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <polyline points="12,6 12,12 16,14"></polyline>
+                                            </svg>
+                                            Urgent
+                                        </span>
+                                    </div>
+                                    <div class="order-meta">
+                                        <span>Order #ORD-2024-1156</span>
+                                        <span>•</span>
+                                        <span>Created 2 hours ago</span>
+                                        <span>•</span>
+                                        <span>Pickup: Today, 14:00</span>
+                                    </div>
+                                </div>
+                                <span class="badge badge-success">In Transit</span>
+                            </div>
+                            
+                            <div class="order-details">
+                                <div class="detail-item">
+                                    <div class="detail-label">Cargo Type</div>
+                                    <div class="detail-value">Machinery</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Weight</div>
+                                    <div class="detail-value">15.2 tons</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Distance</div>
+                                    <div class="detail-value">584 km</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Delivery</div>
+                                    <div class="detail-value">Tomorrow</div>
+                                </div>
+                            </div>
+                            
+                            <div class="order-actions">
+                                <div class="order-price">€2,450</div>
+                                <div class="action-buttons">
+                                    <button class="btn btn-sm btn-ghost">Track</button>
+                                    <button class="btn btn-sm btn-primary">View Details</button>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <li class="order-card" onclick="openOrderDetails('ORD-2024-1155')">
+                            <div class="order-header">
+                                <div>
+                                    <div class="order-route">
+                                        <span class="route-location">Hamburg</span>
+                                        <span class="route-arrow">→</span>
+                                        <span class="route-location">Paris</span>
+                                    </div>
+                                    <div class="order-meta">
+                                        <span>Order #ORD-2024-1155</span>
+                                        <span>•</span>
+                                        <span>Created 5 hours ago</span>
+                                        <span>•</span>
+                                        <span>Pickup: Tomorrow, 09:00</span>
+                                    </div>
+                                </div>
+                                <span class="badge badge-warning">Pending Pickup</span>
+                            </div>
+                            
+                            <div class="order-details">
+                                <div class="detail-item">
+                                    <div class="detail-label">Cargo Type</div>
+                                    <div class="detail-value">Electronics</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Weight</div>
+                                    <div class="detail-value">8.5 tons</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Distance</div>
+                                    <div class="detail-value">789 km</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Delivery</div>
+                                    <div class="detail-value">In 2 days</div>
+                                </div>
+                            </div>
+                            
+                            <div class="order-actions">
+                                <div class="order-price">€1,890</div>
+                                <div class="action-buttons">
+                                    <button class="btn btn-sm btn-ghost">Edit</button>
+                                    <button class="btn btn-sm btn-primary">View Details</button>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <li class="order-card" onclick="openOrderDetails('ORD-2024-1154')">
+                            <div class="order-header">
+                                <div>
+                                    <div class="order-route">
+                                        <span class="route-location">Frankfurt</span>
+                                        <span class="route-arrow">→</span>
+                                        <span class="route-location">Vienna</span>
+                                    </div>
+                                    <div class="order-meta">
+                                        <span>Order #ORD-2024-1154</span>
+                                        <span>•</span>
+                                        <span>Created 1 day ago</span>
+                                        <span>•</span>
+                                        <span>Pickup: In 2 days</span>
+                                    </div>
+                                </div>
+                                <span class="badge badge-primary">Reviewing Bids</span>
+                            </div>
+                            
+                            <div class="order-details">
+                                <div class="detail-item">
+                                    <div class="detail-label">Cargo Type</div>
+                                    <div class="detail-value">Automotive Parts</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Weight</div>
+                                    <div class="detail-value">12.0 tons</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Distance</div>
+                                    <div class="detail-value">425 km</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Bids Received</div>
+                                    <div class="detail-value">7 bids</div>
+                                </div>
+                            </div>
+                            
+                            <div class="order-actions">
+                                <div class="order-price">€1,650</div>
+                                <div class="action-buttons">
+                                    <a href="10-bidding-european.html" class="btn btn-sm btn-accent">View Bids</a>
+                                    <button class="btn btn-sm btn-primary">View Details</button>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <li class="order-card" onclick="openOrderDetails('ORD-2024-1153')">
+                            <div class="order-header">
+                                <div>
+                                    <div class="order-route">
+                                        <span class="route-location">Stuttgart</span>
+                                        <span class="route-arrow">→</span>
+                                        <span class="route-location">Rome</span>
+                                    </div>
+                                    <div class="order-meta">
+                                        <span>Order #ORD-2024-1153</span>
+                                        <span>•</span>
+                                        <span>Created 2 days ago</span>
+                                        <span>•</span>
+                                        <span>Delivered yesterday</span>
+                                    </div>
+                                </div>
+                                <span class="badge badge-success">Delivered</span>
+                            </div>
+                            
+                            <div class="order-details">
+                                <div class="detail-item">
+                                    <div class="detail-label">Cargo Type</div>
+                                    <div class="detail-value">Textiles</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Weight</div>
+                                    <div class="detail-value">6.0 tons</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Distance</div>
+                                    <div class="detail-value">856 km</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Rating</div>
+                                    <div class="detail-value">⭐ 4.9/5</div>
+                                </div>
+                            </div>
+                            
+                            <div class="order-actions">
+                                <div class="order-price">€1,920</div>
+                                <div class="action-buttons">
+                                    <button class="btn btn-sm btn-ghost">Rate & Review</button>
+                                    <button class="btn btn-sm btn-primary">View Details</button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div id="gridView" class="orders-view" style="display: none;">
+                    <div class="orders-grid">
+                        <!-- Grid view cards would go here -->
+                        <div class="empty-state">
+                            <div class="empty-icon">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="3" width="7" height="7"></rect>
+                                    <rect x="14" y="3" width="7" height="7"></rect>
+                                    <rect x="14" y="14" width="7" height="7"></rect>
+                                    <rect x="3" y="14" width="7" height="7"></rect>
+                                </svg>
+                            </div>
+                            <h3>Grid View</h3>
+                            <p>Grid view is coming soon. View your orders in a card-based layout.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="mapView" class="orders-view" style="display: none;">
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                        </div>
+                        <h3>Map View</h3>
+                        <p>Map view is coming soon. Visualize your orders on an interactive map.</p>
+                    </div>
+                </div>
+                
+                <div class="pagination">
+                    <div class="pagination-info">
+                        Showing 1-24 of 156 orders
+                    </div>
+                    <div class="pagination-controls">
+                        <button class="page-btn" disabled>Previous</button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn">2</button>
+                        <button class="page-btn">3</button>
+                        <button class="page-btn">4</button>
+                        <span>...</span>
+                        <button class="page-btn">7</button>
+                        <button class="page-btn">Next</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function toggleFilter(element, filterType) {
+            // Remove active class from all filter chips
+            document.querySelectorAll('.filter-chip').forEach(chip => {
+                chip.classList.remove('active');
+            });
+            
+            // Add active class to clicked chip
+            element.classList.add('active');
+            
+            // Apply filter logic here
+            console.log('Filter applied:', filterType);
+        }
+        
+        function setView(viewType) {
+            // Update view buttons
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.closest('.view-btn').classList.add('active');
+            
+            // Hide all views
+            document.querySelectorAll('.orders-view').forEach(view => {
+                view.style.display = 'none';
+            });
+            
+            // Show selected view
+            const viewMap = {
+                'list': 'listView',
+                'grid': 'gridView',
+                'map': 'mapView'
+            };
+            
+            document.getElementById(viewMap[viewType]).style.display = 'block';
+        }
+        
+        function openOrderDetails(orderId) {
+            window.location.href = `08-order-details-european.html?id=${orderId}`;
+        }
+        
+        function applySavedSearch(searchType) {
+            // Apply saved search filters
+            if (searchType === 'weekly') {
+                document.getElementById('cargoType').value = 'electronics';
+                document.getElementById('dateRange').value = 'week';
+            } else if (searchType === 'urgent') {
+                document.getElementById('cargoType').value = 'automotive';
+                toggleFilter(document.querySelector('[onclick*="urgent"]'), 'urgent');
+            }
+            
+            // Simulate search
+            console.log('Applied saved search:', searchType);
+        }
+        
+        // Real-time search
+        document.getElementById('searchOrder').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            // Implement search logic here
+            console.log('Searching for:', searchTerm);
+        });
+        
+        // Filter change handlers
+        document.getElementById('statusFilter').addEventListener('change', function() {
+            console.log('Status filter changed to:', this.value);
+        });
+        
+        document.getElementById('dateRange').addEventListener('change', function() {
+            console.log('Date range changed to:', this.value);
+        });
+        
+        document.getElementById('cargoType').addEventListener('change', function() {
+            console.log('Cargo type changed to:', this.value);
+        });
+    </script>
+</body>
+</html>
